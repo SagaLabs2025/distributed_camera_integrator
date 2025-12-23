@@ -1,0 +1,124 @@
+# Copyright (c) 2022-2024 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+import("//build/ohos_var.gni")
+import(
+    "//foundation/distributedhardware/distributed_camera/distributedcamera.gni")
+
+ohos_shared_library("distributed_camera_data_process") {
+  sanitize = {
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+    boundary_sanitize = true
+    integer_overflow = true
+    ubsan = true
+  }
+  stack_protector_ret = true
+
+  include_dirs = [
+    "include/interfaces",
+    "include/eventbus",
+    "include/pipeline",
+    "include/utils",
+    "include/pipeline_node/multimedia_codec/decoder",
+    "include/pipeline_node/multimedia_codec/encoder",
+    "include/pipeline_node/fpscontroller",
+    "include/pipeline_node/scale_conversion",
+    "${common_path}/include/constants",
+    "${common_path}/include/utils",
+    "${feeding_smoother_path}/base",
+    "${feeding_smoother_path}/derived",
+    "${feeding_smoother_path}/utils",
+    "${innerkits_path}/native_cpp/camera_source/include",
+    "${services_path}/cameraservice/base/include",
+  ]
+
+  sources = [
+    "${services_path}/cameraservice/base/src/dcamera_sink_frame_info.cpp",
+    "src/pipeline/abstract_data_process.cpp",
+    "src/pipeline/dcamera_pipeline_sink.cpp",
+    "src/pipeline/dcamera_pipeline_source.cpp",
+    "src/pipeline_node/fpscontroller/fps_controller_process.cpp",
+    "src/pipeline_node/multimedia_codec/decoder/decode_surface_listener.cpp",
+    "src/pipeline_node/multimedia_codec/decoder/decode_video_callback.cpp",
+    "src/pipeline_node/multimedia_codec/encoder/encode_data_process.cpp",
+    "src/pipeline_node/multimedia_codec/encoder/encode_video_callback.cpp",
+    "src/utils/image_common_type.cpp",
+    "src/utils/property_carrier.cpp",
+  ]
+
+  ldflags = [
+    "-fpie",
+    "-Wl,-z,relro",
+    "-Wl,-z,now",
+  ]
+
+  deps = [ "${common_path}:distributed_camera_utils" ]
+
+  external_deps = [
+    "av_codec:av_codec_client",
+    "cJSON:cjson",
+    "c_utils:utils",
+    "distributed_hardware_fwk:distributedhardwareutils",
+    "drivers_interface_display:libdisplay_composer_hdi_impl_1.3",
+    "drivers_interface_display:libdisplay_composer_proxy_1.0",
+    "eventhandler:libeventhandler",
+    "graphic_surface:surface",
+    "hilog:libhilog",
+    "hitrace:hitrace_meter",
+    "ipc:ipc_single",
+    "media_foundation:media_foundation",
+    "safwk:system_ability_fwk",
+    "samgr:samgr_proxy",
+  ]
+
+  if (!distributed_camera_common) {
+    sources += [
+      "src/pipeline_node/multimedia_codec/decoder/decode_data_process.cpp",
+      "src/pipeline_node/scale_conversion/scale_convert_process.cpp",
+    ]
+  } else {
+    sources += [
+      "src/pipeline_node/multimedia_codec/decoder/decode_data_process_common.cpp",
+      "src/pipeline_node/scale_conversion/scale_convert_process_common.cpp",
+    ]
+  }
+  
+  external_deps += [ "ffmpeg:libohosffmpeg" ]
+  cflags = [
+    "-fPIC",
+    "-Wall",
+  ]
+
+  if (distributed_camera_common) {
+    cflags += [ "-DDCAMERA_SUPPORT_FFMPEG" ]
+  } else {
+    cflags += [ "-DDCAMERA_MMAP_RESERVE" ]
+  }
+
+  defines = [
+    "HI_LOG_ENABLE",
+    "DH_LOG_TAG=\"dcameradataproc\"",
+    "LOG_DOMAIN=0xD004150",
+  ]
+
+  if (build_variant == "root") {
+    defines += [ "DUMP_DCAMERA_FILE" ]
+  }
+
+  subsystem_name = "distributedhardware"
+
+  part_name = "distributed_camera"
+}

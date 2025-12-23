@@ -1,0 +1,112 @@
+# Copyright (c) 2022-2025 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/test.gni")
+import(
+    "//foundation/distributedhardware/distributed_camera/distributedcamera.gni")
+
+module_out_path = "${unittest_output_path}/dcamera_channel_test"
+
+config("module_private_config") {
+  visibility = [ ":*" ]
+  include_dirs = [
+    "include",
+    "${common_path}/include/constants",
+    "${common_path}/include/utils",
+    "${services_path}/cameraservice/base/include",
+    "${services_path}/channel/include",
+    "${services_path}/channel/include/allconnect",
+    "${services_path}/channel/test/unittest/common/channel",
+    "${services_path}/channel/test/unittest/common/channel/mock",
+    "${services_path}/cameraservice/cameraoperator/client/include",
+    "${services_path}/cameraservice/cameraoperator/client/include/callback",
+    "${services_path}/cameraservice/cameraoperator/client/include/listener",
+    "${services_path}/cameraservice/cameraoperator/handler/include",
+    "${services_path}/cameraservice/sinkservice/include/distributedcameramgr",
+    "${services_path}/cameraservice/sinkservice/include/distributedcameramgr/callback",
+    "${services_path}/cameraservice/sinkservice/include/distributedcameramgr/eventbus",
+    "${services_path}/cameraservice/sinkservice/include/distributedcameramgr/interface",
+    "${services_path}/cameraservice/sinkservice/include/distributedcameramgr/listener",
+    "${services_path}/cameraservice/sinkservice/test/unittest/common/distributedcameramgr",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr/dcameradata",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr/dcamerainterface",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr/dcamerastate",
+    "${services_path}/cameraservice/sourceservice/test/unittest/common/distributedcameramgr",
+    "${services_path}/data_process/include/utils",
+    "${innerkits_path}/native_cpp/camera_source/include",
+    "${innerkits_path}/native_cpp/camera_source/include/callback",
+    "${feeding_smoother_path}/base",
+  ]
+}
+
+ohos_unittest("DCameraChannelTest") {
+  module_out_path = module_out_path
+
+  sources = [
+    "${services_path}/cameraservice/base/src/dcamera_sink_frame_info.cpp",
+    "${services_path}/channel/src/allconnect/distributed_camera_allconnect_manager.cpp",
+    "${services_path}/channel/src/dcamera_channel_sink_impl.cpp",
+    "${services_path}/channel/src/dcamera_channel_source_impl.cpp",
+    "${services_path}/channel/src/dcamera_softbus_adapter.cpp",
+    "${services_path}/channel/src/dcamera_softbus_latency.cpp",
+    "${services_path}/channel/src/dcamera_softbus_session.cpp",
+    "dcamera_allconnect_manager_test.cpp",
+    "dcamera_channel_sink_impl_test.cpp",
+    "dcamera_channel_source_impl_test.cpp",
+    "dcamera_softbus_adapter_test.cpp",
+    "dcamera_softbus_latency_test.cpp",
+    "dcamera_softbus_session_test.cpp",
+    "mock/dcamera_collaboration_mock.cpp",
+    "mock/lib_function_mock.cpp",
+    "session_bus_center.cpp",
+    "session_mock.cpp",
+  ]
+
+  configs = [ ":module_private_config" ]
+
+  deps = [
+    "${common_path}:distributed_camera_utils",
+    "${services_path}/cameraservice/sinkservice:distributed_camera_sink",
+    "${services_path}/cameraservice/sourceservice:distributed_camera_source",
+    "${services_path}/data_process:distributed_camera_data_process",
+  ]
+
+  external_deps = [
+    "cJSON:cjson",
+    "c_utils:utils",
+    "device_manager:devicemanagersdk",
+    "distributed_hardware_fwk:distributedhardwareutils",
+    "drivers_interface_distributed_camera:libdistributed_camera_provider_proxy_1.1",
+    "dsoftbus:softbus_client",
+    "eventhandler:libeventhandler",
+    "googletest:gmock",
+    "googletest:gmock_main",
+    "graphic_surface:surface",
+    "hdf_core:libhdi",
+    "hilog:libhilog",
+    "ipc:ipc_single",
+    "ffrt:libffrt",
+  ]
+
+  defines = [
+    "HI_LOG_ENABLE",
+    "DH_LOG_TAG=\"DCameraChannelTest\"",
+    "LOG_DOMAIN=0xD004150",
+  ]
+}
+
+group("dcamera_channel_test") {
+  testonly = true
+  deps = [ ":DCameraChannelTest" ]
+}
