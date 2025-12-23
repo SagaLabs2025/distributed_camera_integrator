@@ -28,7 +28,7 @@ jobs:
       - name: Sync distributed_camera
         run: |
           rm -rf distributed_camera
-          git clone --depth 1 gitcode.com temp_dc
+          git clone --depth 1 https://gitcode.com/openharmony/distributedhardware_distributed_camera.git temp_dc
           mv temp_dc distributed_camera
           rm -rf distributed_camera/.git
 
@@ -36,7 +36,7 @@ jobs:
       - name: Sync distributed_fwk
         run: |
           rm -rf distributed_fwk
-          git clone --depth 1 gitcode.com temp_df
+          git clone --depth 1 https://gitcode.com/openharmony/distributedhardware_distributed_hardware_fwk.git temp_df
           mv temp_df distributed_fwk
           rm -rf distributed_fwk/.git
 
@@ -46,7 +46,7 @@ jobs:
           rm -rf drivers_interface
           mkdir -p drivers_interface
           # 使用 sparse-checkout 仅获取指定目录
-          git clone --depth 1 --filter=blob:none --sparse gitcode.com temp_di
+          git clone --depth 1 --filter=blob:none --sparse https://gitcode.com/openharmony/drivers_interface.git temp_di
           cd temp_di
           git sparse-checkout set camera distributed_camera
           cd ..
@@ -58,7 +58,7 @@ jobs:
       - name: Sync drivers_camera (Partial)
         run: |
           rm -rf drivers_camera
-          git clone --depth 1 --filter=blob:none --sparse gitcode.com temp_dp
+          git clone --depth 1 --filter=blob:none --sparse https://gitcode.com/openharmony/drivers_peripheral.git temp_dp
           cd temp_dp
           git sparse-checkout set distributed_camera
           cd ..
