@@ -1,0 +1,127 @@
+#  Copyright (c) 2022 Huawei Device Co., Ltd.
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+#####################################################
+#     below is the format of defining event         #
+#####################################################
+#domain: domain name.  [Only one domain name can be defined at the top]
+#
+#author: the author name who defined this event.
+#date: the date when this event was defined, format is YYYY-MM-DD.
+#logged: source file which refer to this event.
+#usage: the usage of this event.
+#//Define event name and event properties.
+#@EVENT_NAME: the event definition part begin.
+#  // __BASE is used for defining the basic info of the event.
+#  // "type" optional values are: FAULT, STATISTICS, SECURITY, BEHAVIOR.
+#  // "level" optional values are: CRITICAL, MINOR.
+#  // "tag" set tags with may used by subscriber of this event, multiple tags devided by space.
+#  // "desc" full description of this event.
+#  @PARAMETER: {type: parameter type, arrsize: array length(optional), desc: parameter description}.
+#  // follow the __BASE block, each line defines a parameter of this event.
+#  // "type" optional values are: INT8, UINT8, INT16, UINT16, INT32, UINT32, INT64, UINT64, FLOAT, DOUBLE, STRING.
+#  // "arrsize" of the parameter is an array, set a non-zero value.
+#  // "desc" full description of this parameter.
+
+#####################################################
+#   Example of some hiviewdfx events definition     #
+#####################################################
+
+domain: DISTCAMERA
+
+DCAMERA_INIT_FAIL:
+  __BASE: {type: FAULT, level: CRITICAL, desc: dcamera init process error occured}
+  ERRCODE: {type: INT32, desc: dcamera init process fail error code}
+  MSG: {type: STRING, desc: dcamera init process error info}
+
+DCAMERA_REGISTER_FAIL:
+  __BASE: {type: FAULT, level: CRITICAL, desc: dcamera register error occured}
+  DEVID: {type: STRING, desc: dcamera devId}
+  DHID: {type: STRING, desc: dcamera dhId}
+  VERSION: {type: STRING, desc: dcamera version}
+  MSG: {type: STRING, desc: register dcamera error info}
+
+DCAMERA_OPT_FAIL:
+  __BASE: {type: FAULT, level: CRITICAL, desc: dcamera operate error occured}
+  ERRCODE: {type: INT32, desc: dcamera init process fail error code}
+  MSG: {type: STRING, desc: dcamera init process error info}
+
+DCAMERA_INIT:
+  __BASE: {type: BEHAVIOR, level: MINOR, desc: dcamera init sa event}
+  SAID: {type: INT32, desc: dcamera SAID}
+  MSG: {type: STRING, desc: dcamera init sa event}
+
+DCAMERA_EXIT:
+  __BASE: {type: BEHAVIOR, level: MINOR, desc: dcamera release sa event}
+  SAID: {type: INT32, desc: dcamera SAID}
+  MSG: {type: STRING, desc: dcamera release sa event}
+
+DCAMERA_REGISTER:
+  __BASE: {type: BEHAVIOR, level: MINOR, desc: dcamera register event}
+  DEVID: {type: STRING, desc: dcamera devId}
+  DHID: {type: STRING, desc: dcamera dhId}
+  VERSION: {type: STRING, desc: dcamera version}
+  MSG: {type: STRING, desc: dcamera register event}
+
+DCAMERA_UNREGISTER:
+  __BASE: {type: BEHAVIOR, level: MINOR, desc: dcamera unregister event}
+  DEVID: {type: STRING, desc: dcamera devId}
+  DHID: {type: STRING, desc: dcamera dhId}
+  VERSION: {type: STRING, desc: dcamera version}
+  MSG: {type: STRING, desc: dcamera unregister event}
+ 
+DCAMERA_OPEN:
+  __BASE: {type: BEHAVIOR, level: MINOR, desc: dcamera open event}
+  DEVID: {type: STRING, desc: dcamera devId}
+  DHID: {type: STRING, desc: dcamera dhId}
+  MSG: {type: STRING, desc: dcamera open event}
+
+DCAMERA_CLOSE:
+  __BASE: {type: BEHAVIOR, level: MINOR, desc: dcamera close event}
+  DEVID: {type: STRING, desc: dcamera devId}
+  DHID: {type: STRING, desc: dcamera dhId}
+  MSG: {type: STRING, desc: dcamera close event}
+
+DCAMERA_CAPTURE:
+  __BASE: {type: BEHAVIOR, level: MINOR, desc: dcamera capture event}
+  WIDTH: {type: INT32, desc: dcamera width}
+  HEIGHT: {type: INT32, desc: dcamera height}
+  FORMAT: {type: INT32, desc: dcamera format}
+  ISCAPTURE: {type: STRING, desc: dcamera isCapture}
+  ENCODETYPE: {type: STRING, desc: dcamera encodeType}
+  STREAMTYPE: {type: STRING, desc: dcamera streamType}
+  MSG: {type: STRING, desc: dcamera capture event}
+
+DISTRIBUTED_CAMERA_BEHAVIOR:
+  __BASE: {type: BEHAVIOR, level: CRITICAL, desc: distributed camera events, preserve: false}
+  ORG_PKG: {type: STRING, desc: The package name of the current module}
+  FUNC: {type: STRING, desc: function name}
+  BIZ_SCENE: {type: INT32, desc: Identify the current business scenario}
+  BIZ_STAGE: {type: INT32, desc: process stage}
+  STAGE_RES: {type: INT32, desc: stage results}
+  BIZ_STATE: {type: INT32, desc: The beginning or end of the entire module}
+  TO_CALL_PKG: {type: STRING, desc: call module}
+  ERROR_CODE: {type: INT32, desc: Unified error code}
+  LOCAL_UDID: {type: STRING, desc: local device udid}
+  PEER_UDID: {type: STRING, desc: Peer device udid}
+  LOCAL_DEV_TYPE: {type: STRING, desc: Local device type}
+  PEER_DEV_TYPE: {type: STRING, desc: Peer device type}
+  LOCAL_NET_ID: {type: STRING, desc: Local device NET_ID}
+  PEER_NET_ID: {type: STRING, desc: Peer device NET_ID}
+  PEER_BT_MAC: {type: STRING, desc: Peer device btMac}
+  IS_TRUST: {type: INT32, desc: Is it credible}
+  LOCAL_SESS_NAME: {type: STRING, desc: Local session name}
+  PEER_SESS_NAME: {type: STRING, desc: Peer session name}
+  CONFIG_INFO: {type: STRING, desc: config infomation}
+  SERVICE_DURATION: {type: STRING, desc: service duration}
+  CONCURRENT_ID: {type: STRING, desc: Concurrent transaction ID}

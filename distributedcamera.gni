@@ -1,0 +1,61 @@
+# Copyright (c) 2021-2025 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+distributedcamera_path = "//foundation/distributedhardware/distributed_camera"
+
+distributedhardwarefwk_path =
+    "//foundation/distributedhardware/distributed_hardware_fwk"
+fuzz_test_output_path = "distributed_camera/distributed_camera"
+unittest_output_path = "distributed_camera/distributed_camera"
+camera_hdf_path = "//drivers/peripheral"
+
+camerastandard_path = "//foundation/multimedia/camera_framework"
+
+graphicsurface_path = "//foundation/graphic/graphic_surface"
+
+common_path = "${distributedcamera_path}/common"
+
+services_path = "${distributedcamera_path}/services"
+
+innerkits_path = "${distributedcamera_path}/interfaces/inner_kits"
+
+fwk_utils_path = "${distributedhardwarefwk_path}/utils"
+
+fwk_common_path = "${distributedhardwarefwk_path}/common"
+
+fwk_innerkits_path = "${distributedhardwarefwk_path}/interfaces/inner_kits"
+
+av_transport_path = "${distributedhardwarefwk_path}/av_transport"
+
+feeding_smoother_path = "${services_path}/cameraservice/sourceservice/include/distributedcameramgr/dcameradata/feedingsmoother"
+
+build_flags = [ "-Werror" ]
+
+declare_args() {
+  distributed_camera_common = true
+  device_security_level_camera = true
+  distributed_camera_filter_front = false
+  distributed_camera_wakeup_enabled = false
+
+  if (defined(global_parts_info) &&
+      !defined(global_parts_info.security_device_security_level)) {
+    device_security_level_camera = false
+  }
+
+  if (!defined(global_parts_info) ||
+      defined(global_parts_info.account_os_account)) {
+    os_account_camera = true
+  } else {
+    os_account_camera = false
+  }
+}

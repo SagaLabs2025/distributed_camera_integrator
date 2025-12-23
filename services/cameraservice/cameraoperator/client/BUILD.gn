@@ -1,0 +1,95 @@
+# Copyright (c) 2021-2025 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+import("//build/ohos_var.gni")
+import(
+    "//foundation/distributedhardware/distributed_camera/distributedcamera.gni")
+
+ohos_shared_library("distributed_camera_client") {
+  branch_protector_ret = "pac_ret"
+  sanitize = {
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+    boundary_sanitize = true
+    integer_overflow = true
+    ubsan = true
+  }
+  stack_protector_ret = true
+
+  include_dirs = [
+    "include",
+    "include/callback",
+    "include/listener",
+    "${common_path}/include/constants",
+    "${common_path}/include/utils",
+    "${services_path}/cameraservice/base/include",
+    "${feeding_smoother_path}/base",
+    "${feeding_smoother_path}/derived",
+    "${feeding_smoother_path}/utils",
+  ]
+
+  sources = [
+    "src/callback/dcamera_input_callback.cpp",
+    "src/callback/dcamera_manager_callback.cpp",
+    "src/callback/dcamera_photo_callback.cpp",
+    "src/callback/dcamera_preview_callback.cpp",
+    "src/callback/dcamera_session_callback.cpp",
+    "src/callback/dcamera_video_callback.cpp",
+    "src/listener/dcamera_photo_surface_listener.cpp",
+  ]
+
+  sources += [ "src/dcamera_client.cpp" ]
+
+  ldflags = [
+    "-fpie",
+    "-Wl,-z,relro",
+    "-Wl,-z,now",
+  ]
+
+  deps = [ "${common_path}:distributed_camera_utils" ]
+
+  defines = [
+    "HI_LOG_ENABLE",
+    "DH_LOG_TAG=\"dcameraclient\"",
+    "LOG_DOMAIN=0xD004150",
+  ]
+
+  if (build_variant == "root") {
+    defines += [ "DUMP_DCAMERA_FILE" ]
+  }
+
+  external_deps = [
+    "cJSON:cjson",
+    "c_utils:utils",
+    "camera_framework:camera_framework",
+    "distributed_hardware_fwk:distributedhardwareutils",
+    "drivers_interface_camera:libbuffer_handle_sequenceable_1.0",
+    "drivers_interface_camera:libbuffer_producer_sequenceable_1.0",
+    "drivers_interface_camera:libcamera_proxy_1.0",
+    "drivers_interface_camera:libmap_data_sequenceable_1.0",
+    "drivers_interface_camera:metadata",
+    "drivers_interface_distributed_camera:libdistributed_camera_provider_proxy_1.1",
+    "graphic_surface:surface",
+    "hdf_core:libhdf_utils",
+    "hilog:libhilog",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr:samgr_proxy",
+  ]
+
+  subsystem_name = "distributedhardware"
+
+  part_name = "distributed_camera"
+}

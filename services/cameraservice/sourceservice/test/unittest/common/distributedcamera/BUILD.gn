@@ -1,0 +1,111 @@
+# Copyright (c) 2021-2025 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/test.gni")
+import(
+    "//foundation/distributedhardware/distributed_camera/distributedcamera.gni")
+
+module_out_path = "${unittest_output_path}/dcamera_source_test"
+
+config("module_private_config") {
+  visibility = [ ":*" ]
+  include_dirs = [
+    "${services_path}/cameraservice/sourceservice/include/distributedcamera",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr/dcameracontrol",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr/dcameradata",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr/dcamerahdf",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr/dcamerainterface",
+    "${services_path}/cameraservice/sourceservice/include/distributedcameramgr/dcamerastate",
+    "${services_path}/cameraservice/cameraoperator/client/include",
+    "${services_path}/cameraservice/base/include",
+    "${services_path}/channel/include",
+    "${services_path}/data_process/include/pipeline",
+    "${services_path}/data_process/include/interfaces",
+    "${services_path}/data_process/include/utils",
+    "${services_path}/data_process/include/eventbus",
+    "${common_path}/include/constants",
+    "${common_path}/include/utils",
+
+    "${innerkits_path}/native_cpp/camera_source/include",
+    "${innerkits_path}/native_cpp/camera_source/include/callback",
+    "${innerkits_path}/native_cpp/camera_sink/include",
+  ]
+}
+
+ohos_unittest("DCameraSourceTest") {
+  sanitize = {
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+  }
+  module_out_path = module_out_path
+
+  sources = [
+    "dcamera_service_state_listener_test.cpp",
+    "dcamera_source_callback_proxy_test.cpp",
+    "dcamera_source_hidumper_test.cpp",
+    "distributed_camera_source_service_test.cpp",
+    "distributed_camera_source_stub_test.cpp",
+    "mock_distributed_hardware_fwk_kit.cpp",
+    "${innerkits_path}/native_cpp/camera_source/src/dcamera_hdf_operate.cpp",
+  ]
+
+  cflags = [
+    "-Dprivate=public",
+    "-Dprotected=public",
+  ]
+
+  configs = [ ":module_private_config" ]
+
+  deps = [
+    "${common_path}:distributed_camera_utils",
+    "${innerkits_path}/native_cpp/camera_source:distributed_camera_source_sdk",
+    "${services_path}/cameraservice/sourceservice:distributed_camera_source",
+    "${services_path}/channel:distributed_camera_channel",
+  ]
+
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "access_token:libnativetoken_shared",
+    "access_token:libtokensetproc_shared",
+    "cJSON:cjson",
+    "c_utils:utils",
+    "distributed_hardware_fwk:distributed_av_receiver",
+    "distributed_hardware_fwk:distributedhardwareutils",
+    "distributed_hardware_fwk:libdhfwk_sdk",
+    "drivers_interface_distributed_camera:libdistributed_camera_provider_proxy_1.1",
+    "dsoftbus:softbus_client",
+    "eventhandler:libeventhandler",
+    "graphic_surface:surface",
+    "hdf_core:libhdf_ipc_adapter",
+    "hdf_core:libhdi",
+    "hdf_core:libpub_utils",
+    "hicollie:libhicollie",
+    "hilog:libhilog",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+    "samgr:samgr_proxy",
+  ]
+
+  defines = [
+    "HI_LOG_ENABLE",
+    "DH_LOG_TAG=\"DCameraSourceTest\"",
+    "LOG_DOMAIN=0xD004150",
+  ]
+}
+
+group("dcamera_source_test") {
+  testonly = true
+  deps = [ ":DCameraSourceTest" ]
+}
