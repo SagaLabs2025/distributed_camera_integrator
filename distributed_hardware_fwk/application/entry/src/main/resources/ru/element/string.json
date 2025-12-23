@@ -1,0 +1,158 @@
+{
+    "string":[
+        {
+            "name":"DHTypeName_Camera",
+            "value":"камера",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"pause",
+            "value":"Приостановить",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"continue_desc_text",
+            "value":"Начните просмотр или редактирование контента на одном устройстве и продолжите действие на другом устройстве под тем же аккаунтом. Когда передача задач доступна, в меню приложений появляется значок. %s",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"connected_to",
+            "value":"Подключено к %1$s",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"learn_more",
+            "value":"Подробнее",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"continue",
+            "value":"Возобновить",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"disconnect",
+            "value":"Отключить",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"update_version_prompt",
+            "value":"Оба устройства должны работать под управлением OpenHarmony NEXT",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"stop_device",
+            "value":"Вы можете отключиться от этого устройства, чтобы прекратить использование его компонента (%1$s).",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"DHTypeName_Mic",
+            "value":"микрофон",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"continue_title",
+            "value":"Передача задачи",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"continue_privacy_text",
+            "value":"Эта служба использует Bluetooth и WLAN. Ей также требуется отправлять имя этого устройства устройствам, на которые вы передаете задачу. Включая эту опцию, вы принимаете эти положения.",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+          "name": "mech_intelligent_tracking",
+          "value": "Умное отслеживание",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_tracking_layout",
+          "value": "Режим отслеживания",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_enable",
+          "value": "Включено",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "mech_close",
+          "value": "Выключено",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_left",
+          "value": "Слева",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_center",
+          "value": "По центру",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_right",
+          "value": "Справа",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "audio_tracking_switch_on",
+          "value": "Умное отслеживание включено, нажмите дважды, чтобы выключить",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "audio_tracking_switch_off",
+          "value": "Умное отслеживание выключено, нажмите дважды, чтобы включить",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "audio_back",
+          "value": "Назад",
+          "attr":{
+              "priority":"translate"
+          }
+        }
+    ]
+}
