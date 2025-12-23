@@ -30,7 +30,7 @@ jobs:
           rm -rf distributed_camera
           git clone --depth 1 https://gitcode.com/openharmony/distributedhardware_distributed_camera.git temp_dc
           mv temp_dc distributed_camera
-          rm -rf distributed_camera/.git
+          rm -rf distributed_camera/.gitee
 
       # 2. 同步 distributed_fwk (全量同步)
       - name: Sync distributed_fwk
@@ -38,7 +38,7 @@ jobs:
           rm -rf distributed_fwk
           git clone --depth 1 https://gitcode.com/openharmony/distributedhardware_distributed_hardware_fwk.git temp_df
           mv temp_df distributed_fwk
-          rm -rf distributed_fwk/.git
+          rm -rf distributed_fwk/.gitee
 
       # 3. 同步 drivers_interface (部分同步: camera 和 distributed_camera)
       - name: Sync drivers_interface (Partial)
