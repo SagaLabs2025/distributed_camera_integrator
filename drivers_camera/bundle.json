@@ -1,0 +1,52 @@
+{
+    "name":"@ohos/drivers_peripheral_distributed_camera",
+    "description":"drivers peripheral distributed camera",
+    "version":"3.2",
+    "repository":"https://gitee.com/openharmony/drivers_peripheral",
+    "license":"Apache License 2.0",
+    "publishAs": "code-segment",
+    "segment": {
+      "destPath": "drivers/peripheral/distributed_camera"
+    },
+    "dirs": {},
+    "scripts": {},
+    "component":{
+        "name":"drivers_peripheral_distributed_camera",
+        "subsystem":"hdf",
+        "features": [
+            "drivers_peripheral_distributed_camera_extension"
+        ],
+        "adapted_system_type":[
+            "standard"
+        ],
+        "rom":"1024KB",
+        "ram":"5120KB",
+        "deps":{
+            "components":[
+                "ipc",
+                "hdf_core",
+                "hilog",
+                "c_utils",
+                "cJSON",
+                "samgr",
+                "drivers_interface_display",
+                "drivers_interface_distributed_camera",
+                "graphic_surface",
+                "drivers_interface_camera"
+            ]
+        },
+        "build":{
+            "sub_component":[
+                "//drivers/peripheral/distributed_camera:distributed_camera_entry"
+            ],
+            "inner_kits":[
+
+            ],
+            "test":[
+                "//drivers/peripheral/distributed_camera/hdi_service/test/fuzztest:hdf_dcamera_fuzztest",
+                "//drivers/peripheral/distributed_camera/hdi_service/test/sample:dcamera_hdf_demo",
+                "//drivers/peripheral/distributed_camera/hdi_service/test/unittest:hdf_service_test"
+            ]
+        }
+    }
+}

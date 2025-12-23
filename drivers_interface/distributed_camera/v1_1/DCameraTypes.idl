@@ -1,0 +1,292 @@
+/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @file DCameraTypes.idl
+ *
+ * @brief Declares data types.
+ * used by the Hardware Driver Interfaces (HDIs) of this module.
+ *
+ * @since 5.0
+ * @version 1.1
+ */
+
+package ohos.hdi.distributed_camera.v1_1;
+
+/**
+ * @brief Enumerates distributed camera metadata updating types.
+ */
+enum DCSettingsType {
+    /**
+     * Set the whole package metadata.
+     */
+    UPDATE_METADATA = 0,
+    /**
+     * Enable metadata configuration.
+     */
+    ENABLE_METADATA = 1,
+    /**
+     * Disable metadata configuration.
+     */
+    DISABLE_METADATA = 2,
+    /**
+     * Return metadata result from distributed camera.
+     */
+    METADATA_RESULT = 3,
+    /**
+     * Set flash light to distribtued camera.
+     */
+    SET_FLASH_LIGHT = 4,
+    /**
+     * Set fps range to distributed camera.
+     */
+    FPS_RANGE = 5,
+    /**
+     * Set the frame metadata to distributed camera.
+     */
+    UPDATE_FRAME_METADATA = 6,
+};
+
+/**
+ * @brief Enumerates return values of the HDIs.
+ */
+enum DCamRetCode {
+    /**
+     * Successful call.
+     */
+    SUCCESS = 0,
+    /**
+     * The camera device is busy.
+     */
+    CAMERA_BUSY = 1,
+    /**
+     * Invalid parameters.
+     */
+    INVALID_ARGUMENT = 2,
+    /**
+     * Unsupported function.
+     */
+    METHOD_NOT_SUPPORTED = 3,
+    /**
+     * The camera device is offlined.
+     */
+    CAMERA_OFFLINE = 4,
+    /**
+     * The number of distributed camera devices enabled exceeds the limit.
+     */
+    EXCEED_MAX_NUMBER = 5,
+    /**
+     * The device is not initialized.
+     */
+    DEVICE_NOT_INIT = 6,
+    /**
+     * Failed call.
+     */
+    FAILED = 7,
+};
+
+/**
+ * @brief Enumerates encoding types of stream data.
+ */
+enum DCEncodeType {
+    /**
+     * Unspecified encode type.
+     */
+    ENCODE_TYPE_NULL = 0,
+    /**
+     * H.264 encode type.
+     */
+    ENCODE_TYPE_H264 = 1,
+    /**
+     * H.265 encode type
+     */
+    ENCODE_TYPE_H265 = 2,
+    /**
+     * JPEG encode type
+     */
+    ENCODE_TYPE_JPEG = 3,
+    /**
+     * mpeg4-es encode type
+     */
+    ENCODE_TYPE_MPEG4_ES = 4,
+};
+
+/**
+ * @brief Enumerates distributed camera inner stream types.
+ */
+enum DCStreamType {
+    /**
+     * Continuous capture stream. For example preview streams, video streams.
+     */
+    CONTINUOUS_FRAME = 0,
+    /**
+     * Single capture stream. For example photographing streams.
+     */
+    SNAPSHOT_FRAME = 1,
+};
+
+/**
+ * @brief Distributed hardware device base info.
+ */
+struct DHBase {
+    /**
+     * The device id, here is networkId.
+    */
+    String deviceId_;
+    /**
+     * The distributed hardware id.
+     */
+    String dhId_;
+};
+
+/**
+ * @brief The control settings of the distributed camera device.
+ */
+struct DCameraSettings {
+    /**
+     * Settings type, see {@link DCSettingsType}.
+     */
+    enum DCSettingsType type_;
+    /**
+     * Settings value. Serialized from bool, array, structure, etc.
+     */
+    String value_;
+};
+
+/**
+ * @brief Defines the inner stream information of the distributed camera,
+ * which is used to pass configuration parameters during stream creation.
+ */
+struct DCStreamInfo {
+    /**
+     * Stream ID, which uniquely identifies a stream on a camera device.
+     */
+    int streamId_;
+    /**
+     * Image width.
+     */
+    int width_;
+    /**
+     * Image height.
+     */
+    int height_;
+    /**
+     * Image stride.
+     */
+    int stride_;
+    /**
+     * Image format.
+     */
+    int format_;
+    /**
+     * Image color space.
+     */
+    int dataspace_;
+    /**
+     * Encoding type, see {@link DCEncodeType}.
+     */
+    enum DCEncodeType encodeType_;
+    /**
+     * Stream type, see {@link DCStreamType}.
+     */
+    enum DCStreamType type_;
+    /**
+     * Current scene mode.
+     */
+    int mode_;
+};
+
+/**
+ * @brief Defines the information about a inner capture request of the distributed camera.
+ */
+struct DCCaptureInfo {
+    /**
+     * IDs of captured streams.
+    */
+    int[] streamIds_;
+    /**
+     * Image width.
+     */
+    int width_;
+    /**
+     * Image height.
+     */
+    int height_;
+    /**
+     * Image stride.
+     */
+    int stride_;
+    /**
+     * Image format.
+     */
+    int format_;
+    /**
+     * Image color space.
+     */
+    int dataspace_;
+    /**
+     * Is trigger sink capture.
+     */
+    boolean isCapture_;
+    /**
+     * Encoding type, see {@link DCEncodeType}.
+     */
+    enum DCEncodeType encodeType_;
+    /**
+     * Stream type, see {@link DCStreamType}.
+     */
+    enum DCStreamType type_;
+    /**
+     * Stream settings, see {@link DCameraSettings}.
+     */
+    struct DCameraSettings[] captureSettings_;
+};
+
+/**
+ * @brief Defines the inner buffer of the distributed camera,
+ * which is used to acquire buffer during processing capture requests.
+ */
+struct DCameraBuffer {
+    /**
+     * Buffer index.
+     */
+    int index_;
+    /**
+     * Buffer size.
+     */
+    unsigned int size_;
+    /**
+     * Native buffer, see {@link NativeBuffer}.
+     */
+    NativeBuffer bufferHandle_;
+};
+
+/**
+ * @brief Notification event of the distributed camera.
+ */
+struct DCameraHDFEvent {
+    /**
+     * Event type.
+     */
+    int type_;
+    /**
+     * Event result.
+     */
+    int result_;
+    /**
+     * Extended content (optional).
+     */
+    String content_;
+};

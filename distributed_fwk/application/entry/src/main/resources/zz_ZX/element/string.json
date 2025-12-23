@@ -1,0 +1,124 @@
+{
+  "string": [
+    {
+      "name": "EntryAbility_label",
+      "value": "[TS_867710]_DHardwareUI"
+    },
+    {
+      "name": "DHTypeName_Camera",
+      "value": "[TS_894802]_camera"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "[TS_867705]_description"
+    },
+    {
+      "name": "pause",
+      "value": "[TS_867692]_Pause"
+    },
+    {
+      "name": "disconnect",
+      "value": "[TS_867695]_Disconnect"
+    },
+    {
+      "name": "connected_to",
+      "value": "[TS_867693]_Connected to %1$s"
+    },
+    {
+      "name": "stop_device",
+      "value": "[TS_867698]_Disconnect to stop using this device's %1$s."
+    },
+    {
+      "name": "DHTypeName_Mic",
+      "value": "[TS_894803]_microphone"
+    },
+    {
+      "name": "module_desc",
+      "value": "[TS_867699]_module description"
+    },
+    {
+      "name": "continue",
+      "value": "[TS_867711]_Resume"
+    },
+    {
+      "name": "continue_desc_text",
+      "value": "[TS_962336]_Start viewing or editing content on one device, and then seamlessly continue on a nearby device logged in to the same ID. When Handover is available, an icon will appear in the app dock. %s"
+    },
+    {
+      "name": "ContinueSwitchAbility_label",
+      "value": "[TS_921307]_label"
+    },
+    {
+      "name": "continue_title",
+      "value": "[TS_921305]_Handover"
+    },
+    {
+      "name": "ContinueSwitchAbility_desc",
+      "value": "[TS_921306]_description"
+    },
+    {
+      "name": "multi_device_collaboration",
+      "value": "[TS_932989]_More connectivity options"
+    },
+    {
+      "name": "continue_privacy_text",
+      "value": "[TS_932988]_This service uses Bluetooth and WLAN and needs to send this device's name to devices you handover to. By turning this on, you agree to these terms."
+    },
+    {
+      "name": "learn_more",
+      "value": "[TS_961711]_Learn more"
+    },
+    {
+      "name": "update_version_prompt",
+      "value": "[TS_961710]_Both devices must be running OpenHarmony NEXT"
+    },
+    {
+      "name": "mech_close",
+      "value": "[TS_1101060]_Off"
+    },
+    {
+      "name": "MechExtAbility_label",
+      "value": "[TS_1101056]_label"
+    },
+    {
+      "name": "mech_enable",
+      "value": "[TS_1101061]_On"
+    },
+    {
+      "name": "mech_left",
+      "value": "[TS_1101053]_Left"
+    },
+    {
+      "name": "mech_right",
+      "value": "[TS_1101054]_Right"
+    },
+    {
+      "name": "MechExtAbility_desc",
+      "value": "[TS_1101057]_description"
+    },
+    {
+      "name": "mech_intelligent_tracking",
+      "value": "[TS_1101058]_Smart tracking"
+    },
+    {
+      "name": "mech_tracking_layout",
+      "value": "[TS_1101055]_Tracking mode"
+    },
+    {
+      "name": "mech_center",
+      "value": "[TS_1101059]_Center"
+    },
+    {
+      "name": "audio_tracking_switch_on",
+      "value": "[TS_1122064]_Smart tracking is turned on, double-tap to turn it off"
+    },
+    {
+      "name": "audio_tracking_switch_off",
+      "value": "[TS_1122065]_Smart tracking is turned off, double-tap to turn it on"
+    },
+    {
+      "name": "audio_back",
+      "value": "[TS_1122066]_Back"
+    }
+  ]
+}

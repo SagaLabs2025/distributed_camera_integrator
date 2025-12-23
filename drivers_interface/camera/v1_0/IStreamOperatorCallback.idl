@@ -1,0 +1,78 @@
+/*
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @file istream_operator_callback.h
+ *
+ * @brief Declares callbacks related to {@link IStreamOperator}. The caller needs to implement these callbacks.
+ *
+ * @since 3.2
+ * @version 1.0
+ */
+
+package ohos.hdi.camera.v1_0;
+
+import ohos.hdi.camera.v1_0.Types;
+
+[callback] interface IStreamOperatorCallback {
+    /**
+     * @brief Called when the capture starts.
+     *
+     * @param captureId Indicates the ID of the capture request corresponding to the callback.
+     * @param streamIds Indicates the IDs of the streams corresponding to the callback.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    OnCaptureStarted([in] int captureId, [in] int[] streamIds);
+
+    /**
+     * @brief Called when the capture ends.
+     *
+     * @param captureId Indicates the ID of the capture request corresponding to the callback.
+     * @param infos Indicates information related to the capture when it ends.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    OnCaptureEnded([in] int captureId, [in] struct CaptureEndedInfo[] infos);
+
+    /**
+     * @brief Called when an error occurs during the capture.
+     *
+     * @param captureId Indicates the ID of the capture request corresponding to the callback.
+     * @param infos Indicates a list of capture error messages.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    OnCaptureError([in] int captureId, [in] struct CaptureErrorInfo[] infos);
+
+    /**
+     * @brief Called when a frame is captured.
+     *
+     * This callback is enabled by using <b>enableShutterCallback_</b> in the {@link CaptureInfo} parameter of {@link Capture}.
+     * When <b>enableShutterCallback_</b> is set to <b>true</b>,
+     * this callback is triggered each time a frame is captured.
+     *
+     * @param captureId Indicates the ID of the capture request corresponding to the callback.
+     * @param streamIds Indicates the IDs of the streams corresponding to the callback.
+     * @param timestamp Indicates the timestamp when the callback is invoked.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    OnFrameShutter([in] int captureId, [in] int[] streamIds, [in] unsigned long timestamp);
+}

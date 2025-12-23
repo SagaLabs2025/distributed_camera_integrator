@@ -1,0 +1,152 @@
+/*
+ * Copyright (c) 2024-2025 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @file IDCameraProvider.idl
+ *
+ * @brief Transfer interfaces call between distributed camera SA service and distributed camera HDF service,
+ * and provide Hardware Driver Interfaces (HDIs) for the upper layer.
+ *
+ * @since 5.0
+ * @version 1.1
+ */
+
+package ohos.hdi.distributed_camera.v1_1;
+
+import ohos.hdi.distributed_camera.v1_1.DCameraTypes;
+import ohos.hdi.distributed_camera.v1_1.IDCameraHdfCallback;
+import ohos.hdi.distributed_camera.v1_1.IDCameraProviderCallback;
+
+interface IDCameraProvider {
+    /**
+     * @brief Enable distributed camera device and set callback. For details about the callbacks,
+     * see {@link IDCameraProviderCallback}.
+     *
+     * @param dhBase [in] Distributed hardware device base info.
+     *
+     * @param abilityInfo [in] The static capability info of the distributed camera device to be enabled.
+     *
+     * @param callbackObj [in] Indicates the callbacks to set.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 5.0
+     * @version 1.1
+     */
+    EnableDCameraDevice([in] struct DHBase dhBase,[in] String abilityInfo,[in] IDCameraProviderCallback callbackObj);
+
+    /**
+     * @brief Disable distributed camera device.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 5.0
+     * @version 1.1
+     */
+    DisableDCameraDevice([in] struct DHBase dhBase);
+
+    /**
+     * @brief Acquire a frame buffer from the procedure handle which attached to the streamId.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @param streamId [in] Indicates the ID of the stream to which the procedure handle is to be attached.
+     *
+     * @param buffer [out] A frame buffer
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 5.0
+     * @version 1.1
+     */
+    AcquireBuffer([in] struct DHBase dhBase,[in] int streamId,[out] struct DCameraBuffer buffer);
+
+    /**
+     * @brief Notify distributed camera HDF service when a frame buffer has been filled.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @param streamId [in] Indicates the ID of the stream to which the frame buffer is to be attached.
+     *
+     * @param buffer [in] output frame buffer
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 5.0
+     * @version 1.1
+     */
+    ShutterBuffer([in] struct DHBase dhBase,[in] int streamId,[in] struct DCameraBuffer buffer);
+
+    /**
+     * @brief Called to report metadata related to the distributed camera device.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @param result Indicates the metadata reported.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 5.0
+     * @version 1.1
+     */
+    OnSettingsResult([in] struct DHBase dhBase,[in] struct DCameraSettings result);
+
+    /**
+     * @brief Called to notify some events from distributed camera SA service to distributed camera HDF service.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @param event [in] Detail event contents
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 5.0
+     * @version 1.1
+     */
+    Notify([in] struct DHBase dhBase,[in] struct DCameraHDFEvent event);
+
+    /**
+     * @brief Registering distributed camera HDF drivers listener.
+     *
+     * @param serviceName Service name.
+     * @param callbackObj Distributed camera HDF listener Callback.
+     *
+     * @return a value of 0 if success and a negative value if failed.
+     *
+     * @since 6.0
+     * @version 1.0
+     */
+    RegisterCameraHdfListener([in] String serviceName, [in] IDCameraHdfCallback callbackObj);
+
+    /**
+     * @brief Unregistering distributed camera HDF drivers listener.
+     *
+     * @param serviceName Service name.
+     *
+     * @return a value of 0 if success and a negative value if failed.
+     *
+     * @since 6.0
+     * @version 1.0
+     */
+    UnRegisterCameraHdfListener([in] String serviceName);
+}

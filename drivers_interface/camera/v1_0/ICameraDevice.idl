@@ -1,0 +1,130 @@
+/*
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @file icamera_device.h
+ *
+ * @brief Declares APIs for camera device operations.
+ *
+ * @since 3.2
+ * @version 1.0
+ */
+
+package ohos.hdi.camera.v1_0;
+
+import ohos.hdi.camera.v1_0.IStreamOperatorCallback;
+import ohos.hdi.camera.v1_0.IStreamOperator;
+import ohos.hdi.camera.v1_0.Types;
+
+interface ICameraDevice {
+    /**
+     * @brief Obtains the stream operation handle.
+     *
+     * @param callback Indicates a stream callback. For details, see {@link IStreamOperatorCallback}.
+     * {@link OnCaptureStarted} and {@link OnCaptureEnded} are used to report the start and end of capture,
+     * and {@link OnCaptureError} is used to report a capture error.
+     *
+     * @param streamOperator Indicates the stream operation handle.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful; returns an error code defined
+     * in {@link CamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    GetStreamOperator([in] IStreamOperatorCallback callbackObj, [out] IStreamOperator streamOperator);
+
+    /**
+     * @brief Updates camera device control parameters.
+     *
+     * @param settings Indicates the camera parameters, including the sensor frame rate and 3A parameters.
+     * 3A stands for automatic focus (AF), automatic exposure (AE), and automatic white-balance (?AWB).
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful; returns an error code defined
+     * in {@link CamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    UpdateSettings([in] unsigned char[] settings);
+
+    /**
+     * @brief Sets the metadata reporting mode.
+     *
+     * @param mode Indicates the metadata reporting mode to set, which can be frame-by-frame reporting or reporting
+     * upon device status change. For details, see {@link ResultCallbackMode}.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful; returns an error code defined
+     * in {@link CamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    SetResultMode([in] enum ResultCallbackMode mode);
+
+    /**
+     * @brief Obtains enabled metadata.
+     *
+     * Metadata to be reported is enabled by calling {@link EnableResult}.
+     *
+     * @param results Indicates all enabled metadata.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful; returns an error code defined
+     * in {@link CamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    GetEnabledResults([out] int[] results);
+
+    /**
+     * @brief Enables metadata reporting.
+     *
+     * Only metadata that is enabled can be reported by using {@link OnResult}.
+     *
+     * @param results Indicates the metadata for which reporting is to be enabled.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful; returns an error code defined
+     * in {@link CamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    EnableResult([in] int[] results);
+
+    /**
+     * @brief Disables metadata reporting.
+     *
+     * After metadata reporting is disabled, the metadata is not reported by calling {@link OnResult}.
+     * To enable metadata reporting, you must call {@link EnableResult}.
+     *
+     * @param results Indicates the metadata for which reporting is to be disabled.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful; returns an error code defined
+     * in {@link CamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    DisableResult([in] int[] results);
+
+    /**
+     * @brief Closes the camera device.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    Close();
+}

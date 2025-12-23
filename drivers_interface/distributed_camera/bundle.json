@@ -1,0 +1,61 @@
+{
+    "name": "@ohos/drivers_interface_distributed_camera",
+    "description": "drivers interface distributed camera",
+    "version": "5.0",
+    "repository":"https://gitee.com/openharmony/drivers_interface",
+    "license": "Apache License 2.0",
+    "publishAs": "code-segment",
+    "segment": {
+      "destPath": "drivers/interface/distributed_camera"
+    },
+    "dirs": {},
+    "scripts": {},
+    "component": {
+      "name": "drivers_interface_distributed_camera",
+      "subsystem": "hdf",
+      "adapted_system_type": ["standard"],
+      "rom": "1024KB",
+      "ram": "2048KB",
+      "deps": {
+        "components": [
+          "ipc",
+          "hdf_core",
+          "hilog",
+          "c_utils"
+        ]
+      },
+      "build": {
+        "sub_component": [
+          "//drivers/interface/distributed_camera/v1_1:distributed_camera_provider_idl_target"
+        ],
+        "test": [
+        ],
+        "inner_kits": [
+          {
+            "name": "//drivers/interface/distributed_camera/v1_1:libdistributed_camera_provider_stub_1.1",
+            "header": {
+              "header_files": [
+              ],
+              "header_base": "//drivers/interface/distributed_camera"
+            }
+          },
+          {
+            "name": "//drivers/interface/distributed_camera/v1_1:libdistributed_camera_provider_proxy_1.1",
+            "header": {
+              "header_files": [
+              ],
+              "header_base": "//drivers/interface/distributed_camera"
+            }
+          },
+          {
+            "name": "//drivers/interface/distributed_camera/v1_1:distributed_camera_provider_idl_headers",
+            "header": {
+              "header_files": [
+              ],
+              "header_base": "//drivers/interface/distributed_camera"
+            }
+          }
+        ]
+      }
+    }
+  }

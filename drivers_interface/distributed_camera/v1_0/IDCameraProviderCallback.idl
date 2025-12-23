@@ -1,0 +1,134 @@
+/*
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @file IDCameraProviderCallback.idl
+ *
+ * @brief Declares callbacks for distributed camera SA service. The caller needs to implement the callbacks.
+ *
+ * @since 3.2
+ * @version 1.0
+ */
+
+package ohos.hdi.distributed_camera.v1_0;
+
+import ohos.hdi.distributed_camera.v1_0.DCameraTypes;
+
+[callback] interface IDCameraProviderCallback {
+    /**
+     * @brief Create the transmission channel between the source device and the sink device.
+     * Open and initialize the distributed camera session.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    OpenSession([in] struct DHBase dhBase);
+
+    /**
+     * @brief Close the distributed camera session, and destroy the transmission channel between
+     * the source device and the sink device.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    CloseSession([in] struct DHBase dhBase);
+
+    /**
+     * @brief Configures streams.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @param streamInfos [in] Indicates the list of stream information, which is defined by {@link DCStreamInfo}.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    ConfigureStreams([in] struct DHBase dhBase,[in] struct DCStreamInfo[] streamInfos);
+
+    /**
+     * @brief Releases streams.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @param streamIds [IN] Indicates the IDs of the streams to release.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    ReleaseStreams([in] struct DHBase dhBase,[in] int[] streamIds);
+
+    /**
+     * @brief Start capture images.
+     * This function must be called after {@link ConfigStreams}.
+     * There are two image capture modes: continuous capture and single capture.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @param captureInfos [in] Indicates the capture request configuration information.
+     * For details, see {@link DCCaptureInfo}.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    StartCapture([in] struct DHBase dhBase,[in] struct DCCaptureInfo[] captureInfos);
+
+    /**
+     * @brief Stop capture images.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    StopCapture([in] struct DHBase dhBase,[in] int[] streamIds);
+
+    /**
+     * @brief Updates distributed camera device control parameters.
+     *
+     * @param dhBase [in] Distributed hardware device base info
+     *
+     * @param settings [in] Indicates the camera parameters, including the sensor frame rate and 3A parameters.
+     * For details about the settings, see {@link DCameraSettings}.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful,
+     * returns an error code defined in {@link DCamRetCode} otherwise.
+     *
+     * @since 3.2
+     * @version 1.0
+     */
+    UpdateSettings([in] struct DHBase dhBase,[in] struct DCameraSettings[] settings);
+}

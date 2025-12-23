@@ -1,0 +1,131 @@
+/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @file ivideo_process_session.h
+ *
+ * @brief Declares APIs for video process session.
+ *
+ * @since 5.0
+ * @version 1.0
+ */
+
+package ohos.hdi.camera.v1_3;
+
+import ohos.hdi.camera.v1_3.Types;
+import ohos.hdi.camera.v1_1.Types;
+
+interface IVideoProcessSession {
+
+    /**
+     * @brief Get the IDs of the pending video which are unprocessed.
+     *
+     * @param videoIds Indicates the IDs of the pending videos.
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    GetPendingVideos([out] List<String> videoIds);
+
+    /**
+     * @brief pending the prepare video.
+     *
+     * @param the id of the pending video.
+     * @param fd Indicates pending video file.
+     * @param streamDescs Indicates straem information.
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    Prepare([in] String videoId, [in] FileDescriptor fd, [out] StreamDescription []streamDescs);
+
+    /**
+     * @brief Creates streams.
+     *
+     * @param streamInfos Indicates the list of stream information, which is defined by {@link StreamInfo}.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful;
+     * returns an error code defined in {@link CamRetCode} otherwise.
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    CreateStreams([in] struct StreamInfo_V1_1[] streamInfos);
+
+    /**
+     * @brief Configures a stream.
+     *
+     * This function must be called after {@link CreateStreams}.
+     *
+     * @param mode Indicates the operation mode of the stream. For details, see {@link OperationMode_V1_1}.
+     * @param modeSetting Indicates the stream configuration parameters, including the frame rate and zoom information
+     * @return Returns <b>NO_ERROR</b> if the operation is successful;
+     * returns an error code defined in {@link CamRetCode} otherwise.
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    CommitStreams([in] unsigned char[] modeSetting);
+
+    /**
+     * @brief Releases streams.
+     *
+     * @param streamInfos Indicates the information of the streams to release.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful;
+     * returns an error code defined in {@link CamRetCode} otherwise.
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    ReleaseStreams([in] struct StreamInfo_V1_1[] streamInfos);
+
+    /**
+     * @brief Process the specific video by video ID.
+     *
+     * @param videoId Indicates video id.
+     * @param timestamp Indicates need process video frame time.
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    ProcessVideo([in] String videoId, [in] unsigned long timestamp);
+
+    /**
+     * @brief Remove the specific video by video ID.
+     *
+     * @param videoId Indicates video ID.
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    RemoveVideo([in] String videoId);
+
+    /**
+     * @brief Interrupt the process session.
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    Interrupt();
+
+    /**
+     * @brief Reset the process session.
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    Reset();
+}

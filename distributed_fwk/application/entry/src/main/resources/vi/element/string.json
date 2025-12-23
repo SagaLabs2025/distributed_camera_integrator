@@ -1,0 +1,158 @@
+{
+    "string":[
+        {
+            "name":"DHTypeName_Camera",
+            "value":"máy ảnh",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"pause",
+            "value":"Tạm dừng",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"continue_desc_text",
+            "value":"Bắt đầu xem hoặc sửa nội dung trên một thiết bị, sau đó ngay lập tức xem hoặc sửa nội dung đó trên một thiết bị ở gần đã đăng nhập vào cùng một ID. Khi tính năng Chuyển giao khả dụng, một biểu tượng sẽ xuất hiện trên thanh ứng dụng. %s",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"connected_to",
+            "value":"Đã kết nối với %1$s",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"learn_more",
+            "value":"Tìm hiểu thêm",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"continue",
+            "value":"Tiếp tục",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"disconnect",
+            "value":"Ngắt kết nối",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"update_version_prompt",
+            "value":"Cả hai thiết bị đều phải chạy OpenHarmony NEXT",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"stop_device",
+            "value":"Ngắt kết nối để ngừng sử dụng %1$s của thiết bị này.",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"DHTypeName_Mic",
+            "value":"micrô",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"continue_title",
+            "value":"Chuyển giao",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"continue_privacy_text",
+            "value":"Dịch vụ này sử dụng Bluetooth và WLAN, đồng thời cần gửi tên thiết bị này đến các thiết bị bạn chuyển giao. Bằng việc bật nút chuyển này, bạn đồng ý với các điều khoản này.",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+          "name": "mech_intelligent_tracking",
+          "value": "Theo dõi thông minh",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_tracking_layout",
+          "value": "Chế độ theo dõi",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_enable",
+          "value": "Bật",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "mech_close",
+          "value": "Tắt",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_left",
+          "value": "Trái",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_center",
+          "value": "Giữa",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_right",
+          "value": "Phải",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "audio_tracking_switch_on",
+          "value": "Tính năng Theo dõi thông minh đang bật, chạm đúp để tắt",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "audio_tracking_switch_off",
+          "value": "Tính năng Theo dõi thông minh đã tắt, chạm đúp để bật",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "audio_back",
+          "value": "Trở lại",
+          "attr":{
+              "priority":"translate"
+          }
+        }
+    ]
+}

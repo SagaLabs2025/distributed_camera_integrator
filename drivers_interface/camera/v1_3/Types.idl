@@ -1,0 +1,540 @@
+/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @file Types.h
+ *
+ * @brief Declares data types
+ * used by the Hardware Driver Interfaces (HDIs) of this module.
+ *
+ * @since 3.2
+ * @version 1.3
+ */
+
+package ohos.hdi.camera.v1_3;
+
+import ohos.hdi.camera.v1_2.Types;
+import ohos.hdi.camera.v1_0.Types;
+
+sequenceable ohos.hdi.camera.v1_0.BufferHandleSequenceable;
+sequenceable ohos.hdi.camera.v1_0.MapDataSequenceable;
+
+/**
+ * @brief Enumerates stream operation modes.
+ * @since 3.2
+ * @version 1.3
+ */
+enum OperationMode : ohos.hdi.camera.v1_2.OperationMode_V1_2 {
+
+    /**
+     * Professional mode, which dedicated to professional photo scene
+     * Abandoned, use the new operationMode below
+     *
+     * @since 4.1
+     * @version 1.1
+     */
+    PROFESSIONAL_V1_3 = PROFESSIONAL,
+
+    /**
+     * Professional mode, which dedicated to capture code
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    PROFESSIONAL_PHOTO = 11,
+
+    /**
+     * Professional mode, which dedicated to video code
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    PROFESSIONAL_VIDEO = 12,
+
+    /**
+     * Slow motion mode, which dedicated to video recording slow motion
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    HIGH_FRAME_RATE = 13,
+
+    /**
+     * High resolution photo mode, which dedicated to capture recording high pixel
+     *
+     * @since 5.0
+     * @version 1.0
+     */
+    HIGH_RESOLUTION_PHOTO = 14,
+
+    /**
+    * Secure mode, which dedicated to secure mode
+    * @since 5.0
+    * @version 1.0
+    */
+    SECURE = 15,
+
+    /**
+    * quick shot photo mode, which dedicated to quick shot photo mode
+    * @since 5.0
+    * @version 1.0
+    */
+    QUICK_SHOT_PHOTO = 16,
+
+    /**
+    * Light painting mode, which dedicated to light painting mode
+    * @since 5.0
+    * @version 1.0
+    */
+    LIGHT_PAINTING = 17,
+
+    /**
+    * Panorama photo mode, which dedicated to panorama photo mode
+    * @since 5.0
+    * @version 1.0
+    */
+    PANORAMA_PHOTO = 18,
+
+    /**
+    * Timelapse photo mode, which dedicated to timelapse photo mode
+    * @since 5.0
+    * @version 1.0
+    */
+    TIMELAPSE_PHOTO = 19,
+
+    /**
+    * Aperture video mode, which dedicated to aperture video mode
+    * @since 5.0
+    * @version 1.0
+    */
+    APERTURE_VIDEO = 20,
+
+    /**
+    * fluorescence photo mode, which dedicated to fluorescence photo mode
+    * @since 5.0
+    * @version 1.0
+    */
+    FLUORESCENCE_PHOTO = 21,
+
+    /**
+    * sun block mode, which dedicated to uv sunscreen detection mode
+    * @since 5.0
+    * @version 1.0
+    */
+    SUN_BLOCK = 22,
+};
+
+/**
+ * @brief Enumerates types of the extended stream information.
+ * @since 4.0
+ * @version 1.2
+ */
+enum ExtendedStreamInfoType : ohos.hdi.camera.v1_2.ExtendedStreamInfoType_V1_2 {
+
+    /**
+     * Extended stream information of raw.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_RAW = 2,
+
+    /**
+     * Extended stream information of depth.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_DEPTH = 3,
+
+    /**
+     * Extended stream information of meta.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_META = 4,
+    
+    /**
+     * Extended stream information of secure.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_SECURE = 5,
+
+    /**
+     * Extended stream information of maker.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_MAKER_INFO = 6,
+
+    /**
+     * Extended stream information of exif.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_EXIF = 7,
+
+    /**
+     * Extended stream information of gainmap.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_GAINMAP = 8,
+
+    /**
+     * Extended stream information of unrefocus.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_UNREFOCUS = 9,
+
+    /**
+     * Extended stream information of linear.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_LINEAR = 10,
+
+    /**
+     * Extended stream information of fragment.
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_FRAGMENT =11,
+
+    /**
+     * Extended stream information of uv sunscreen detection
+     * @since 5.0
+     * @version 1.0
+     */
+    EXTENDED_STREAM_INFO_UV = 12,
+};
+
+/**
+ * @brief Enumerates stream types.
+ * @since 5.0
+ * @version 1.0
+ */
+enum StreamType {
+
+    /**
+     * Preview streams, indicating that stream data is used for preview
+     */
+    STREAM_TYPE_PREVIEW = 0,
+
+    /**
+     * Video streams, indicating that stream data is used to encode and generate videos
+     */
+    STREAM_TYPE_VIDEO = 1,
+
+    /**
+     * Photographing streams, indicating that stream data is used to encode and generate images
+     */
+    STREAM_TYPE_STILL_CAPTURE = 2,
+
+    /**
+     * Stream data that is used to store thumbnails
+     */
+    STREAM_TYPE_POST_VIEW = 3,
+
+    /**
+     * Stream data that is used for image analysis
+     */
+    STREAM_TYPE_ANALYZE = 4,
+
+    /**
+     * Custom type
+     */
+    STREAM_TYPE_CUSTOM = 5,
+
+    /**
+     * Depth type
+     */
+    STREAM_TYPE_DEPTH = 6,
+};
+
+/**
+ * @brief Enumerates types of the execution modes.
+ * @since 4.1
+ * @version 1.1
+ */
+enum ExecutionMode : ohos.hdi.camera.v1_2.ExecutionMode {
+    /**
+     * Default mode.
+     */
+    DEFAULT = 3,
+};
+
+/**
+ * @brief Enumerates camera device error types, which are used by {@link OnError}.
+ * @since 3.2
+ * @version 1.1
+ */
+enum ErrorType : ohos.hdi.camera.v1_0.ErrorType {
+    /**
+     * sensor data error.
+     * @since 5.0
+     * @version 1.0
+     */
+    SENSOR_DATA_ERROR = 5,
+};
+
+/**
+ * @brief Defines the CameraDeviceResourceCost, which is used by {@link ICameraDevice::GetResourceCost}.
+ */
+struct CameraDeviceResourceCost {
+    /**
+     * @brief Total resource cost of using current camera device, scope is [0, 100].
+     */
+    unsigned int resourceCost_;
+
+    /**
+     * @brief Cameradevices ID that can not open while current camera device is on.
+     */
+    String[] conflictingDevices_;
+};
+
+/**
+ * @brief Enumerates camera media stream type.
+ * @since 5.0
+ * @version 1.0
+ */
+enum MediaStreamType {
+    /**
+     * video media stream
+     * @since 5.0
+     * @version 1.0
+     */
+    MEDIA_STREAM_TYPE_VIDEO = 0,
+    /**
+     * metadata media stream
+     * @since 5.0
+     * @version 1.0
+     */
+    MEDIA_STREAM_TYPE_METADATA = 1,
+    /**
+     * maker media stream
+     * @since 5.0
+     * @version 1.0
+     */
+    MEDIA_STREAM_TYPE_MAKER = 2,
+};
+
+/**
+ * @brief Defines the SteramDescription, which is used by {@link IVideoProcessSession::Prepare}.
+ * @since 5.0
+ * @version 1.0
+ */
+struct StreamDescription {
+    /**
+     * stream id
+     * @since 5.0
+     * @version 1.0
+     */
+    int streamId;
+    /**
+     * media stream type
+     * @since 5.0
+     * @version 1.0
+     */
+    enum MediaStreamType type;
+    /**
+     * pixel format
+     * @since 5.0
+     * @version 1.0
+     */
+    int pixelFormat;
+    /**
+     * image width
+     * @since 5.0
+     * @version 1.0
+     */
+    int width;
+    /**
+     * image height
+     * @since 5.0
+     * @version 1.0
+     */
+    int height;
+    /**
+     * image color space
+     * @since 5.0
+     * @version 1.0
+     */
+    int dataspace;
+};
+
+/**
+ * @brief Defines the CaptureEndedInfoExt, which is used by {@link IStreamOperatorCallback::OnCaptureEndedExt}.
+ * @since 5.0
+ * @version 1.0
+ */
+struct CaptureEndedInfoExt {
+    /**
+     * stream id
+     * @since 5.0
+     * @version 1.0
+     */
+    int streamId_;
+    /**
+     * frame count
+     * @since 5.0
+     * @version 1.0
+     */
+    int frameCount_;
+    /**
+     * whether deffered video enhancement available
+     * @since 5.0
+     * @version 1.0
+     */
+    boolean isDeferredVideoEnhancementAvailable_;
+    /**
+     * video id
+     * @since 5.0
+     * @version 1.0
+     */
+    String videoId_;
+};
+
+/**
+ * @brief Defines the ImageBufferInfo, which is used by {@link IImageProcessCallback::OnProcessDoneExt}.
+ * @since 5.0
+ * @version 1.0
+ */
+struct ImageBufferInfoExt {
+    /**
+     * @brief The information of metadata.
+     * @since 5.0
+     * @version 1.0
+     */
+    MapDataSequenceable metadata;
+
+    /**
+     * @brief The information of imageHandle.
+     * @since 5.0
+     * @version 1.0
+     */
+    BufferHandleSequenceable imageHandle;
+
+    /**
+     * @brief If the gain map reported.
+     * @since 5.0
+     * @version 1.0
+     */
+    boolean isGainMapValid;
+
+    /**
+     * @brief The gain map information.
+     * @since 5.0
+     * @version 1.0
+     */
+    BufferHandleSequenceable gainMapHandle;
+
+    /**
+     * @brief Is depthMapHandle valid.
+     * @since 5.0
+     * @version 1.0
+     */
+    boolean isDepthMapValid;
+
+    /**
+     * @brief Data of metadata.
+     * @since 5.0
+     * @version 1.0
+     */
+    BufferHandleSequenceable depthMapHandle;
+
+    /**
+     * @brief If the unrefocus image of portrait mode reported.
+     * @since 5.0
+     * @version 1.0
+     */
+    boolean isUnrefocusImageValid;
+
+    /**
+     * @brief The unrefocus image of portrait mode.
+     * @since 5.0
+     * @version 1.0
+     */
+    BufferHandleSequenceable unrefocusImageHandle;
+
+    /**
+     * @brief If the high bit depth linear image reported.
+     * @since 5.0
+     * @version 1.0
+     */
+    boolean isHighBitDepthLinearImageValid;
+
+    /**
+     * @brief The high bit depth linear image.
+     * @since 5.0
+     * @version 1.0
+     */
+    BufferHandleSequenceable highBitDepthLinearImageHandle;
+
+    /**
+     * @brief If the exif information reported.
+     * @since 5.0
+     * @version 1.0
+     */
+    boolean isExifValid;
+
+    /**
+     * @brief The exif information.
+     * @since 5.0
+     * @version 1.0
+     */
+    BufferHandleSequenceable exifHandle;
+
+    /**
+     * @brief If the maker information reported.
+     * @since 5.0
+     * @version 1.0
+     */
+    boolean isMakerInfoValid;
+
+    /**
+     * @brief The maker information.
+     * @since 5.0
+     * @version 1.0
+     */
+    BufferHandleSequenceable makerInfoHandle;
+};
+
+/**
+ * @brief Enumerates encoding types of stream data.
+ * @since 5.0
+ * @version 1.0
+ */
+enum EncodeType : ohos.hdi.camera.v1_0.EncodeType {
+     /**
+      * HEIC
+      */
+     ENCODE_TYPE_HEIC = 4,
+};
+
+/**
+ * @brief Enumerates stream error types, which are used by {@link CaptureErrorInfo}.
+ * @since 3.2
+ * @version 1.1
+ */
+enum StreamError : ohos.hdi.camera.v1_0.StreamError {
+    /**
+     * When the sensor temperature is higher than the threshold, the cameraHal will stop the sketch stream
+     * and report the high temperature error through by {@link OnCaptureError}.
+     * @since 5.0
+     * @version 1.0
+     */
+    HIGH_TEMPERATURE_ERROR = 2,
+};

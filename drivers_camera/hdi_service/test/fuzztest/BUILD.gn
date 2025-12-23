@@ -1,0 +1,60 @@
+# Copyright (c) 2022 - 2025 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+group("hdf_dcamera_fuzztest") {
+  testonly = true
+  deps = [
+    "dcameraacquirebuffer_fuzzer:fuzztest",
+    "dcameraadddcameradevice_fuzzer:fuzztest",
+    "dcameraclosesession_fuzzer:fuzztest",
+    "dcameraconfigurestreams_fuzzer:fuzztest",
+    "dcameracreatestreams_fuzzer:fuzztest",
+    "dcameradeviceclose_fuzzer:fuzztest",
+    "dcameradevicegetenabledresults_fuzzer:fuzztest",
+    "dcameradevicegetsettings_fuzzer:fuzztest",
+    "dcameradevicesetresultmode_fuzzer:fuzztest",
+    "dcameradeviceupdatesettings_fuzzer:fuzztest",
+    "dcameradisabledcameradevice_fuzzer:fuzztest",
+    "dcameradisableresult_fuzzer:fuzztest",
+    "dcameraenabledcameradevice_fuzzer:fuzztest",
+    "dcameraenableresult_fuzzer:fuzztest",
+    "dcameragetcameraability_fuzzer:fuzztest",
+    "dcameragetcameraids_fuzzer:fuzztest",
+    "dcameragetdevicebydhbase_fuzzer:fuzztest",
+    "dcamerahost_fuzzer:fuzztest",
+    "dcamerahostsetcallback_fuzzer:fuzztest",
+    "dcameraisstreamssupported_fuzzer:fuzztest",
+    "dcameranotify_fuzzer:fuzztest",
+    "dcameranotifydcamerastatus_fuzzer:fuzztest",
+    "dcameraonsettingsresult_fuzzer:fuzztest",
+    "dcameraopencamera_fuzzer:fuzztest",
+    "dcameraopensession_fuzzer:fuzztest",
+    "dcameraregistercamerahdflistener_fuzzer:fuzztest",
+    "dcamerareleasestreams_fuzzer:fuzztest",
+    "dcameraremovedcameradevice_fuzzer:fuzztest",
+    "dcamerasetflashlight_fuzzer:fuzztest",
+    "dcamerashutterbuffer_fuzzer:fuzztest",
+    "dcamerastartcapture_fuzzer:fuzztest",
+    "dcamerastopcapture_fuzzer:fuzztest",
+    "dcameraunregistercamerahdflistener_fuzzer:fuzztest",
+    "dcameraupdatesettings_fuzzer:fuzztest",
+    "dstreamattachbufferqueue_fuzzer:fuzztest",
+    "dstreamcancelcapture_fuzzer:fuzztest",
+    "dstreamcapture_fuzzer:fuzztest",
+    "dstreamchangetoofflinestream_fuzzer:fuzztest",
+    "dstreamcommitstreams_fuzzer:fuzztest",
+    "dstreamdetachbufferqueue_fuzzer:fuzztest",
+    "dstreamgetstreamattributes_fuzzer:fuzztest",
+    "dstreamreleasestreams_fuzzer:fuzztest",
+  ]
+}

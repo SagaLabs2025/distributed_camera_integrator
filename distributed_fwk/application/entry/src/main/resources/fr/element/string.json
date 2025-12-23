@@ -1,0 +1,158 @@
+{
+    "string":[
+        {
+            "name":"DHTypeName_Camera",
+            "value":"l'appareil photo",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"pause",
+            "value":"Pause",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"continue_desc_text",
+            "value":"Vous pouvez commencer à afficher ou à modifier du contenu sur un appareil, puis reprenez instantanément sur un appareil à proximité connecté au même Compte. Lorsque Transfert est disponible, une icône apparaît dans le dock des applications. %s",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"connected_to",
+            "value":"Connecté à %1$s",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"learn_more",
+            "value":"En savoir plus",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"continue",
+            "value":"Reprendre",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"disconnect",
+            "value":"Déconnecter",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"update_version_prompt",
+            "value":"Les deux appareils doivent fonctionner sous OpenHarmony NEXT",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"stop_device",
+            "value":"Veuillez déconnecter pour arrêter d'utiliser %1$s de cet appareil.",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"DHTypeName_Mic",
+            "value":"le micro",
+            "attr":{
+                "priority":"translate"
+            }
+        },
+        {
+            "name":"continue_title",
+            "value":"Transfert",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+            "name":"continue_privacy_text",
+            "value":"Ce service utilise le Bluetooth et le WLAN et doit envoyer le nom de cet appareil aux appareils vers lesquels vous effectuez un transfert. En activant ce service, vous acceptez ces conditions.",
+            "attr":{
+                "priority":"LT"
+            }
+        },
+        {
+          "name": "mech_intelligent_tracking",
+          "value": "Suivi intelligent",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_tracking_layout",
+          "value": "Mode suivi",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_enable",
+          "value": "Activé",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "mech_close",
+          "value": "Désactivé",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_left",
+          "value": "Gauche",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "mech_center",
+          "value": "Centre",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "mech_right",
+          "value": "Droite",
+          "attr":{
+              "priority":"LT"
+          }
+        },
+        {
+          "name": "audio_tracking_switch_on",
+          "value": "Le Suivi intelligent est activé, toucher deux fois pour le désactiver",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "audio_tracking_switch_off",
+          "value": "Le Suivi intelligent est désactivé, toucher deux fois pour l'activer",
+          "attr":{
+              "priority":"translate"
+          }
+        },
+        {
+          "name": "audio_back",
+          "value": "Retour",
+          "attr":{
+              "priority":"translate"
+          }
+        }
+    ]
+}

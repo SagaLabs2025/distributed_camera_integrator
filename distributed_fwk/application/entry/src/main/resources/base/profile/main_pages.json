@@ -1,0 +1,8 @@
+{
+  "src": [
+    "pages/DHardwareUI",
+    "pages/ContinueSwitch",
+    "pages/MechControl",
+    "pages/TrackingLayout"
+  ]
+}

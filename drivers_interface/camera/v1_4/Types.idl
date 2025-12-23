@@ -1,0 +1,44 @@
+/*
+ * Copyright (c) 2025 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @file Types.h
+ *
+ * @brief Declares data types
+ * used by the Hardware Driver Interfaces (HDIs) of this module.
+ *
+ * @since 5.1
+ * @version 1.4
+ */
+
+package ohos.hdi.camera.v1_4;
+
+import ohos.hdi.camera.v1_3.Types;
+
+sequenceable ohos.hdi.camera.v1_0.BufferHandleSequenceable;
+sequenceable ohos.hdi.camera.v1_0.BufferProducerSequenceable;
+sequenceable ohos.hdi.camera.v1_0.MapDataSequenceable;
+
+/**
+ * @brief Enumerates encoding types of stream data.
+ * @since 5.1
+ * @version 1.0
+ */
+enum EncodeType : ohos.hdi.camera.v1_3.EncodeType {
+     /**
+      * DNG_XDRAW
+      */
+     ENCODE_TYPE_DNG_XDRAW = 5,
+};
