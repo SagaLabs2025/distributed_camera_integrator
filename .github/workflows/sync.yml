@@ -1,0 +1,78 @@
+name: Multi-Repo Code Integrator
+
+on:
+  schedule:
+    # 每周日 23:00 (UTC 15:00) 自动触发
+    - cron: '0 15 * * 0'
+  workflow_dispatch: # 支持手动触发
+
+jobs:
+  sync_and_combine:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Target Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SYNC_PAT }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 1. 同步 distributed_camera (全量同步)
+      - name: Sync distributed_camera
+        run: |
+          rm -rf distributed_camera
+          git clone --depth 1 gitcode.com temp_dc
+          mv temp_dc distributed_camera
+          rm -rf distributed_camera/.git
+
+      # 2. 同步 distributed_fwk (全量同步)
+      - name: Sync distributed_fwk
+        run: |
+          rm -rf distributed_fwk
+          git clone --depth 1 gitcode.com temp_df
+          mv temp_df distributed_fwk
+          rm -rf distributed_fwk/.git
+
+      # 3. 同步 drivers_interface (部分同步: camera 和 distributed_camera)
+      - name: Sync drivers_interface (Partial)
+        run: |
+          rm -rf drivers_interface
+          mkdir -p drivers_interface
+          # 使用 sparse-checkout 仅获取指定目录
+          git clone --depth 1 --filter=blob:none --sparse gitcode.com temp_di
+          cd temp_di
+          git sparse-checkout set camera distributed_camera
+          cd ..
+          cp -r temp_di/camera drivers_interface/
+          cp -r temp_di/distributed_camera drivers_interface/
+          rm -rf temp_di
+
+      # 4. 同步 drivers_camera (部分同步: 只取 distributed_camera 文件夹)
+      - name: Sync drivers_camera (Partial)
+        run: |
+          rm -rf drivers_camera
+          git clone --depth 1 --filter=blob:none --sparse gitcode.com temp_dp
+          cd temp_dp
+          git sparse-checkout set distributed_camera
+          cd ..
+          mv temp_dp/distributed_camera drivers_camera
+          rm -rf temp_dp
+
+      # 5. 提交并推送更改
+      - name: Commit and Push Changes
+        run: |
+          git add .
+          # 检查是否有内容变更，避免空提交报错
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-sync from external repositories: $(date +'%Y-%m-%d %H:%M')"
+            git push origin main
+          fi
