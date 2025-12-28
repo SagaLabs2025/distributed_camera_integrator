@@ -62,6 +62,7 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_STATUS_MOON_CAPTURE_DETECTION,
     OHOS_ABILITY_CAPTURE_DURATION_SUPPORTED,
     OHOS_CAMERA_CUSTOM_SNAPSHOT_DURATION,
+    OHOS_CAMERA_CONSTELLATION_DRAWING_STATE,
     OHOS_ABILITY_MOVING_PHOTO,
     OHOS_ABILITY_FLASH_SUGGESTION_SUPPORTED,
     OHOS_CONTROL_FLASH_SUGGESTION_SWITCH,
@@ -99,6 +100,9 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_ABILITY_CAMERA_LIMITED_CAPABILITIES,
     OHOS_ABILITY_CAMERA_CONCURRENT_TYPE,
     OHOS_ABILITY_CONCURRENT_SUPPORTED_CAMERAS,
+    OHOS_ABILITY_LOG_ASSISTANCE_SUPPORTED,
+    OHOS_ABILITY_STAGE_BOOST,
+    OHOS_CONTROL_STAGE_BOOST,
 
     OHOS_SENSOR_EXPOSURE_TIME,
     OHOS_SENSOR_COLOR_CORRECTION_GAINS,
@@ -123,8 +127,10 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_STATISTICS_FACE_LANDMARKS,
     OHOS_STATISTICS_FACE_RECTANGLES,
     OHOS_STATISTICS_FACE_SCORES,
+    OHOS_STATISTICS_TIMESTAMP,
     OHOS_STATISTICS_DETECT_HUMAN_FACE_INFOS,
     OHOS_STATISTICS_DETECT_HUMAN_BODY_INFOS,
+    OHOS_STATISTICS_DETECT_HUMAN_HEAD_INFOS,
     OHOS_STATISTICS_DETECT_CAT_FACE_INFOS,
     OHOS_STATISTICS_DETECT_CAT_BODY_INFOS,
     OHOS_STATISTICS_DETECT_DOG_FACE_INFOS,
@@ -186,12 +192,19 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_CONTROL_SUN_BLOCK_PREVIEW_TYPE,
     OHOS_CONTROL_SUN_BLOCK_BLEND_COLOR,
     OHOS_CONTROL_QUALITY_PRIORITIZATION,
+    OHOS_CONTROL_LOG_ASSISTANCE,
     OHOS_CONTROL_SYSTEM_CAPTURE,
     OHOS_CONTROL_AUTO_VIDEO_FRAME_RATE,
     OHOS_ABILITY_AUTO_VIDEO_FRAME_RATE,
+    OHOS_ABILITY_EXTERNAL_CAMERA_LENS_BOOST,
+    OHOS_CONTROL_EXTERNAL_CAMERA_LENS_BOOST,
     OHOS_ABILITY_PHOTO_QUALITY_PRIORITIZATION,
     OHOS_CONTROL_PHOTO_QUALITY_PRIORITIZATION,
+    OHOS_CONTROL_REQUEST_CAMERA_SWITCH,
+    OHOS_CONTROL_CAMERA_SWITCH_INFOS,
     OHOS_CONTROL_REMOVE_SENSOR_RESTRAINT,
+    OHOS_ABILITY_CAMERA_PREVIEW_QUALITY_PRIORITIZATION,
+    OHOS_CONTROL_CAMERA_PREVIEW_QUALITY_PRIORITIZATION,
 
     // Camera device image acquisition related
     OHOS_ABILITY_DEVICE_AVAILABLE_EXPOSUREMODES,
@@ -218,6 +231,7 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_CONTROL_FOCUS_DISTANCE,
     OHOS_ABILITY_FOCUS_RANGE_TYPES,
     OHOS_CONTROL_FOCUS_RANGE_TYPE,
+    OHOS_ABILITY_FOCUS_TRACKING_MODES,
     OHOS_CONTROL_FOCUS_TRACKING_MODE,
     OHOS_ABILITY_FOCUS_TRACKING_REGION,
     OHOS_ABILITY_FOCUS_DRIVEN_TYPES,
@@ -243,6 +257,8 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_ABILITY_SCENE_ZOOM_CAP,
     OHOS_STATUS_CAMERA_CURRENT_ZOOM_RATIO,
     OHOS_CONTROL_SMOOTH_ZOOM_RATIOS,
+    OHOS_CONTROL_CAMERA_TARGET_ZOOM_RATIO,
+    OHOS_ABILITY_CAMERA_NEED_SET_SMOOTH,
     OHOS_CONTROL_PREPARE_ZOOM,
     OHOS_ABILITY_CAMERA_ZOOM_PERFORMANCE,
     OHOS_STATUS_CAMERA_ZOOM_PERFORMANCE,
@@ -262,9 +278,12 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_ABILITY_PRERECORD,
     OHOS_CONTROL_PRERECORD_MODE,
     OHOS_CONTROL_RECORD_STATE,
+    OHOS_STREAM_SUPPLEMENTARY_INFO,
     OHOS_ABILITY_CHANGETO_OFFLINE_STREAM_OPEATOR,
     OHOS_CONTROL_CHANGETO_OFFLINE_STREAM_OPEATOR,
     OHOS_ABILITY_ROTATION_IN_IPS_SUPPORTED,
+    OHOS_ABILITY_BANDWIDTH_COMPRESSION_AVAILABLE,
+    OHOS_CONTROL_BANDWIDTH_COMPRESSION,
     OHOS_CONTROL_DELAY_ALLOC,
 
     OHOS_JPEG_GPS_COORDINATES,
@@ -281,6 +300,8 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_ABILITY_VIDEO_STABILIZATION_MODES,
     OHOS_CONTROL_VIDEO_STABILIZATION_MODE,
     OHOS_CONTROL_VIDEO_DEBUG_SWITCH,
+    OHOS_CINEMA_VIDEO_KEY_FRAME_TIMESTAMP,
+    OHOS_CINEMA_VIDEO_KEY_FRAME_TYPE,
 
     // camera effects & algorithms
     OHOS_ABILITY_SCENE_FILTER_TYPES,
@@ -297,6 +318,18 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_CONTROL_BEAUTY_SKIN_TONE_VALUE,
     OHOS_ABILITY_BEAUTY_SKIN_SMOOTH_VALUES,
     OHOS_CONTROL_BEAUTY_SKIN_SMOOTH_VALUE,
+    OHOS_ABILITY_BEAUTY_SKIN_TONEBRIGHT_VALUES,
+    OHOS_CONTROL_BEAUTY_SKIN_TONEBRIGHT_VALUE,
+    OHOS_ABILITY_BEAUTY_EYE_BIGEYES_VALUES,
+    OHOS_CONTROL_BEAUTY_EYE_BIGEYES_VALUE,
+    OHOS_ABILITY_BEAUTY_HAIR_HAIRLINE_VALUES,
+    OHOS_CONTROL_BEAUTY_HAIR_HAIRLINE_VALUE,
+    OHOS_ABILITY_BEAUTY_FACE_MAKEUP_VALUES,
+    OHOS_CONTROL_BEAUTY_FACE_MAKEUP_VALUE,
+    OHOS_ABILITY_BEAUTY_HEAD_SHRINK_VALUES,
+    OHOS_CONTROL_BEAUTY_HEAD_SHRINK_VALUE,
+    OHOS_ABILITY_BEAUTY_NOSE_SLENDER_VALUES,
+    OHOS_CONTROL_BEAUTY_NOSE_SLENDER_VALUE,
     OHOS_ABILITY_CAMERA_MACRO_SUPPORTED,
     OHOS_ABILITY_SCENE_MACRO_CAP,
     OHOS_CAMERA_MACRO_STATUS,
@@ -306,6 +339,7 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_ABILITY_CAMERA_PHYSICAL_APERTURE_RANGE,
     OHOS_CONTROL_CAMERA_PHYSICAL_APERTURE_VALUE,
     OHOS_STATUS_CAMERA_APERTURE_VALUE,
+    OHOS_STATUS_CAMERA_CURRENT_APERTURE_EFFECT,
     OHOS_DEVICE_EXITCAMERA_EVENT,
     OHOS_CONTROL_MOTION_DETECTION_CHECK_AREA,
     OHOS_STATUS_SLOW_MOTION_DETECTION,
@@ -321,6 +355,16 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_CONTROL_EFFECT_SUGGESTION_DETECTION,
     OHOS_CAMERA_EFFECT_SUGGESTION_TYPE,
     OHOS_CONTROL_EFFECT_SUGGESTION_TYPE,
+    OHOS_ABILITY_NIGHT_SUB_MODES,
+    OHOS_CONTROL_NIGHT_SUB_MODE,
+    OHOS_CONTROL_GPS_COORDINATES,
+    OHOS_ABILITY_CONSTELLATION_DRAWING,
+    OHOS_CONTROL_CONSTELLATION_DRAWING_DETECT,
+    OHOS_CONTROL_CONSTELLATION_DRAWING,
+    OHOS_STATUS_CONSTELLATION_DRAWING_DETECT,
+    OHOS_ABILITY_IMAGE_STABILIZATION_GUIDE,
+    OHOS_CONTROL_IMAGE_STABILIZATION_GUIDE,
+    OHOS_STATUS_IMAGE_STABILIZATION_GUIDE,
     OHOS_ABILITY_AVAILABLE_PROFILE_LEVEL,
     OHOS_ABILITY_AVAILABLE_PREVIEW_PROFILE,
     OHOS_ABILITY_AVAILABLE_PHOTO_PROFILE,
@@ -362,6 +406,7 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_MOVING_PHOTO_BUFFER_DURATION,
     OHOS_MOVING_PHOTO_START,
     OHOS_MOVING_PHOTO_END,
+    OHOS_SMOOTH_ZOOM_DURATION,
     OHOS_ABILITY_COLOR_RESERVATION_TYPES,
     OHOS_CONTROL_COLOR_RESERVATION_TYPE,
     OHOS_ABILITY_CONTROL_CENTER_SUPPORTED,
@@ -375,9 +420,30 @@ const std::vector<uint32_t> g_metadataTags = {
     OHOS_CONTROL_SECURE_IR_LED_SWITCH,
     OHOS_CONTROL_SECURE_IR_LOCKAE_SWITCH,
 
-    //XMAGE MODES
+    // XMAGE MODES
     OHOS_ABILITY_SUPPORTED_COLOR_MODES,
+    OHOS_ABILITY_SCENE_SUPPORTED_COLOR_MODES,
     OHOS_CONTROL_SUPPORTED_COLOR_MODES,
+
+    // COLOR STYLE
+    OHOS_ABILITY_COLOR_STYLE_AVAILABLE,
+    OHOS_ABILITY_COLOR_STYLE_DEFAULT_SETTINGS,
+    OHOS_CONTROL_COLOR_STYLE_SETTING,
+    OHOS_STATUS_COLOR_STYLE_SETTING,
+    OHOS_ABILITY_OUTPUT_COLOR_STYLE_PHOTO_TYPE,
+
+    // BOKEH DELIVERY
+    OHOS_ABILITY_AUTO_MOTION_BOOST_DELIVERY,
+    OHOS_CONTROL_AUTO_MOTION_BOOST_DELIVERY_SWITCH,
+    OHOS_ABILITY_AUTO_BOKEH_DATA_DELIVERY,
+    OHOS_CONTROL_AUTO_BOKEH_DATA_DELIVERY_SWITCH,
+
+    // COMPOSITION
+    OHOS_ABILITY_RECOMMENDED_INFO_LANGUAGE,
+    OHOS_CONTROL_RECOMMENDED_INFO_LANGUAGE,
+    OHOS_ABILITY_COMPOSITION_EFFECT_PREVIEW,
+    OHOS_CONTROL_COMPOSITION_EFFECT_PREVIEW,
+    OHOS_ABILITY_COMPOSITION_RECOMMENDED_PICTURE_SIZE,
 };
 
 std::map<uint32_t, uint32_t> g_metadataSectionMap = {
@@ -394,11 +460,14 @@ std::map<uint32_t, uint32_t> g_metadataSectionMap = {
     {OHOS_STREAM_ABILITY, OHOS_SECTION_STREAM_ABILITY},
     {OHOS_STREAM_JPEG, OHOS_SECTION_STREAM_JPEG},
     {OHOS_STREAM_VIDEO, OHOS_SECTION_STREAM_VIDEO},
+    {OHOS_STREAM_PHOTO_STITCHING, OHOS_SECTION_STREAM_PHOTO_STITCHING},
     {OHOS_CAMERA_EFFECT, OHOS_SECTION_CAMERA_EFFECT},
     {OHOS_CAMERA_SECURE, OHOS_SECTION_CAMERA_SECURE},
     {OHOS_XMAGE_COLOR_ABILITY, OHOS_SECTION_CAMERA_XMAGE},
     {OHOS_STREAM_CONTROL, OHOS_SECTION_STREAM_CONTROL},
+    {OHOS_COMPOSITION_SUGGESTION, OHOS_SECTION_COMPOSITION_SUGGESTION},
     {OHOS_LIGHT_STATUS, OHOS_SECTION_LIGHT_STATUS},
+    {OHOS_DATA_DELIVERY, OHOS_SECTION_DATA_DELIVERY},
 };
 
 std::map<uint32_t, uint32_t> g_itemDataTypeMap {
@@ -555,7 +624,7 @@ bool CameraMetadata::Marshalling(Parcel &parcel) const
 {
     return MetadataUtils::WriteCameraMetadata(metadata_, static_cast<MessageParcel&>(parcel));
 }
- 
+
 CameraMetadata* CameraMetadata::Unmarshalling(Parcel &parcel)
 {
     uint32_t tagCount = parcel.ReadUint32();
@@ -923,9 +992,10 @@ int CameraMetadata::AddCameraMetadataItem(common_metadata_header_t *dst, uint32_
         METADATA_ERR_LOG("AddCameraMetadataItem fail: invalid argument.");
         return CAM_META_INVALID_PARAM;
     }
-    
+
     int32_t dataBytes = CalculateCameraMetadataItemDataSize(dataType, dataCount);
-    if (dataBytes + dst->data_count > dst->data_capacity) {
+    if ((uint32_t)dataBytes >= (UINT32_MAX - dst->data_count) ||
+        (uint32_t)dataBytes + dst->data_count > dst->data_capacity) {
         METADATA_ERR_LOG("AddCameraMetadataItem data_capacity limit reached");
         return CAM_META_DATA_CAP_EXCEED;
     }
@@ -959,13 +1029,25 @@ int CameraMetadata::AddCameraMetadataItem(common_metadata_header_t *dst, uint32_
             METADATA_ERR_LOG("AddCameraMetadataItem GetMetadataData failed");
             return CAM_META_FAILURE;
         }
-        ret = memcpy_s(dstMetadataData + metadataItem->data.offset, dst->data_capacity - dst->data_count, data,
-            dataPayloadBytes);
+        if (dst->data_capacity < metadataItem->data.offset) {
+            METADATA_ERR_LOG("AddCameraMetadataItem Invalid data capacity and data offset failed");
+            return CAM_META_FAILURE;
+        }
+        size_t remaind = dst->data_capacity - metadataItem->data.offset;
+        if (remaind < dataPayloadBytes) {
+            METADATA_ERR_LOG("AddCameraMetadataItem Insufficient capacity for copying");
+            return CAM_META_FAILURE;
+        }
+        ret = memcpy_s(dstMetadataData + metadataItem->data.offset, remaind, data, dataPayloadBytes);
         if (ret != EOK) {
             METADATA_ERR_LOG("AddCameraMetadataItem memory copy failed");
             return CAM_META_FAILURE;
         }
-        dst->data_count += dataBytes;
+        if (dst->data_count > UINT32_MAX - (uint32_t)dataBytes) {
+            METADATA_ERR_LOG("AddCameraMetadataItem ");
+            return CAM_META_FAILURE;
+        }
+        dst->data_count += (uint32_t)dataBytes;
     }
     dst->item_count++;
 
@@ -1154,7 +1236,18 @@ int CameraMetadata::copyMetadataMemory(common_metadata_header_t *dst, camera_met
             " offset:%{public}u, total size:%{public}u", item->data.offset, dst->size);
         return CAM_META_FAILURE;
     }
-    ret = memcpy_s(dstMetadataData + item->data.offset, dataPayloadSize, data, dataPayloadSize);
+    if (dst->data_capacity < item->data.offset) {
+        METADATA_ERR_LOG("UpdateameraMetadataItemSize Invalid data capacity and data offset failed");
+        return CAM_META_FAILURE;
+    }
+
+    size_t remaind = dst->data_capacity - item->data.offset;
+    if (remaind < dataPayloadSize) {
+        METADATA_ERR_LOG("UpdateameraMetadataItemSize Insufficient capacity for copying");
+        return CAM_META_FAILURE;
+    }
+
+    ret = memcpy_s(dstMetadataData + item->data.offset, remaind, data, dataPayloadSize);
     if (ret != EOK) {
         METADATA_ERR_LOG("copyMetadataMemory memory copy failed");
         return CAM_META_FAILURE;
@@ -1181,7 +1274,11 @@ int CameraMetadata::UpdateCameraMetadataItemSize(camera_metadata_item_entry_t *i
         return CAM_META_FAILURE;
     }
     if (dataSize != oldItemSize) {
-        if (dst->data_capacity < (dst->data_count + dataSize - oldItemSize)) {
+        if (dst->data_count > UINT32_MAX - (uint32_t)dataSize &&
+            dst->data_count + (uint32_t)dataSize < (uint32_t)oldItemSize) {
+            return CAM_META_FAILURE;
+        }
+        if (dst->data_capacity < (dst->data_count + (uint32_t)dataSize - (uint32_t)oldItemSize)) {
             METADATA_ERR_LOG("UpdateCameraMetadataItemByIndex data_capacity limit reached");
             return CAM_META_DATA_CAP_EXCEED;
         }
@@ -1197,7 +1294,10 @@ int CameraMetadata::UpdateCameraMetadataItemSize(camera_metadata_item_entry_t *i
             if (ret != CAM_META_SUCCESS) {
                 return ret;
             }
-            dst->data_count += dataSize;
+            if (dst->data_count > UINT32_MAX - (uint32_t)dataSize) {
+                return CAM_META_FAILURE;
+            }
+            dst->data_count += (uint32_t)dataSize;
         }
     } else if (dataSize != 0) {
         ret = copyMetadataMemory(dst, item, dataPayloadSize, data);
@@ -1206,7 +1306,7 @@ int CameraMetadata::UpdateCameraMetadataItemSize(camera_metadata_item_entry_t *i
         }
     }
     if (dataSize == 0) {
-        ret = memcpy_s(item->data.value, dataPayloadSize, data, dataPayloadSize);
+        ret = memcpy_s(item->data.value, ENTRY_DATA_SIZE, data, dataPayloadSize);
         if (ret != EOK) {
             METADATA_ERR_LOG("UpdateCameraMetadataItemByIndex memory copy failed");
             return CAM_META_FAILURE;
@@ -1332,14 +1432,18 @@ int CameraMetadata::DeleteCameraMetadataItemByIndex(common_metadata_header_t *ds
         if (ret != CAM_META_SUCCESS) {
             return ret;
         }
-        dst->data_count -= dataBytes;
+        if (dst->data_count < (uint32_t)dataBytes) {
+            return CAM_META_FAILURE;
+        }
+        dst->data_count -= (uint32_t)dataBytes;
 
         camera_metadata_item_entry_t *metadataItems = GetMetadataItems(dst);
         for (uint32_t i = 0; i < dst->item_count; i++, ++metadataItems) {
             if (CalculateCameraMetadataItemDataSize(
                 metadataItems->data_type, metadataItems->count) > 0 &&
-                metadataItems->data.offset > itemToDelete->data.offset) {
-                metadataItems->data.offset -= dataBytes;
+                metadataItems->data.offset > itemToDelete->data.offset &&
+                metadataItems->data.offset > (uint32_t)dataBytes) {
+                metadataItems->data.offset -= (uint32_t)dataBytes;
             }
         }
     } else if (dataBytes == CAM_META_FAILURE) {
@@ -1435,7 +1539,7 @@ int32_t CameraMetadata::CopyCameraMetadataItems(common_metadata_header_t *newMet
             sizeof(uint8_t[oldMetadata->data_count]));
         if (ret != EOK) {
             METADATA_ERR_LOG("CopyCameraMetadataItems memory copy failed, DataCapacity Size = %{public}u,"
-                "DataCount Size = %{public}u", newMetadata->data_capacity, oldMetadata->data_count);
+                "DataCount Size  = %{public}u", newMetadata->data_capacity, oldMetadata->data_count);
             return CAM_META_FAILURE;
         }
     }

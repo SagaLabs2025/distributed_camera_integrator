@@ -1,0 +1,72 @@
+/*
+ * Copyright (c) 2025 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @file istream_operator.h
+ *
+ * @brief Declares APIs for stream operations.
+ *
+ * @since 6.1
+ * @version 1.4
+ */
+
+package ohos.hdi.camera.v1_5;
+
+import ohos.hdi.camera.v1_3.IStreamOperator;
+import ohos.hdi.camera.v1_5.Types;
+import ohos.hdi.camera.v1_5.IStreamOperatorCallback;
+import ohos.hdi.camera.v1_0.IOfflineStreamOperator;
+
+interface IStreamOperator extends ohos.hdi.camera.v1_3.IStreamOperator {
+    /**
+     * @brief Converts a specific stream to an offline stream.
+     *
+     * Only photographing streams can be converted into offline streams,other streams are not supported.
+     * Due to the limited processing capability, some devices may spend a long period of time on
+     * algorithm processing during photographing, causing the capture requests to stack in the module.
+     * Converting to an offline stream enables the bottom-layer device to close and
+     * the offline stream to take over for subsequent processing.
+     *
+     * @param streamIds Indicates the IDs of the streams to be converted.
+     * @param callback Indicates the callback for conversion to offline streams.
+     * @param offlineOperator Indicates the offline stream after conversion.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful;
+     * returns an error code defined in {@link CamRetCode} otherwise.
+     *
+     * @since 6.1
+     * @version 1.0
+     */
+    ChangeToOfflineStream_V1_4([in] int[] streamIds, [in] IStreamOperatorCallback callbackObj,
+        [out] IOfflineStreamOperator offlineOperator);
+
+    /**
+     * @brief Creates streams.
+     *
+     * Before calling this function, you must use {@link IsStreamsSupported} to check whether the hardware
+     * abstraction layer (HAL) supports the streams to create.
+     *
+     * @param streamInfos Indicates the list of stream information, which is defined by {@link StreamInfo}.
+     * The passed stream information may be changed. Therefore, you can run {@link GetStreamAttributes} to
+     * obtain the latest stream attributes after the stream is created.
+     *
+     * @return Returns <b>NO_ERROR</b> if the operation is successful;
+     * returns an error code defined in {@link CamRetCode} otherwise.
+     *
+     * @since 6.1
+     * @version 1.0
+     */
+    CreateStreams_V1_5([in] struct StreamInfo_V1_5[] streamInfos);
+}

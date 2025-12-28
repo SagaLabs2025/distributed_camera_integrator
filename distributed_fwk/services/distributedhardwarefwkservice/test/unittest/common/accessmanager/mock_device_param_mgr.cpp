@@ -33,9 +33,9 @@ void IDeviceParamMgr::ReleaseInstance()
     ParamMgrInstance_ = nullptr;
 }
 
-bool IsDeviceE2ESync()
+bool GetDeviceSyncDataMode()
 {
-    return IDeviceParamMgr::GetOrCreateInstance()->IsDeviceE2ESync();
+    return IDeviceParamMgr::GetOrCreateInstance()->GetDeviceSyncDataMode();
 }
 } // namespace DistributedHardware
 } // namespace OHOS

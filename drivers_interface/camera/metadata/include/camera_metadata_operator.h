@@ -33,6 +33,7 @@
 
 #define INDEX_COUNTER 2
 #define WRAP_LENGTH 4
+#define ENTRY_DATA_SIZE 4
 
 // data type
 enum {
@@ -87,7 +88,7 @@ typedef struct camera_metadata_item_entry {
     uint32_t count;
     union {
         uint32_t offset;
-        uint8_t  value[4];
+        uint8_t  value[ENTRY_DATA_SIZE];
     } data;
 } camera_metadata_item_entry_t;
 
@@ -128,11 +129,14 @@ typedef enum camera_metadata_sec {
     OHOS_SECTION_STREAM_ABILITY,
     OHOS_SECTION_STREAM_JPEG,
     OHOS_SECTION_STREAM_VIDEO,
+    OHOS_SECTION_STREAM_PHOTO_STITCHING,
     OHOS_SECTION_CAMERA_EFFECT,
     OHOS_SECTION_CAMERA_SECURE,
     OHOS_SECTION_CAMERA_XMAGE,
     OHOS_SECTION_STREAM_CONTROL,
+    OHOS_SECTION_COMPOSITION_SUGGESTION,
     OHOS_SECTION_LIGHT_STATUS,
+    OHOS_SECTION_DATA_DELIVERY,
     OHOS_SECTION_COUNT,
 } camera_metadata_sec_t;
 

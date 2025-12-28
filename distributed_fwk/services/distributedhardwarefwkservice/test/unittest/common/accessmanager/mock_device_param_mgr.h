@@ -26,7 +26,7 @@ class IDeviceParamMgr {
 public:
     virtual ~IDeviceParamMgr() = default;
 
-    virtual bool IsDeviceE2ESync() = 0;
+    virtual bool GetDeviceSyncDataMode() = 0;
     static std::shared_ptr<IDeviceParamMgr> GetOrCreateInstance();
     static void ReleaseInstance();
 private:
@@ -35,7 +35,7 @@ private:
 
 class MockIDeviceParamMgr : public IDeviceParamMgr {
 public:
-    MOCK_METHOD(bool, IsDeviceE2ESync, ());
+    MOCK_METHOD(bool, GetDeviceSyncDataMode, ());
 };
 } // namespace DistributedHardware
 } // namespace OHOS
