@@ -634,6 +634,13 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_FOLD_STATE_SENSOR_ORIENTATION_MAP,
     /**
+     * ohos.ability.foldStateAndNaturalDirectionSensorOrientationMap [static, int32[], public]
+     *
+     * camera device property, query sensor orientation of all fold state by different natural direction
+     * (i.e. int32 ...)
+     */
+    OHOS_FOLD_STATE_AND_NATURAL_DIRECTION_SENSOR_ORIENTATION_MAP,
+    /**
      * ohos.camera.sensorEnd
      *
      * camera sensor endChar

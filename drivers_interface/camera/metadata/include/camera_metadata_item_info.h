@@ -185,6 +185,8 @@ static item_info_t g_ohosCameraSensor[OHOS_CAMERA_SENSOR_END - OHOS_CAMERA_SENSO
         OHOS_CAMERA_SENSOR_START] = {"sensorOrientationVariable", META_TYPE_INT32, 1},
     [OHOS_FOLD_STATE_SENSOR_ORIENTATION_MAP -
         OHOS_CAMERA_SENSOR_START] = {"foldStateSensorOrientationMap", META_TYPE_INT32, -1},
+    [OHOS_FOLD_STATE_AND_NATURAL_DIRECTION_SENSOR_ORIENTATION_MAP -
+        OHOS_CAMERA_SENSOR_START] = {"foldStateAndNaturalDirectionSensorOrientationMap", META_TYPE_INT32, -1},
 };
 
 static item_info_t g_ohosCameraSensorInfo[OHOS_CAMERA_SENSOR_INFO_END - OHOS_CAMERA_SENSOR_INFO_START] = {
