@@ -233,5 +233,14 @@ int32_t DCameraSinkDataProcess::GetProperty(const std::string& propertyName, Pro
     }
     return pipeline_->GetProperty(propertyName, propertyCarrier);
 }
+
+int32_t DCameraSinkDataProcess::PushImuData(const std::vector<uint8_t>& imuData, int32_t frameIndex)
+{
+    if (pipeline_ == nullptr) {
+        DHLOGD("PushImuData: pipeline is nullptr.");
+        return DCAMERA_BAD_VALUE;
+    }
+    return pipeline_->PushImuData(imuData, frameIndex);
+}
 } // namespace DistributedHardware
 } // namespace OHOS

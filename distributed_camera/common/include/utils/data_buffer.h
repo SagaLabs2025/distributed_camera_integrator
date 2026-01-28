@@ -18,6 +18,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 #include <cstddef>
 #include <cstdint>
 #include "ifeedable_data.h"
@@ -38,9 +39,11 @@ public:
     void SetInt32(const std::string name, int32_t value);
     void SetInt64(const std::string name, int64_t value);
     void SetString(const std::string name, std::string value);
+    void SetByteArray(const std::string name, const std::vector<uint8_t>& value);
     bool FindInt32(const std::string& name, int32_t& value);
     bool FindInt64(const std::string& name, int64_t& value);
     bool FindString(const std::string& name, std::string& value);
+    bool FindByteArray(const std::string& name, std::vector<uint8_t>& value);
     int64_t GetTimeStamp() override;
     virtual ~DataBuffer();
     DCameraFrameInfo frameInfo_;
@@ -54,6 +57,7 @@ private:
     std::map<std::string, int32_t> int32Map_;
     std::map<std::string, int64_t> int64Map_;
     std::map<std::string, std::string> stringMap_;
+    std::map<std::string, std::vector<uint8_t>> byteArrayMap_;
 
     DataBuffer(const DataBuffer &) = delete;
     DataBuffer &operator = (const DataBuffer &) = delete;

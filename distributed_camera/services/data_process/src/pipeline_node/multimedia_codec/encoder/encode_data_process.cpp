@@ -508,6 +508,22 @@ int32_t EncodeDataProcess::GetEncoderOutputBuffer(uint32_t index, MediaAVCodec::
     bufferOutput->SetInt64(TIME_STAMP_US, timeStamp);
     bufferOutput->SetInt32(FRAME_TYPE, flag);
     bufferOutput->SetInt32(INDEX, index_);
+
+    std::vector<uint8_t> imuData;
+    {
+        std::lock_guard<std::mutex> lock(imuDataMutex_);
+        auto it = imuDataMap_.find(index_);
+        if (it != imuDataMap_.end()) {
+            imuData = it->second;
+            imuDataMap_.erase(it);
+        }
+    }
+
+    if (!imuData.empty()) {
+        bufferOutput->SetByteArray("IMU_DATA", imuData);
+        DHLOGD("Attached IMU data to encoded frame %u", index_);
+    }
+
     index_++;
     std::vector<std::shared_ptr<DataBuffer>> nextInputBuffers;
     nextInputBuffers.push_back(bufferOutput);
@@ -594,6 +610,19 @@ void EncodeDataProcess::OnOutputBufferAvailable(uint32_t index, MediaAVCodec::AV
 VideoConfigParams EncodeDataProcess::GetSourceConfig() const
 {
     return sourceConfig_;
+}
+
+void EncodeDataProcess::SetImuData(uint32_t frameIndex, const std::vector<uint8_t>& imuData)
+{
+    std::lock_guard<std::mutex> lock(imuDataMutex_);
+    imuDataMap_[frameIndex] = imuData;
+
+    // Clear old data (keep recent 100 frames)
+    if (imuDataMap_.size() > 100) {
+        auto it = imuDataMap_.begin();
+        imuDataMap_.erase(it);
+    }
+    DHLOGD("Set IMU data for frame %u, size=%zu", frameIndex, imuData.size());
 }
 
 VideoConfigParams EncodeDataProcess::GetTargetConfig() const

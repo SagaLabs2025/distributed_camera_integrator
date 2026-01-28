@@ -730,6 +730,37 @@ int32_t DCameraSinkController::StartCaptureInner(std::vector<std::shared_ptr<DCa
                 ret = DCAMERA_BAD_VALUE;
             }
         }
+
+        if (surface != nullptr) {
+            std::shared_ptr<DCameraCaptureInfo> videoInfo = nullptr;
+            for (auto& info : captureInfosCache_) {
+                if (info->streamType_ == CONTINUOUS_FRAME) {
+                    videoInfo = info;
+                    break;
+                }
+            }
+
+            if (videoInfo != nullptr) {
+                if (surfaceRelay_ == nullptr) {
+                    surfaceRelay_ = std::make_shared<SurfaceBufferRelay>();
+                }
+                int32_t relayRet = surfaceRelay_->Init(videoInfo->width_, videoInfo->height_, videoInfo->format_);
+                if (relayRet == DCAMERA_OK) {
+                    surfaceRelay_->SetEncoderSurface(surface);
+                    surfaceRelay_->SetImuDataCallback([this](uint32_t frameIndex, const std::vector<uint8_t>& imuData) {
+                        this->OnImuDataReceived(frameIndex, imuData);
+                    });
+                    sptr<Surface> cameraSurface = surfaceRelay_->GetCameraSurface();
+                    if (cameraSurface != nullptr) {
+                        surface = cameraSurface;
+                        DHLOGI("Using SurfaceBufferRelay for video stream");
+                    }
+                } else {
+                    DHLOGE("SurfaceBufferRelay Init failed: %d", relayRet);
+                }
+            }
+        }
+
         std::shared_ptr<DCameraSurfaceHolder> holder = std::make_shared<DCameraSurfaceHolder>(ret, surface);
         AppExecFwk::InnerEvent::Pointer event = AppExecFwk::InnerEvent::Get(
             DCameraSinkContrEventHandler::EVENT_ENCODER_PREPARED, holder);
@@ -1010,6 +1041,13 @@ void DCameraSinkController::HandleCaptureError(int32_t errorCode, const std::str
         default:
             DCameraNotifyInner(DCAMERA_MESSAGE, DCAMERA_EVENT_DEVICE_ERROR, errorMsg);
             break;
+    }
+}
+
+void DCameraSinkController::OnImuDataReceived(uint32_t frameIndex, const std::vector<uint8_t>& imuData)
+{
+    if (output_ != nullptr) {
+        output_->PushImuData(imuData, static_cast<int32_t>(frameIndex));
     }
 }
 

@@ -352,6 +352,13 @@ int32_t DCameraSoftbusAdapter::SendSofbusStream(int32_t socket, std::shared_ptr<
     sinkFrameInfo.finishEncodeT_ = finishEncodeT;
     sinkFrameInfo.sendT_ = GetNowTimeStampUs();
     sinkFrameInfo.rawTime_ = std::to_string(timeStamp);
+
+    std::vector<uint8_t> imuData;
+    if (buffer->FindByteArray("IMU_DATA", imuData)) {
+        sinkFrameInfo.imuData_ = Base64Encode(imuData.data(), imuData.size());
+        DHLOGD("SendSofbusStream: Found IMU data, size=%zu", imuData.size());
+    }
+
     sinkFrameInfo.Marshal(jsonStr);
     DHLOGI("send videoPts=%{public}s to softbus,frameType:%{public}d", sinkFrameInfo.rawTime_.c_str(), frameType);
     StreamData ext = { const_cast<char *>(jsonStr.c_str()), jsonStr.length() };
@@ -541,6 +548,18 @@ int32_t DCameraSoftbusAdapter::HandleSourceStreamExt(std::shared_ptr<DataBuffer>
     frameInfo.timePonit.send = sinkFrameInfo.sendT_;
     frameInfo.timePonit.recv = recvT;
     buffer->frameInfo_ = frameInfo;
+
+    if (!sinkFrameInfo.imuData_.empty()) {
+        std::string decodedImuData = Base64Decode(sinkFrameInfo.imuData_);
+        if (decodedImuData.length() == 768) {
+            std::vector<uint8_t> imuVec(decodedImuData.begin(), decodedImuData.end());
+            buffer->SetByteArray("IMU_DATA", imuVec);
+            DHLOGD("HandleSourceStreamExt: Received IMU data, size=%zu", imuVec.size());
+        } else {
+            DHLOGW("HandleSourceStreamExt: Invalid IMU data size: %zu", decodedImuData.length());
+        }
+    }
+
     return DCAMERA_OK;
 }
 

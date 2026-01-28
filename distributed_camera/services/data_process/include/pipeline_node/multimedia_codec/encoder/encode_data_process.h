@@ -82,6 +82,7 @@ private:
     int32_t GetEncoderOutputBuffer(uint32_t index, MediaAVCodec::AVCodecBufferInfo info,
         MediaAVCodec::AVCodecBufferFlag flag, std::shared_ptr<Media::AVSharedMemory>& buffer);
     int32_t EncodeDone(std::vector<std::shared_ptr<DataBuffer>>& outputBuffers);
+    void SetImuData(uint32_t frameIndex, const std::vector<uint8_t>& imuData);
 
 private:
     constexpr static int32_t ENCODER_STRIDE_ALIGNMENT = 8;
@@ -135,6 +136,9 @@ private:
     std::atomic<bool> isEncoderProcess_ = false;
     std::mutex isEncoderProcessMtx_;
     std::condition_variable isEncoderProcessCond_;
+
+    std::mutex imuDataMutex_;
+    std::map<uint32_t, std::vector<uint8_t>> imuDataMap_;
 
     int32_t waitEncoderOutputCount_ = 0;
     int64_t lastFeedEncoderInputBufferTimeUs_ = 0;

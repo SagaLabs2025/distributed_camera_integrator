@@ -47,7 +47,8 @@ public:
     void OnSessionError(DCStreamType type, int32_t eventType, int32_t eventReason, std::string detail);
     void OnDataReceived(DCStreamType type, std::vector<std::shared_ptr<DataBuffer>>& dataBuffers);
 
-    int32_t GetProperty(const std::string& propertyName, PropertyCarrier& propertyCarrier) override;
+    int32_t GetProperty(const std::string& propertyName, PropertyCarrier& propertyCarrier) = 0;
+    int32_t PushImuData(const std::vector<uint8_t>& imuData, int32_t frameIndex) override;
 
 private:
     void InitInner(DCStreamType type);

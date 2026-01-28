@@ -38,6 +38,7 @@ public:
     virtual int32_t OpenChannel(std::shared_ptr<DCameraChannelInfo>& info) = 0;
     virtual int32_t CloseChannel() = 0;
     virtual int32_t GetProperty(const std::string& propertyName, PropertyCarrier& propertyCarrier) = 0;
+    virtual int32_t PushImuData(const std::vector<uint8_t>& imuData, int32_t frameIndex) = 0;
 };
 } // namespace DistributedHardware
 } // namespace OHOS

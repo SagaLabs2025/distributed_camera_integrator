@@ -34,6 +34,9 @@ void DCameraSinkFrameInfo::Marshal(std::string& jsonStr)
     cJSON_AddNumberToObject(frameInfo, FRAME_INFO_SENDT.c_str(), sendT_);
     cJSON_AddStringToObject(frameInfo, FRAME_INFO_VERSION.c_str(), ver_.c_str());
     cJSON_AddStringToObject(frameInfo, RAW_TIME.c_str(), rawTime_.c_str());
+    if (!imuData_.empty()) {
+        cJSON_AddStringToObject(frameInfo, FRAME_INFO_IMU_DATA.c_str(), imuData_.c_str());
+    }
 
     char *data = cJSON_Print(frameInfo);
     if (data == nullptr) {
@@ -95,6 +98,12 @@ int32_t DCameraSinkFrameInfo::Unmarshal(const std::string& jsonStr)
     } else {
         rawTime_ = std::string(rawTime->valuestring);
     }
+
+    cJSON *imuData = cJSON_GetObjectItemCaseSensitive(rootValue, FRAME_INFO_IMU_DATA.c_str());
+    if (imuData != nullptr && cJSON_IsString(imuData)) {
+        imuData_ = std::string(imuData->valuestring);
+    }
+
     cJSON_Delete(rootValue);
     return DCAMERA_OK;
 }

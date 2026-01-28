@@ -29,6 +29,7 @@
 #include "device_manager_callback.h"
 #include "property_carrier.h"
 #include "idcamera_sink_callback.h"
+#include "surface_buffer_relay.h"
 
 namespace OHOS {
 namespace DistributedHardware {
@@ -97,6 +98,9 @@ private:
     int32_t CreateCtrlSession();
     int32_t CheckSensitive();
     bool CheckAclRight();
+    
+    // Callback for IMU data
+    void OnImuDataReceived(uint32_t frameIndex, const std::vector<uint8_t>& imuData);
     class DCameraSurfaceHolder {
     public:
         DCameraSurfaceHolder(int32_t r, sptr<Surface> s) : result(r), surface(s) {}
@@ -150,6 +154,8 @@ private:
     std::mutex captureStateMutex_;
     std::condition_variable captureStateCv_;
     DcameraCaptureState captureState_ {CAPTURE_IDLE};
+    
+    std::shared_ptr<SurfaceBufferRelay> surfaceRelay_;
 };
 
 class DeviceInitCallback : public DmInitCallback {

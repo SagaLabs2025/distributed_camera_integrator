@@ -34,6 +34,7 @@ public:
     int64_t sendT_;
     std::string ver_;
     std::string rawTime_;
+    std::string imuData_;
 
 public:
     const std::string FRAME_INFO_TYPE = "type";
@@ -45,6 +46,7 @@ public:
     const std::string FRAME_INFO_SENDT = "sendT";
     const std::string FRAME_INFO_VERSION = "ver";
     const std::string RAW_TIME = "rawTime";
+    const std::string FRAME_INFO_IMU_DATA = "imuData";
 
 public:
     void Marshal(std::string& jsonStr);

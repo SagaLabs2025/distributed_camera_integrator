@@ -264,5 +264,14 @@ int32_t DCameraSinkOutput::GetProperty(const std::string& propertyName, Property
     }
     return dataProcesses_[CONTINUOUS_FRAME]->GetProperty(propertyName, propertyCarrier);
 }
+
+int32_t DCameraSinkOutput::PushImuData(const std::vector<uint8_t>& imuData, int32_t frameIndex)
+{
+    if (dataProcesses_.find(CONTINUOUS_FRAME) == dataProcesses_.end() || dataProcesses_[CONTINUOUS_FRAME] == nullptr) {
+        DHLOGD("PushImuData: continuous frame data process is not ready.");
+        return DCAMERA_BAD_VALUE;
+    }
+    return dataProcesses_[CONTINUOUS_FRAME]->PushImuData(imuData, frameIndex);
+}
 } // namespace DistributedHardware
 } // namespace OHOS
