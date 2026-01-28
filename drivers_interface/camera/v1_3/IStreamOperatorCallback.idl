@@ -25,6 +25,7 @@
 package ohos.hdi.camera.v1_3;
 
 import ohos.hdi.camera.v1_3.Types;
+import ohos.hdi.camera.v1_2.IStreamOperatorCallback;
 
 [callback] interface IStreamOperatorCallback extends ohos.hdi.camera.v1_2.IStreamOperatorCallback {
     /**
@@ -61,7 +62,7 @@ import ohos.hdi.camera.v1_3.Types;
      * @version 1.0
      */
     OnCaptureEndedExt([in] int captureId, [in] struct CaptureEndedInfoExt[] infos);
-    
+
     /**
      * @brief Called to report metadata and other information related to the stream.
      * For details about the reporting mode, see {@link SetResultMode}.

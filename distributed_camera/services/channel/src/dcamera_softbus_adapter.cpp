@@ -72,6 +72,8 @@ IMPLEMENT_SINGLE_INSTANCE(DCameraSoftbusAdapter);
 // LCOV_EXCL_START
 static void DCameraSourceOnBind(int32_t socket, PeerSocketInfo info)
 {
+    (void)socket;
+    (void)info;
     return;
 }
 
@@ -563,6 +565,7 @@ int32_t DCameraSoftbusAdapter::HandleSourceStreamExt(std::shared_ptr<DataBuffer>
     return DCAMERA_OK;
 }
 
+// LCOV_EXCL_START
 void DCameraSoftbusAdapter::RecordSourceSocketSession(int32_t socket, std::shared_ptr<DCameraSoftbusSession> session)
 {
     if (session == nullptr) {
@@ -639,6 +642,7 @@ int32_t DCameraSoftbusAdapter::DCameraSoftBusGetSessionByPeerSocket(int32_t sock
     DHLOGI("find session by peer socket end, socket %{public}d", socket);
     return DCAMERA_OK;
 }
+// LCOV_EXCL_STOP
 
 // sink
 int32_t DCameraSoftbusAdapter::SinkOnBind(int32_t socket, PeerSocketInfo info)
@@ -691,6 +695,7 @@ int32_t DCameraSoftbusAdapter::SinkOnBind(int32_t socket, PeerSocketInfo info)
     return ret;
 }
 
+// LCOV_EXCL_START
 int32_t DCameraSoftbusAdapter::HandleConflictSession(int32_t socket,
     std::shared_ptr<DCameraSoftbusSession> session, const std::string& networkId)
 {
@@ -789,6 +794,7 @@ int32_t DCameraSoftbusAdapter::CheckOsType(const std::string &networkId, bool &i
     DHLOGI("remote not found.");
     return DCAMERA_OK;
 }
+// LCOV_EXCL_STOP
 
 void DCameraSoftbusAdapter::SinkOnShutDown(int32_t socket, ShutdownReason reason)
 {
@@ -900,6 +906,7 @@ void DCameraSoftbusAdapter::SinkOnStream(int32_t socket, const StreamData *data,
     return;
 }
 
+// LCOV_EXCL_START
 int32_t DCameraSoftbusAdapter::GetLocalNetworkId(std::string& myDevId)
 {
     NodeBasicInfo basicInfo = { { 0 } };
@@ -1115,5 +1122,6 @@ void DeviceInitCallback::OnRemoteDied()
 {
     DHLOGI("DeviceInitCallback OnRemoteDied");
 }
+// LCOV_EXCL_STOP
 } // namespace DistributedHardware
 } // namespace OHOS

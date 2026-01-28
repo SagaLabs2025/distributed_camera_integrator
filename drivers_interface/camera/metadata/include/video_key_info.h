@@ -132,33 +132,57 @@ const std::string dataStride = "dataStride";
 const int32_t VIDEO_KEY_THUMBNAIL_STRIDE = 0x10;
 
 /**
+ * @brief Playing during the writing. The value type is uint_64.
+ */
+const std::string deferredVideoEnhanceFlag = "deferredVideoEnhanceFlag";
+const int32_t VIDEO_KEY_VIDEO_ENHANCE_FLAG = 0x11;
+
+/**
+ * @brief Indicates the composition reasons. The value type is string.
+ */
+const std::string compositionReasons = "compositionReasons";
+const int32_t VIDEO_KEY_COMPOSITION_REASONS = 0x12;
+
+/**
+ * @brief Indicates the composition ID. The value type is int32_t.
+ */
+const std::string compositionId = "compositionId";
+const int32_t VIDEO_KEY_VIDEO_COMPOSITION_ID = 0x13;
+
+/**
+ * @brief Indicates the composition point index. The value type is int32_t.
+ */
+const std::string compositionPointIndex = "compositionPointIndex";
+const int32_t VIDEO_KEY_VIDEO_COMPOSITION_POINT_INDEX = 0x14;
+
+/**
  * @brief Indicates the exposure time in the thumbnail watermark information. The value type is int64_t.
  */
 const std::string expoTime = "expoTime";
-const int32_t VIDEO_KEY_EXPO_TIME = 0x11;
+const int32_t VIDEO_KEY_EXPO_TIME = 0x15;
 
 /**
  * @brief Indicates the exposure iso in the thumbnail watermark information. The value type is int32_t.
  */
 const std::string expoIso = "expoIso";
-const int32_t VIDEO_KEY_EXPO_ISO = 0x12;
+const int32_t VIDEO_KEY_EXPO_ISO = 0x16;
 
 /**
  * @brief Indicates the exposure f-number in the thumbnail watermark information. The value type is double.
  */
 const std::string expoFNumber = "expoFNumber";
-const int32_t VIDEO_KEY_EXPO_FNUMBER = 0x13;
+const int32_t VIDEO_KEY_EXPO_FNUMBER = 0x17;
 
 /**
  * @brief Indicates the exposure focal length in the thumbnail watermark information. The value type is double.
  */
 const std::string expoEfl = "expoEfl";
-const int32_t VIDEO_KEY_EXPO_EFL = 0x14;
+const int32_t VIDEO_KEY_EXPO_EFL = 0x18;
 
 /**
  * @brief Indicates the capture time of thumbnail. The value type is int64_t.
  */
 const std::string captureTime = "captureTime";
-const int32_t VIDEO_KEY_CAPTURE_TIME = 0x15;
+const int32_t VIDEO_KEY_CAPTURE_TIME = 0x19;
 } // end namespace OHOS::Camera
 #endif

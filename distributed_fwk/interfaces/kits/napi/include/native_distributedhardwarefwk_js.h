@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2025 Huawei Device Co., Ltd.
+ * Copyright (c) 2023-2026 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -35,6 +35,7 @@ public:
     ~DistributedHardwareManager();
     static napi_value Init(napi_env env, napi_value exports);
     static void InitDistributedHardwareType(napi_env env, napi_value exports);
+    static void InitDistributedHardwareErrorCode(napi_env env, napi_value exports);
     static napi_value PauseDistributedHardware(napi_env env, napi_callback_info info);
     static napi_value ResumeDistributedHardware(napi_env env, napi_callback_info info);
     static napi_value StopDistributedHardware(napi_env env, napi_callback_info info);
@@ -47,6 +48,7 @@ public:
 private:
     static bool IsSystemApp();
     static bool HasAccessDHPermission();
-    static bool Verify(napi_env env);
+    static bool Verify(napi_env env, int32_t type);
+    static bool IsSupportType(int32_t type);
 };
 #endif // OHOS_DH_NATIVE_DISTRIBUTED_HARDWARE_JS_H

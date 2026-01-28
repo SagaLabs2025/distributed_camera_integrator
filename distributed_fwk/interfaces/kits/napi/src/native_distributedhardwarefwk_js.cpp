@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2025 Huawei Device Co., Ltd.
+ * Copyright (c) 2023-2026 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,36 @@ namespace {
     size_t argc = num;                \
     napi_value argv[num] = {nullptr}; \
     napi_value thisVar = nullptr;     \
-    NAPI_CALL(env, napi_get_cb_info(env, info, &argc, argv, &thisVar, nullptr))
+    DH_CALL(napi_get_cb_info(env, info, &argc, argv, &thisVar, nullptr))
+
+#define DH_RETVAL_NOTHING
+#define DH_CALL_BASE(theCall, retVal)                                      \
+    do {                                                                    \
+        if ((theCall) != napi_ok) {                                         \
+            DHLOGE("napi call failed, theCall: %{public}s", #theCall); \
+            return retVal;                                                  \
+        }                                                                   \
+    } while (0)
+
+#define DH_CALL(theCall) DH_CALL_BASE(theCall, nullptr)
+#define DH_CALL_RETURN_VOID(theCall) DH_CALL_BASE(theCall, DH_RETVAL_NOTHING)
+
+#define DH_ASSERT_BASE(env, assertion, message, code, retVal)                                    \
+    do {                                                                                     \
+        if (!(assertion)) {                                                                  \
+            napi_value errMsg; \
+            DH_CALL(napi_create_string_utf8(env, message, NAPI_AUTO_LENGTH, &errMsg)); \
+            napi_value error; \
+            DH_CALL(napi_create_error(env, nullptr, errMsg, &error)); \
+            napi_value errorCode; \
+            DH_CALL(napi_create_int32(env, code, &errorCode)); \
+            DH_CALL(napi_set_named_property(env, error, "errorCode", errorCode)); \
+            DH_CALL(napi_throw(env, error)); \
+            return retVal;                                                                   \
+        }                                                                                    \
+    } while (0)
+
+#define DH_ASSERT(env, assertion, message, code) DH_ASSERT_BASE(env, assertion, message, code, nullptr)
 
 const int32_t DH_NAPI_ARGS_ONE = 1;
 const int32_t DH_NAPI_ARGS_TWO = 2;
@@ -80,18 +109,18 @@ void DistributedHardwareManager::JsObjectToString(const napi_env &env, const nap
     const std::string &fieldStr, char *dest, const int32_t destLen)
 {
     bool hasProperty = false;
-    NAPI_CALL_RETURN_VOID(env, napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty));
+    DH_CALL_RETURN_VOID(napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty));
     if (hasProperty) {
         napi_value field = nullptr;
         napi_valuetype valueType = napi_undefined;
 
         napi_get_named_property(env, object, fieldStr.c_str(), &field);
-        NAPI_CALL_RETURN_VOID(env, napi_typeof(env, field, &valueType));
+        DH_CALL_RETURN_VOID(napi_typeof(env, field, &valueType));
         if (!CheckArgsType(env, valueType == napi_string, fieldStr.c_str(), "string")) {
             return;
         }
         size_t result = 0;
-        NAPI_CALL_RETURN_VOID(env, napi_get_value_string_utf8(env, field, dest, destLen, &result));
+        DH_CALL_RETURN_VOID(napi_get_value_string_utf8(env, field, dest, destLen, &result));
     } else {
         DHLOGE("devicemanager napi js to str no property: %{public}s", fieldStr.c_str());
     }
@@ -101,13 +130,13 @@ void DistributedHardwareManager::JsObjectToInt(const napi_env &env, const napi_v
     const std::string &fieldStr, int32_t &fieldRef)
 {
     bool hasProperty = false;
-    NAPI_CALL_RETURN_VOID(env, napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty));
+    DH_CALL_RETURN_VOID(napi_has_named_property(env, object, fieldStr.c_str(), &hasProperty));
     if (hasProperty) {
         napi_value field = nullptr;
         napi_valuetype valueType = napi_undefined;
 
         napi_get_named_property(env, object, fieldStr.c_str(), &field);
-        NAPI_CALL_RETURN_VOID(env, napi_typeof(env, field, &valueType));
+        DH_CALL_RETURN_VOID(napi_typeof(env, field, &valueType));
         if (!CheckArgsType(env, valueType == napi_number, fieldStr.c_str(), "number")) {
             return;
         }
@@ -132,7 +161,7 @@ bool DistributedHardwareManager::HasAccessDHPermission()
     return (result == OHOS::Security::AccessToken::PERMISSION_GRANTED);
 }
 
-bool DistributedHardwareManager::Verify(napi_env env)
+bool DistributedHardwareManager::Verify(napi_env env, int32_t type)
 {
     if (!IsSystemApp()) {
         DHLOGE("GetCallerProcessName not system hap.");
@@ -144,7 +173,21 @@ bool DistributedHardwareManager::Verify(napi_env env)
         CreateBusinessErr(env, ERR_NO_PERMISSION);
         return false;
     }
+    if (!IsSupportType(type)) {
+        DHLOGE("param type is invalid.");
+        CreateBusinessErr(env, ERR_INVALID_PARAMS);
+        return false;
+    }
     return true;
+}
+
+bool DistributedHardwareManager::IsSupportType(int32_t type)
+{
+    if (type == ALL || type == CAMERA || type == SCREEN || type == MODEM_MIC || type == MODEM_SPEAKER ||
+        type == MIC || type == SPEAKER) {
+        return true;
+    }
+    return false;
 }
 
 napi_value DistributedHardwareManager::CreateBusinessErr(napi_env env, int32_t errCode)
@@ -169,15 +212,13 @@ napi_value DistributedHardwareManager::CreateBusinessErr(napi_env env, int32_t e
 napi_value DistributedHardwareManager::PauseDistributedHardware(napi_env env, napi_callback_info info)
 {
     DHLOGI("PauseDistributedHardware in");
-    if (!Verify(env)) {
-        return nullptr;
-    }
     napi_value result = nullptr;
     size_t argc = 2;
     napi_value argv[2] = {nullptr};
     napi_value thisVar = nullptr;
-    NAPI_CALL(env, napi_get_cb_info(env, info, &argc, argv, &thisVar, nullptr));
-    NAPI_ASSERT(env, ((argc >= DH_NAPI_ARGS_ONE) && (argc <= DH_NAPI_ARGS_TWO)), "requires 1 or 2 parameter");
+    DH_CALL(napi_get_cb_info(env, info, &argc, argv, &thisVar, nullptr));
+    DH_ASSERT(env, ((argc >= DH_NAPI_ARGS_ONE) && (argc <= DH_NAPI_ARGS_TWO)),
+                             "requires 1 or 2 parameter", ERR_INVALID_PARAMS);
 
     napi_valuetype valueType = napi_undefined;
     napi_typeof(env, argv[0], &valueType);
@@ -187,6 +228,9 @@ napi_value DistributedHardwareManager::PauseDistributedHardware(napi_env env, na
     int32_t type = -1;
     char networkId[96];
     JsObjectToInt(env, argv[0], "type", type);
+    if (!Verify(env, type)) {
+        return nullptr;
+    }
     DHType dhType = DHType::UNKNOWN;
     DHSubtype dhSubtype = static_cast<DHSubtype>(type);
     if (dhSubtype == DHSubtype::AUDIO_MIC || dhSubtype == DHSubtype::AUDIO_SPEAKER) {
@@ -221,15 +265,13 @@ napi_value DistributedHardwareManager::PauseDistributedHardware(napi_env env, na
 napi_value DistributedHardwareManager::ResumeDistributedHardware(napi_env env, napi_callback_info info)
 {
     DHLOGI("ResumeDistributedHardware in");
-    if (!Verify(env)) {
-        return nullptr;
-    }
     napi_value result = nullptr;
     size_t argc = 2;
     napi_value argv[2] = {nullptr};
     napi_value thisVar = nullptr;
-    NAPI_CALL(env, napi_get_cb_info(env, info, &argc, argv, &thisVar, nullptr));
-    NAPI_ASSERT(env, ((argc >= DH_NAPI_ARGS_ONE) && (argc <= DH_NAPI_ARGS_TWO)), "requires 1 or 2 parameter");
+    DH_CALL(napi_get_cb_info(env, info, &argc, argv, &thisVar, nullptr));
+    DH_ASSERT(env, ((argc >= DH_NAPI_ARGS_ONE) && (argc <= DH_NAPI_ARGS_TWO)),
+                        "requires  or 2 parameter", ERR_INVALID_PARAMS);
 
     napi_valuetype valueType = napi_undefined;
     napi_typeof(env, argv[0], &valueType);
@@ -239,6 +281,9 @@ napi_value DistributedHardwareManager::ResumeDistributedHardware(napi_env env, n
     int32_t type = -1;
     char networkId[96];
     JsObjectToInt(env, argv[0], "type", type);
+    if (!Verify(env, type)) {
+        return nullptr;
+    }
     DHType dhType = DHType::UNKNOWN;
     DHSubtype dhSubtype = static_cast<DHSubtype>(type);
     if (dhSubtype == DHSubtype::AUDIO_MIC || dhSubtype == DHSubtype::AUDIO_SPEAKER) {
@@ -273,15 +318,13 @@ napi_value DistributedHardwareManager::ResumeDistributedHardware(napi_env env, n
 napi_value DistributedHardwareManager::StopDistributedHardware(napi_env env, napi_callback_info info)
 {
     DHLOGI("StopDistributedHardware in");
-    if (!Verify(env)) {
-        return nullptr;
-    }
     napi_value result = nullptr;
     size_t argc = 2;
     napi_value argv[2] = {nullptr};
     napi_value thisVar = nullptr;
-    NAPI_CALL(env, napi_get_cb_info(env, info, &argc, argv, &thisVar, nullptr));
-    NAPI_ASSERT(env, ((argc >= DH_NAPI_ARGS_ONE) && (argc <= DH_NAPI_ARGS_TWO)), "requires 1 or 2 parameter");
+    DH_CALL(napi_get_cb_info(env, info, &argc, argv, &thisVar, nullptr));
+    DH_ASSERT(env, (argc >= DH_NAPI_ARGS_ONE) && (argc <= DH_NAPI_ARGS_TWO),
+                         "requires 1 or  parameter", ERR_INVALID_PARAMS);
 
     napi_valuetype valueType = napi_undefined;
     napi_typeof(env, argv[0], &valueType);
@@ -291,6 +334,9 @@ napi_value DistributedHardwareManager::StopDistributedHardware(napi_env env, nap
     int32_t type = -1;
     char networkId[96];
     JsObjectToInt(env, argv[0], "type", type);
+    if (!Verify(env, type)) {
+        return nullptr;
+    }
     DHType dhType = DHType::UNKNOWN;
     DHSubtype dhSubtype = static_cast<DHSubtype>(type);
     if (dhSubtype == DHSubtype::AUDIO_MIC || dhSubtype == DHSubtype::AUDIO_SPEAKER) {
@@ -331,7 +377,7 @@ napi_value DistributedHardwareManager::Init(napi_env env, napi_value exports)
     };
 
     DHLOGI("DistributedHardwareManager::Init is called!");
-    NAPI_CALL(env, napi_define_properties(env, exports, sizeof(dhmProperties) / sizeof(dhmProperties[0]),
+    DH_CALL(napi_define_properties(env, exports, sizeof(dhmProperties) / sizeof(dhmProperties[0]),
         dhmProperties));
     DHLOGI("All functions are configured..");
     return exports;
@@ -369,6 +415,24 @@ void DistributedHardwareManager::InitDistributedHardwareType(napi_env env, napi_
     napi_set_named_property(env, exports, propertyName, obj);
 }
 
+void DistributedHardwareManager::InitDistributedHardwareErrorCode(napi_env env, napi_value exports)
+{
+    char propertyName[] = "DistributedHardwareErrorCode";
+    napi_value dhNotStart = nullptr;
+    napi_value deviceNotConnect = nullptr;
+    napi_create_int32(env, static_cast<int32_t>(DHBussinessErrorCode::ERR_CODE_DH_NOT_START), &dhNotStart);
+    napi_create_int32(env, static_cast<int32_t>(DHBussinessErrorCode::ERR_CODE_DEVICE_NOT_CONNECT), &deviceNotConnect);
+
+    napi_property_descriptor desc[] = {
+        DECLARE_NAPI_STATIC_PROPERTY("ERR_CODE_DISTRIBUTED_HARDWARE_NOT_STARTED", dhNotStart),
+        DECLARE_NAPI_STATIC_PROPERTY("ERR_CODE_DEVICE_NOT_CONNECTED", deviceNotConnect),
+    };
+    napi_value obj = nullptr;
+    napi_create_object(env, &obj);
+    napi_define_properties(env, obj, sizeof(desc) / sizeof(desc[0]), desc);
+    napi_set_named_property(env, exports, propertyName, obj);
+}
+
 /*
  * Function registering all props and functions of ohos.distributedhardware
  */
@@ -377,6 +441,7 @@ static napi_value Export(napi_env env, napi_value exports)
     DHLOGI("Export is called!");
     DistributedHardwareManager::Init(env, exports);
     DistributedHardwareManager::InitDistributedHardwareType(env, exports);
+    DistributedHardwareManager::InitDistributedHardwareErrorCode(env, exports);
     return exports;
 }
 

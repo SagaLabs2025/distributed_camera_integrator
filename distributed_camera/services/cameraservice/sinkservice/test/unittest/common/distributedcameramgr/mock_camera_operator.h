@@ -40,6 +40,7 @@ public:
     bool stopCaptureFinished = false;
     const int32_t commitCaptureState = 1;
     const int32_t stopCaptureState = 2;
+    const int32_t normalSecurityLevel = 4;
     void ResetAsyncState()
     {
         asyncOperationState = 0;
@@ -93,6 +94,8 @@ public:
 
     int32_t PrepareCapture(std::vector<std::shared_ptr<DCameraCaptureInfo>>& captureInfos, int32_t sceneMode)
     {
+        (void)captureInfos;
+        (void)sceneMode;
         if (g_operatorStr == "test_prepare_fail") {
             return DCAMERA_BAD_VALUE;
         }
@@ -117,6 +120,9 @@ public:
             stopCaptureFinished = true;  // for test_011
         }
         cv_.notify_one();
+        if (g_operatorStr == "test_stop_capture_failed") {
+            return DCAMERA_OPERATION;
+        }
         return DCAMERA_OK;
     }
 
@@ -144,6 +150,15 @@ public:
             return DCAMERA_BAD_VALUE;
         }
         return DCAMERA_OK;
+    }
+
+    int32_t GetDeviceSecurityLevel(const std::string &udid)
+    {
+        (void)udid;
+        if (g_operatorStr == "secutity_level_failed") {
+            return 1;
+        }
+        return normalSecurityLevel;
     }
 };
 } // namespace DistributedHardware

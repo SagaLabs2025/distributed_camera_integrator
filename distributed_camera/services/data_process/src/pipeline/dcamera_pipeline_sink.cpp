@@ -175,14 +175,14 @@ void DCameraPipelineSink::OnError(DataProcessErrorType errorType)
     processListener_->OnError(errorType);
 }
 
-void DCameraPipelineSink::OnProcessedVideoBuffer(const std::shared_ptr<DataBuffer>& videoResult)
+int32_t DCameraPipelineSink::OnProcessedVideoBuffer(const std::shared_ptr<DataBuffer>& videoResult)
 {
     DHLOGD("Sink pipeline output the processed video buffer.");
     if (processListener_ == nullptr) {
         DHLOGE("The process listener of sink pipeline is empty.");
-        return;
+        return DCAMERA_BAD_VALUE;
     }
-    processListener_->OnProcessedVideoBuffer(videoResult);
+    return processListener_->OnProcessedVideoBuffer(videoResult);
 }
 
 int32_t DCameraPipelineSink::GetProperty(const std::string& propertyName, PropertyCarrier& propertyCarrier)
@@ -211,10 +211,7 @@ int32_t DCameraPipelineSink::PushImuData(const std::vector<uint8_t>& imuData, in
     }
     
     // Find EncodeDataProcess node
-    // In current implementation, pipNodeRanks_[0] IS EncodeDataProcess (see InitDCameraPipNodes calling make_shared<EncodeDataProcess>)
-    // For robustness, we could dynamic_cast or check type if RTTI is enabled, but here we know the structure.
-    
-    // Assuming the first node is always the encoder in VIDEO pipeline
+    // In current implementation, pipNodeRanks_[0] IS EncodeDataProcess
     std::shared_ptr<EncodeDataProcess> encoder = std::dynamic_pointer_cast<EncodeDataProcess>(pipelineHead_);
     if (encoder != nullptr) {
         encoder->SetImuData(frameIndex, imuData);
@@ -233,5 +230,11 @@ int32_t DCameraPipelineSink::PushImuData(const std::vector<uint8_t>& imuData, in
     DHLOGW("PushImuData: EncodeDataProcess node not found in pipeline.");
     return DCAMERA_NOT_FOUND;
 }
+
+int32_t DCameraPipelineSink::UpdateSettings(const std::shared_ptr<Camera::CameraMetadata> settings)
+{
+    return DCAMERA_OK;
+}
+
 } // namespace DistributedHardware
 } // namespace OHOS

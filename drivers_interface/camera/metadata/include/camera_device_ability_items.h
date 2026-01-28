@@ -32,6 +32,7 @@ typedef enum camera_ability_section {
     OHOS_DEVICE_FLASH,
     OHOS_DEVICE_ZOOM,
     OHOS_LIGHT_STATUS,
+    OHOS_DATA_DELIVERY,
 
     // Camera effects & algorithms
     OHOS_CAMERA_EFFECT = 0x2000,
@@ -45,6 +46,8 @@ typedef enum camera_ability_section {
     OHOS_STREAM_METADATA,
     OHOS_STREAM_METADATA_FACE,
     OHOS_STREAM_METADATA_BODY,
+    OHOS_COMPOSITION_SUGGESTION,
+    OHOS_STREAM_PHOTO_STITCHING,
 
     // Secure camera control related
     OHOS_CAMERA_SECURE = 0x4000,
@@ -81,12 +84,15 @@ typedef enum camera_device_metadata_section_start {
     OHOS_STREAM_METADATA_START = OHOS_STREAM_METADATA << 16,
     OHOS_STREAM_METADATA_FACE_START = OHOS_STREAM_METADATA_FACE << 16,
     OHOS_STREAM_METADATA_BODY_START = OHOS_STREAM_METADATA_BODY << 16,
+    OHOS_STREAM_PHOTO_STITCHING_START = OHOS_STREAM_PHOTO_STITCHING << 16,
 
     OHOS_CAMERA_SECURE_START = OHOS_CAMERA_SECURE << 16,
 
     OHOS_XMAGE_COLOR_MODES_START = OHOS_XMAGE_COLOR_ABILITY << 16,
     OHOS_VENDOR_SECTION_START = OHOS_VENDOR_SECTION << 16,
+    OHOS_COMPOSITION_SUGGESTION_START = OHOS_COMPOSITION_SUGGESTION << 16,
     OHOS_LIGHT_STATUS_START = OHOS_LIGHT_STATUS << 16,
+    OHOS_DATA_DELIVERY_START = OHOS_DATA_DELIVERY << 16,
 } camera_device_info_section_start_t;
 
 typedef enum camera_device_metadata_tag {
@@ -541,6 +547,30 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_AUTO_AIGC_PHOTO,
     /**
+     * ohos.ability.logAssistanceSuppported [static, byte, public]
+     *
+     * camera device property, whether log assistance is supported.
+     * (i.e. byte: 0-false/1-true ...)
+     * @since 5.1
+     * @version 1.0
+     */
+
+    OHOS_ABILITY_LOG_ASSISTANCE_SUPPORTED,
+    /**
+     * ohos.ability.stageBoost [static, enum, public]
+     *
+     * camera device property, report current supported stage boost
+     * (i.e. enum 0(true)/1(false) ...)
+     */
+    OHOS_ABILITY_STAGE_BOOST,
+    /**
+     * ohos.control.stageBoost [static, enum, public]
+     *
+     * camera device property, set current camera whether support stage boost
+     * (i.e. enum 0(true)/1(false) ...)
+     */
+    OHOS_CONTROL_STAGE_BOOST,
+    /**
      * ohos.camera.propertiesEnd
      *
      * camera property end
@@ -590,19 +620,26 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_ROTATE_ANGLE,
     /**
-     * ohos.ability.sensorOrientationVariable [static, int32[], public]
+     * ohos.ability.sensorOrientationVariable [static, int32, public]
      *
      * camera device property, query sensor orientation whether change with fold status
      * (i.e. int32 ...)
      */
     OHOS_ABILITY_SENSOR_ORIENTATION_VARIABLE,
     /**
-     * ohos.fold.state.sensor.orientation.map [static, int32, public]
+     * ohos.ability.foldStateSensorOrientationMap [static, int32[], public]
      *
      * camera device property, query sensor orientation of all fold state
      * (i.e. int32 ...)
      */
     OHOS_FOLD_STATE_SENSOR_ORIENTATION_MAP,
+    /**
+     * ohos.ability.foldStateAndNaturalDirectionSensorOrientationMap [static, int32[], public]
+     *
+     * camera device property, query sensor orientation of all fold state by different natural direction
+     * (i.e. int32 ...)
+     */
+    OHOS_FOLD_STATE_AND_NATURAL_DIRECTION_SENSOR_ORIENTATION_MAP,
     /**
      * ohos.camera.sensorEnd
      *
@@ -716,6 +753,13 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_STATISTICS_FACE_SCORES,
     /**
+     * ohos.statistics.timestamp [static, int64[], public]
+     *
+     * camera device property, query detection timestamp
+     * (i.e. int64[] ...)
+     */
+    OHOS_STATISTICS_TIMESTAMP,
+    /**
      * ohos.statistics.detectHumanFaceInfos [static, int32[], public]
      *
      * camera device property, query current camera detect human face informations
@@ -729,6 +773,13 @@ typedef enum camera_device_metadata_tag {
      * (i.e. int32[] ...)
      */
     OHOS_STATISTICS_DETECT_HUMAN_BODY_INFOS,
+    /**
+     * ohos.statistics.detectHumanHeadInfos [static, int32[], public]
+     *
+     * camera device property, query current camera detect human head informations
+     * (i.e. int32[] ...)
+     */
+    OHOS_STATISTICS_DETECT_HUMAN_HEAD_INFOS,
     /**
      * ohos.statistics.detectCatFaceInfos [static, int32[], public]
      *
@@ -1157,12 +1208,33 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_QUALITY_PRIORITIZATION,
     /**
+     * ohos.control.logAssistanceEnable [static, byte, public]
+     *
+     * camera device property, set the log assistant mode for the current device.
+     * (i.e. byte ...)
+     */
+    OHOS_CONTROL_LOG_ASSISTANCE,
+    /**
      * ohos.control.systemCapture [static, uint8, public]
      *
      * camera device property, set current camera device system application capture
      * (i.e. uint8: 0-false/1-true ...)
      */
     OHOS_CONTROL_SYSTEM_CAPTURE,
+    /**
+     * ohos.ability.external camera lens boost [static, byte, system]
+     *
+     * camera device property, report current camera support .external camera
+     * (i.e. byte ...)
+     */
+    OHOS_ABILITY_EXTERNAL_CAMERA_LENS_BOOST,
+    /**
+     * ohos.control.external cameralens boost [static, byte, system]
+     *
+     * camera device property, set current camera external camera lens boost
+     * (i.e. byte ...)
+    */
+    OHOS_CONTROL_EXTERNAL_CAMERA_LENS_BOOST,
     /**
      * ohos.ability.photoQualityPrioritization [static, int32_t[], public]
      *
@@ -1177,6 +1249,36 @@ typedef enum camera_device_metadata_tag {
      * (i.e. byte ...)
     */
     OHOS_CONTROL_PHOTO_QUALITY_PRIORITIZATION,
+    /**
+     * ohos.ability.previewQualityPrioritization [static, uint8[], public]
+     * camera device property, report camera default preview quality prioritization
+     *(i.e. uint8[]: 1 2 3 ...)
+     * @since 6.1
+     * @version 1.0
+     */
+    OHOS_ABILITY_CAMERA_PREVIEW_QUALITY_PRIORITIZATION,
+    /**
+     * ohos.control.previewQualityPrioritization [static, uint8, public]
+     * camera device property, set current settings of preview quality prioritization
+     *(i.e. uint8 1 2 3 ...)
+     * @since 6.1
+     * @version 1.0
+     */
+    OHOS_CONTROL_CAMERA_PREVIEW_QUALITY_PRIORITIZATION,
+    /**
+     * ohos.control.requestCameraSwitch [static, enum, public]
+     *
+     * camera device property, set current camera switch
+     * (i.e. enum: ON ...)
+     */
+    OHOS_CONTROL_REQUEST_CAMERA_SWITCH,
+    /**
+     * ohos.control.cameraSwitchInfos [static, int32[], public]
+     *
+     * camera switch infos, set original camera sensor orientation
+     * (i.e. int32[] ...)
+     */
+    OHOS_CONTROL_CAMERA_SWITCH_INFOS,
     /**
      * ohos.control.removeSensorRestraint [static, uint8, public]
      *
@@ -1362,6 +1464,13 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_FOCUS_RANGE_TYPE,
     /**
+     * ohos.ability.focusTrackingMode [static, enum[], public]
+     *
+     * camera device property, report current supported focus tracking mode
+     * (i.e. enum[]: AUTO, LOCKED ...)
+     */
+    OHOS_ABILITY_FOCUS_TRACKING_MODES,
+    /**
      * ohos.control.focusTrackingMode [static, enum, public]
      *
      * camera device property, set current camera focus tracking mode
@@ -1483,10 +1592,10 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_FLASH_STATE,
     /**
-     * ohos.ability.sceneFlashModes [static, byte[], public]
+     * ohos.ability.sceneFlashModes [static, int32[], public]
      *
      * camera device property, report current camera support scene flash modes
-     * (i.e. byte[] ...)
+     * (i.e. int32[] ...)
      */
     OHOS_ABILITY_SCENE_FLASH_MODES,
     /**
@@ -1546,6 +1655,20 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_SMOOTH_ZOOM_RATIOS,
     /**
+     * ohos.control.zoomBezierCurvePoint [static, float, public]
+      *
+      * camera device property, set current camera smooth zoom target zoom ratio
+      * (i.e. float ...)
+      */
+    OHOS_CONTROL_CAMERA_TARGET_ZOOM_RATIO,
+    /**
+     * ohos.control.cameraZoomPerformance [static, uint32[], public]
+     *
+     * camera device property, set current camera support cal smooth zoom ratio by hal
+     * (i.e. uint32[] ...)
+     */
+    OHOS_ABILITY_CAMERA_NEED_SET_SMOOTH,
+    /**
      * ohos.control.prepareZoom [static, enum, public]
      *
      * camera device property, set current camera prepare zoom
@@ -1573,6 +1696,13 @@ typedef enum camera_device_metadata_tag {
       * (i.e. byte ...)
       */
     OHOS_ABILITY_CAMERA_ZOOM_BEZIER_CURVC_POINT,
+    /**
+     * ohos.status.cameraCurrentZoomRatioRange [static, float, public]
+     *
+     * camera device property, query current camera zoom ratio range
+     * (i.e. uint32 ...)
+     */
+    OHOS_STATUS_CAMERA_CURRENT_ZOOM_RATIO_RANGE,
     /**
      * ohos.control.zoomCenterPoint [static, float[], public]
      *
@@ -1683,6 +1813,20 @@ typedef enum camera_device_metadata_tag {
      * (i.e. uint8: 0-false/1-true ...)
      */
     OHOS_ABILITY_ROTATION_IN_IPS_SUPPORTED,
+    /*
+     * ohos.ability.bandwidthCompressionAvailable [static, byte[], public]
+     *
+     * camera stream property, report camera support band width compression available
+     * (i.e. byte[] ...)
+     */
+    OHOS_ABILITY_BANDWIDTH_COMPRESSION_AVAILABLE,
+    /**
+     * ohos.control.bandwidthCompressionAvailable [static, byte[], public]
+     *
+     * camera stream property, set camera support band width compression
+     * (i.e. byte[] ...)
+     */
+    OHOS_CONTROL_BANDWIDTH_COMPRESSION,
     /**
      * ohos.control.delayAlloc [static, uint8, public]
      *
@@ -1727,6 +1871,13 @@ typedef enum camera_device_metadata_tag {
      * (i.e. enum: PRERECORD_START/RECORD_START/RECORD_END  ...)
      */
     OHOS_CONTROL_RECORD_STATE,
+    /**
+     * ohos.stream.supplementaryInfo [static, int32[], public]
+     *
+     * camera stream supplementaryInfo
+     * (i.e. int32[]: [0] ...)
+     */
+    OHOS_STREAM_SUPPLEMENTARY_INFO,
     /**
      * ohos.stream.controlEnd
      *
@@ -1833,11 +1984,96 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_VIDEO_DEBUG_SWITCH,
     /**
+     * ohos.control.cinemaVideoKeyFrameTimestamp [static, int64, public]
+     *
+     * camera device property, report current video key frame timestamp
+     * (i.e. byte ...)
+     */
+    OHOS_CINEMA_VIDEO_KEY_FRAME_TIMESTAMP,
+    /**
+     * ohos.control.cinemaVideoKeyFrameType [static, uint8, public]
+     *
+     * camera device property, report current video key frame type
+     * (i.e. byte ...)
+     */
+    OHOS_CINEMA_VIDEO_KEY_FRAME_TYPE,
+    /**
      * ohos.stream.videoEnd
      *
      * camera stream videoEnd
      */
     OHOS_STREAM_VIDEO_END,
+
+    /**
+     * ohos.control.photoStitchingType [static, enum, public]
+     *
+     * camera stream property, set stitching image's type
+     * (i.e. enum: 0(longScroll)/1(paintingScroll)/2(nineGrid) ...)
+     * @since 5.1
+     * @version 1.0
+     */
+    OHOS_CONTROL_PHOTO_STITCHING_TYPE = OHOS_STREAM_PHOTO_STITCHING_START,
+    /**
+     * ohos.control.photoStitchingDirection [static, enum, public]
+     *
+     * camera stream property, set stitching direction
+     * (i.e. enum: landscape/portrait ...)
+     * @since 5.1
+     * @version 1.0
+     */
+    OHOS_CONTROL_PHOTO_STITCHING_DIRECTION,
+
+    /**
+     * ohos.status.captureState [static, enum, public]
+     *
+     * photo stitching capture state
+     * (i.e. enum 0(begin)/1(end) ...)
+     * @since 5.1
+     * @version 1.0
+     */
+    OHOS_STATUS_PHOTO_STITCHING_CAPTURE_STATE,
+    /**
+     * ohos.status.sketchPoint [static, float[], public]
+     *
+     * camera stream property, return next stitching capture point position
+     * (i.e. float[]: [px, py] ...)
+     * @since 5.1
+     * @version 1.0
+     */
+    OHOS_STATUS_PHOTO_STITCHING_POSITION,
+    /**
+     * ohos.status.sketchAngle [static, float, public]
+     *
+     * camera stream property, return next stitching capture point angle
+     * (i.e. float: ...)
+     * @since 5.1
+     * @version 1.0
+     */
+    OHOS_STATUS_PHOTO_STITCHING_ANGLE,
+    /**
+     * ohos.control.photoStitchingHint [static, enum, public]
+     *
+     * camera stream property, set stitching hint
+     * (i.e. enum: 0(dimLight)/1(keepH)/2(spinning)/3(moveTooFast)/4(outOfRange)/5(tooClose) ...)
+     * @since 5.1
+     * @version 1.0
+     */
+    OHOS_STATUS_PHOTO_STITCHING_HINT,
+    /**
+     * ohos.control.photoStitchingMovingClockwise [static, byte, public]
+     *
+     * camera stream property, set stitching moving clockwise
+     * (i.e. byte: 0-false/1true ...)
+     * @since 5.1
+     * @version 1.0
+     */
+    OHOS_CONTROL_PHOTO_STITCHING_MOVING_CLOCKWISE,
+    /**
+     * ohos.stream.photoStitchingEnd
+     *
+     * camera stream photoStitchingEnd
+     */
+    OHOS_STREAM_PHOTO_STITCHING_END,
 
     // camera effects & algorithms
     /**
@@ -1939,6 +2175,90 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_BEAUTY_SKIN_SMOOTH_VALUE,
     /**
+     * ohos.ability.beautySkinToneBrightValues [static, byte[], public]
+     *
+     * camera device property, report current camera support beauty skin tone bright values
+     * (i.e. byte[] ...)
+     */
+    OHOS_ABILITY_BEAUTY_SKIN_TONEBRIGHT_VALUES,
+    /**
+     * ohos.ability.beautySkinToneBrightValue [static, byte, public]
+     *
+     * camera device property, set current camera support beauty skin tone bright value
+     * (i.e. byte ...)
+     */
+    OHOS_CONTROL_BEAUTY_SKIN_TONEBRIGHT_VALUE,
+    /**
+     * ohos.ability.beautyEyeBigEyesValues [static, byte[], public]
+     *
+     * camera device property, report current camera support beauty eye big eyes values
+     * (i.e. byte[] ...)
+     */
+    OHOS_ABILITY_BEAUTY_EYE_BIGEYES_VALUES,
+    /**
+     * ohos.ability.beautEyeBigEyesValue [static, byte, public]
+     *
+     * camera device property, set current camera support beauty eye big eyes value
+     * (i.e. byte ...)
+     */
+    OHOS_CONTROL_BEAUTY_EYE_BIGEYES_VALUE,
+    /**
+     * ohos.ability.beautyHairHairlineValues [static, byte[], public]
+     *
+     * camera device property, report current camera support beauty hair hairline values
+     * (i.e. byte[] ...)
+     */
+    OHOS_ABILITY_BEAUTY_HAIR_HAIRLINE_VALUES,
+    /**
+     * ohos.ability.beautyHairHairlineValue [static, byte, public]
+     *
+     * camera device property, set current camera support beauty hair hairline value
+     * (i.e. byte ...)
+     */
+    OHOS_CONTROL_BEAUTY_HAIR_HAIRLINE_VALUE,
+    /**
+     * ohos.ability.beautyFaceMakeUpValues [static, byte[], public]
+     *
+     * camera device property, report current camera support beauty face make up values
+     * (i.e. byte[] ...)
+     */
+    OHOS_ABILITY_BEAUTY_FACE_MAKEUP_VALUES,
+    /**
+     * ohos.ability.beautyFaceMakeUpValue [static, byte, public]
+     *
+     * camera device property, set current camera support beauty face make up value
+     * (i.e. byte ...)
+     */
+    OHOS_CONTROL_BEAUTY_FACE_MAKEUP_VALUE,
+    /**
+     * ohos.ability.beautyHeadShrinkValues [static, byte[], public]
+     *
+     * camera device property, report current camera support beauty head shrink values
+     * (i.e. byte[] ...)
+     */
+    OHOS_ABILITY_BEAUTY_HEAD_SHRINK_VALUES,
+    /**
+     * ohos.ability.beautyHeadShrinkValue [static, byte, public]
+     *
+     * camera device property, set current camera support beauty head shrink value
+     * (i.e. byte ...)
+     */
+    OHOS_CONTROL_BEAUTY_HEAD_SHRINK_VALUE,
+    /**
+     * ohos.ability.beautyNoseSlenderValues [static, byte[], public]
+     *
+     * camera device property, report current camera support beauty nose slender values
+     * (i.e. byte[] ...)
+     */
+    OHOS_ABILITY_BEAUTY_NOSE_SLENDER_VALUES,
+    /**
+     * ohos.ability.beautyNoseSlenderValue [static, byte, public]
+     *
+     * camera device property, set current camera support beauty nose slender value
+     * (i.e. byte ...)
+     */
+    OHOS_CONTROL_BEAUTY_NOSE_SLENDER_VALUE,
+    /**
      * ohos.ability.camera [static, enum, public]
      *
      * camera device property, report current camera macro
@@ -2001,6 +2321,13 @@ typedef enum camera_device_metadata_tag {
      * (i.e. float ...)
      */
     OHOS_STATUS_CAMERA_APERTURE_VALUE,
+    /**
+     * ohos.status.cameraCurrentApertureEffect [static, enum, public]
+     *
+     * camera device property, query current camera aperture value
+     * (i.e. enum: normal/lowlight/macro ...)
+     */
+    OHOS_STATUS_CAMERA_CURRENT_APERTURE_EFFECT,
     /**
      * ohos.device.exitCameraEvent [static, byte, public]
      *
@@ -2106,6 +2433,83 @@ typedef enum camera_device_metadata_tag {
      * (i.e. byte[] [enum, 0(disable)/1(enable)] ...)
      */
     OHOS_CONTROL_EFFECT_SUGGESTION_TYPE,
+    /**
+     * ohos.ability.nightSubModes [static, byte[], public]
+     *
+     * camera device property, report current camera night sub modes
+     * (i.e. byte[] ...)
+     */
+    OHOS_ABILITY_NIGHT_SUB_MODES,
+    /**
+     * ohos.control.nightSubMode [static, byte, public]
+     *
+     * camera device property, set current camera night sub mode
+     * (i.e. byte [enum, 0(DEFAULT)/1(SUPER_MOON)/2(STARRY_SKY)/3(STARRY_SKY_PORTRAIT)])
+     */
+    OHOS_CONTROL_NIGHT_SUB_MODE,
+    /**
+     * ohos.control.gpsCoordinates [static, double[], public]
+     *
+     * camera device property, set current camera gps coordinates
+     * (i.e. double[] latitude, longitude, altitude)
+     */
+    OHOS_CONTROL_GPS_COORDINATES,
+    /**
+     * ohos.ability.constellationDrawing [static, int32[], public]
+     *
+     * camera device property, report current camera support constellation drawing
+     * (i.e. int32[] ...)
+     */
+    OHOS_ABILITY_CONSTELLATION_DRAWING,
+    /**
+     * ohos.control.constellationDrawingDetect [static, byte, public]
+     *
+     * camera device property, set current camera constellation drawing detect
+     * (i.e. byte [enum, 0(disable)/1(enable)])
+     */
+    OHOS_CONTROL_CONSTELLATION_DRAWING_DETECT,
+    /**
+     * ohos.control.constellationDrawing [static, byte, public]
+     *
+     * camera device property, set current camera constellation drawing
+     * (i.e. byte [enum, 0(disable)/1(enable)])
+     */
+    OHOS_CONTROL_CONSTELLATION_DRAWING,
+    /**
+     * ohos.status.constellationDrawingDetect [static, float[], public]
+     *
+     * camera device property, query current camera constellation drawing detect
+     * (i.e. float[] ...)
+     */
+    OHOS_STATUS_CONSTELLATION_DRAWING_DETECT,
+    /**
+     * ohos.camera.constellationDrawingState [static, byte, public]
+     *
+     * camera device property, notify current camera constellation drawing state
+     * (i.e. byte ...)
+     */
+    OHOS_CAMERA_CONSTELLATION_DRAWING_STATE,
+    /**
+     * ohos.ability.imageStabilizationGuide [static, byte, public]
+     *
+     * camera device property, report current camera image stabilization guide
+     * (i.e. byte [enum, 0(notSupport)/1(support)])
+     */
+    OHOS_ABILITY_IMAGE_STABILIZATION_GUIDE,
+    /**
+     * ohos.control.imageStabilizationGuide [static, byte, public]
+     *
+     * camera device property, set current camera image stabilization guide
+     * (i.e. byte [enum, 0(disable)/1(enable)])
+     */
+    OHOS_CONTROL_IMAGE_STABILIZATION_GUIDE,
+    /**
+     * ohos.status.imageStabilizationGuide [static, float[], public]
+     *
+     * camera device property, query current camera image stabilization guide
+     * (i.e. float[] ...)
+     */
+    OHOS_STATUS_IMAGE_STABILIZATION_GUIDE,
     /**
      * ohos.ability.availableProfileLevel [static, int32[], public]
      *
@@ -2331,6 +2735,13 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_MOVING_PHOTO_END,
     /**
+     * ohos.control.smoothZoomDuration [static, int32[], public]
+     *
+     * camera device property, report current smooth zoom duration
+     * (i.e. int32[] ...)
+     */
+    OHOS_SMOOTH_ZOOM_DURATION,
+    /**
      * ohos.ability.captureMacroDepthFusionSupported [static, byte, public]
      *
      * camera device property, report current capture macro depth fusion supported
@@ -2478,7 +2889,7 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CAMERA_SECURE_END,
 
-    //XMAGE MODE
+    // XMAGE MODE
     /**
      * ohos.control.supportedColorModes [static, enum[], public]
      *
@@ -2487,18 +2898,151 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_ABILITY_SUPPORTED_COLOR_MODES = OHOS_XMAGE_COLOR_MODES_START,
     /**
+     * ohos.ability.scene.supportedColorModes [static, int32[], public]
+     *
+     * camera device property, report current camera color modes in conflict report
+     * (i.e. int32[]: ...)
+     */
+    OHOS_ABILITY_SCENE_SUPPORTED_COLOR_MODES,
+    /**
      * ohos.control.supportedColorModes [static, enum, public]
      *
      * camera device property, set current camera color modes
      * (i.e. enum: normal/bright/soft/mono ...)
      */
     OHOS_CONTROL_SUPPORTED_COLOR_MODES,
+    //COLOR STYLE
+    /**
+     * ohos.ability.colorStyleAvailable [static, byte, public]
+     *
+     * camera device property, report camera colorstyle available
+     */
+    OHOS_ABILITY_COLOR_STYLE_AVAILABLE,
+    /**
+     * ohos.ability.colorStyleDefaultSettings [static, float[], public]
+     *
+     * camera device property, report camera colorstyle default settings
+     */
+    OHOS_ABILITY_COLOR_STYLE_DEFAULT_SETTINGS,
+    /**
+     * ohos.control.colorStyleSetting [static, float[], public]
+     *
+     * camera device property, set current colorstyle setting
+     */
+    OHOS_CONTROL_COLOR_STYLE_SETTING,
+    /**
+     * ohos.status.colorStyleSetting [static, float[], public]
+     *
+     * camera device property, get current colorstyle setting
+     */
+    OHOS_STATUS_COLOR_STYLE_SETTING,
+    /**
+     * ohos.ability.outputColorStylePhotoType [static, uint8, public]
+     *
+     * camera device property, get current colorstyle output type
+     * (i.e. byte: 1-effect/2-original-and-effect)
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_ABILITY_OUTPUT_COLOR_STYLE_PHOTO_TYPE,
     /**
      * ohos.xmage.colorMoodesEnd
      *
      * camera xmage end
      */
     OHOS_XMAGE_COLOR_MODES_END,
+    /**
+     * ohos.control.compositionSuggestion [static, byte[], public]
+     *
+     * camera device property, report current camera whether support composition suggestion
+     * (i.e. byte ...)
+     */
+    OHOS_ABILITY_COMPOSITION_SUGGESTION = OHOS_COMPOSITION_SUGGESTION_START,
+    /**
+     * ohos.control.compositionSuggestion [static, enum, public]
+     *
+     * camera device property, set current camera enable or disable composition suggestion, set by mode
+     * (i.e. enum 0(disable)/1(enable) ...)
+     */
+    OHOS_CONTROL_COMPOSITION_SUGGESTION,
+    /**
+     * ohos.camera.compositionBegin
+     *
+     * camera composition begin
+     */
+    OHOS_COMPOSITION_BEGIN,
+    /**
+     * ohos.camera.compositionPositionCalibration [static, float[], public]
+     *
+     * Normalized coordinates of the recommended point
+     * (i.e. x1 y1 x2 y2 ...)
+     */
+    OHOS_COMPOSITION_POSITION_CALIBRATION,
+    /**
+     * ohos.camera.compositionPositionCalibrationExpand [static, float[], public]
+     *
+     * Normalized coordinates of the recommended point
+     * (i.e. rotationAngleStatus rotationAngle )
+     */
+    OHOS_COMPOSITION_POSITION_CALIBRATION_EXPAND,
+    /**
+     * ohos.camera.compositionMatched [static, float[], public]
+     *
+     * Matching fov of recommended points
+     */
+    OHOS_COMPOSITION_MATCHED,
+    /**
+     * ohos.ability.recommendedInfoLanguage [static, uint8[], public]
+     * camera device property, report camera default settings of recommended info language
+     *(i.e. uint8[]: 1 2 3 ...)
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_ABILITY_RECOMMENDED_INFO_LANGUAGE,
+    /**
+     * ohos.control.recommendedInfoLanguage [static, uint8, public]
+     * camera device property, set current settings of recommended info language
+     *(i.e. uint8 1 2 3 ...)
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_CONTROL_RECOMMENDED_INFO_LANGUAGE,
+    /**
+     * ohos.ability.compositionEffectPreview [static, enum, public]
+     * camera device property, report whether current camera supports composition effect preview
+     * (i.e. enum 0(unsupport)/1(support))
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_ABILITY_COMPOSITION_EFFECT_PREVIEW,
+    /**
+     * ohos.control.compositionEffectPreview [static, enum, public]
+     * camera device property, set current camera settings of composition effect preview
+     * (i.e. enum 0(disable)/1(enable))
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_CONTROL_COMPOSITION_EFFECT_PREVIEW,
+    /**
+     * ohos.ability.compositionreCommendedPictureSizes [static, uint32[], public]
+     * camera device property, report camera default settings of suggested picture sizes
+     * (i.e. uint32[]: 960 720 720 720 784 720 ...)
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_ABILITY_COMPOSITION_RECOMMENDED_PICTURE_SIZE,
+    /**
+     * ohos.camera.compositionEnd [static, enum, public]
+     *
+     * End status of a recommendation point.
+     */
+    OHOS_COMPOSITION_END,
+    /**
+     * ohos.camera.compositionSuggestionEnd
+     *
+     * camera composition end
+     */
+    OHOS_COMPOSITION_SUGGESTION_END,
     /**
      * ohos.camera.abilityLightStatus [static, uint8, public]
      *
@@ -2526,6 +3070,48 @@ typedef enum camera_device_metadata_tag {
      * camera light status end
      */
     OHOS_LIGHT_STATUS_END,
+    /**
+     * ohos.ability.autoMotionBoostDelivery [static, uint8[], public]
+     *
+     * camera auto motion boost delivery ability
+     * (i.e. byte[]: [Supported_Mode, ...] ...)
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_ABILITY_AUTO_MOTION_BOOST_DELIVERY = OHOS_DATA_DELIVERY_START,
+    /**
+     * ohos.control.autoMotionBoostDeliverySwitch [static, uint8, public]
+     *
+     * camera auto motion boost delivery switch control
+     * (i.e. byte: 0-false/1-true ...)
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_CONTROL_AUTO_MOTION_BOOST_DELIVERY_SWITCH,
+    /**
+     * ohos.ability.autoBokehDataDelivery [static, uint8[], public]
+     *
+     * camera auto bokeh data delivery ability
+     * (i.e. byte[]: [Supported_Mode, ...] ...)
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_ABILITY_AUTO_BOKEH_DATA_DELIVERY,
+    /**
+     * ohos.control.autoBokehDataDeliverySwitch [static, uint8, public]
+     *
+     * camera auto bokeh data delivery switch control
+     * (i.e. byte: 0-false/1-true ...)
+     * @since 6.0
+     * @version 1.0
+     */
+    OHOS_CONTROL_AUTO_BOKEH_DATA_DELIVERY_SWITCH,
+    /**
+     * ohos.camera.dataDelivery [static, enum, public]
+     *
+     * camera data Delivery end
+     */
+    OHOS_DATA_DELIVERY_END,
 } camera_device_metadata_tag_t;
 
 // switch type tag enumeration values
@@ -2550,6 +3136,7 @@ typedef enum camera_type_enum {
     OHOS_CAMERA_TYPE_TRUE_DEAPTH,
     OHOS_CAMERA_TYPE_LOGICAL,
     OHOS_CAMERA_TYPE_UNSPECIFIED,
+    OHOS_CAMERA_TYPE_SUPER_TELTPHOTO,
 } camera_type_enum_t;
 
 // OHOS_ABILITY_CAMERA_CONNECTION_TYPE enumeration values
@@ -2727,6 +3314,7 @@ typedef enum camera_meter_mode {
     OHOS_CAMERA_REGION_METERING,
     OHOS_CAMERA_OVERALL_METERING,
     OHOS_CAMERA_CENTER_WEIGHTED_METERING,
+    OHOS_CAMERA_CENTER_HIGHLIGHT_WEIGHTED,
 } camera_meter_mode_t;
 
 typedef enum camera_exposure_state {
@@ -2829,6 +3417,12 @@ typedef enum camera_beauty_type {
     OHOS_CAMERA_BEAUTY_TYPE_SKIN_SMOOTH,
     OHOS_CAMERA_BEAUTY_TYPE_FACE_SLENDER,
     OHOS_CAMERA_BEAUTY_TYPE_SKIN_TONE,
+    OHOS_CAMERA_BEAUTY_TYPE_SKIN_TONEBRIGHT,
+    OHOS_CAMERA_BEAUTY_TYPE_EYE_BIGEYES,
+    OHOS_CAMERA_BEAUTY_TYPE_HAIR_HAIRLINE,
+    OHOS_CAMERA_BEAUTY_TYPE_FACE_MAKEUP,
+    OHOS_CAMERA_BEAUTY_TYPE_HEAD_SHRINK,
+    OHOS_CAMERA_BEAUTY_TYPE_NOSE_SLENDER,
 } camera_beauty_type_t;
 
 //OHOS_ABILITY_SUPPORTED_COLOR_MODES and OHOS_CONTROL_SUPPORTED_COLOR_MODES enumeration
@@ -2837,6 +3431,8 @@ typedef enum camera_xmage_color_type {
     CAMERA_CUSTOM_COLOR_BRIGHT,
     CAMERA_CUSTOM_COLOR_SOFT,
     CAMERA_CUSTOM_COLOR_MONO,
+    CAMERA_CUSTOM_COLOR_CLASSIC,
+    CAMERA_CUSTOM_COLOR_MODERN,
 } camera_xmage_color_type_t;
 
 // OHOS_ABILITY_CAMERA_FOLDSCREEN_TYPE enumeration values
@@ -2983,6 +3579,10 @@ enum StatisticsDetectType {
     OHOS_CAMERA_BAR_CODE_DETECT = 7,
     OHOS_CAMERA_BASE_FACE_DETECT = 8,
     OHOS_CAMERA_BASE_TRACKING_REGION = 9,
+    OHOS_CAMERA_HUMAN_HEAD_DETECT = 10,
+    OHOS_CAMERA_BASE_TRACKING_MODE = 11,
+    OHOS_CAMERA_BASE_TRACKING_OBJECT_ID = 12,
+    OHOS_CAMERA_TIMESTAMP = 13,
 };
 
 // OHOS_STATUS_TRIPOD_DETECTION_STATUS
@@ -3088,6 +3688,36 @@ enum CameraStreamAutoFpsControl {
     OHOS_STREAM_AUTO_FPS_ENABLE,
 };
 
+// OHOS_STATUS_PHOTO_STITCHING_CAPTURE_STATE
+enum PhotoStitchingCaptureState {
+    OHOS_CAMERA_PHOTO_STITCHING_CAPTURE_BEGIN = 1,
+    OHOS_CAMERA_PHOTO_STITCHING_CAPTURE_END = 2,
+    OHOS_CAMERA_PHOTO_STITCHING_CAPTURE_COMPLETED = 3,
+};
+
+// OHOS_CONTROL_PHOTO_STITCHING_TYPE
+enum PhotoStitchingType {
+    OHOS_CAMERA_PHOTO_STITCHING_LONG_SCROLL = 0,
+    OHOS_CAMERA_PHOTO_STITCHING_PAINTING_SCROLL = 1,
+    OHOS_CAMERA_PHOTO_STITCHING_NINE_GRID = 2,
+};
+
+// OHOS_STATUS_PHOTO_STITCHING_HINT
+enum PhotoStitchingHint {
+    OHOS_CAMERA_PHOTO_STITCHING_DIM_LIGHT = 0,
+    OHOS_CAMERA_PHOTO_STITCHING_KEEP_H,
+    OHOS_CAMERA_PHOTO_STITCHING_SPINNING,
+    OHOS_CAMERA_PHOTO_STITCHING_MOVE_TOO_FAST,
+    OHOS_CAMERA_PHOTO_STITCHING_OUT_OF_RANGE,
+    OHOS_CAMERA_PHOTO_STITCHING_TOO_CLOSE,
+};
+
+// OHOS_CONTROL_PHOTO_STITCHING_DIRECTION
+enum PhotoStitchingDirection {
+    OHOS_CAMERA_PHOTO_STITCHING_LANDSCAPE = 0,
+    OHOS_CAMERA_PHOTO_STITCHING_PORTRAIT,
+};
+
 // OHOS_ABILITY_FOCUS_RANGE_TYPES
 // OHOS_CONTROL_FOCUS_RANGE_TYPE
 typedef enum camera_focus_range_type {
@@ -3102,9 +3732,11 @@ typedef enum camera_focus_driven_type {
     OHOS_CAMERA_FOCUS_DRIVEN_FACE
 } camera_focus_driven_type_t;
 
+// OHOS_ABILITY_FOCUS_TRACKING_MODES
 // OHOS_CONTROL_FOCUS_TRACKING_MODE
 typedef enum camera_focus_tracking_mode {
     OHOS_CAMERA_FOCUS_TRACKING_AUTO = 0,
+    OHOS_CAMERA_FOCUS_TRACKING_LOCKED
 } camera_focus_tracking_mode_t;
 
 // OHOS_ABILITY_COLOR_RESERVATION_TYPES
@@ -3139,6 +3771,36 @@ enum CameraRecordState {
     OHOS_CAMERA_RECORD_STATE_RECORD_STOP = 3,
 };
 
+// OHOS_COMPOSITION_END
+enum CameraCompositionEndEnum {
+    OHOS_CAMERA_COMPOSITION_SUCCESS = 0,
+    OHOS_CAMERA_COMPOSITION_TIMEOUT,
+    OHOS_CAMERA_COMPOSITION_INTERRUPTED,
+};
+
+// OHOS_ABILITY_NIGHT_SUB_MODES
+// OHOS_CONTROL_NIGHT_SUB_MODE
+enum CameraNightSubMode {
+    OHOS_CAMERA_NIGHT_SUB_MODE_DEFAULT = 0,
+    OHOS_CAMERA_NIGHT_SUB_MODE_SUPER_MOON,
+    OHOS_CAMERA_NIGHT_SUB_MODE_STARRY_SKY,
+    OHOS_CAMERA_NIGHT_SUB_MODE_STARRY_SKY_PORTRAIT,
+};
+
+// OHOS_ABILITY_COLOR_STYLE_DEFAULT_SETTINGS
+// OHOS_CONTROL_COLOR_STYLE_SETTING
+// OHOS_STATUS_COLOR_STYLE_SETTING
+enum camera_color_style_template {
+    OHOS_CAMERA_COLOR_STYLE_INVALID = 0,
+    OHOS_CAMERA_COLOR_STYLE_PRIMARY = 1,
+    OHOS_CAMERA_COLOR_STYLE_FILM = 2,
+    OHOS_CAMERA_COLOR_STYLE_ROMANTIC = 3,
+    OHOS_CAMERA_COLOR_STYLE_COMICAL = 4,
+    OHOS_CAMERA_COLOR_STYLE_VIVID = 5,
+    OHOS_CAMERA_COLOR_STYLE_BRIGHT = 6,
+    OHOS_CAMERA_COLOR_STYLE_BLACK_WHITE = 7,
+};
+
 // OHOS_ABILITY_CAMERA_CONCURRENT_TYPE
 enum CameraConcurrentType {
     OHOS_CAMERA_COCURRENT_FULL = 0,
@@ -3151,10 +3813,39 @@ enum SketchStreamInfoStatus {
     OHOS_CAMERA_SKETCH_STREAM_SUPPORT
 };
 
+// OHOS_CAMERA_CONSTELLATION_DRAWING_STATE
+enum camera_constellation_drawing_state {
+    OHOS_CAMERA_CONSTELLATION_PROCESSING = 0,
+    OHOS_CAMERA_CONSTELLATION_SUCCEEDED = 1,
+    OHOS_CAMERA_CONSTELLATION_FAILED_OVERBRIGHT = 2,
+    OHOS_CAMERA_CONSTELLATION_FAILED_INSUFFICIENT_STARS = 3,
+};
+
+// OHOS_STATUS_CAMERA_CURRENT_APERTURE_EFFECT
+enum CameraApertureEffectType {
+    OHOS_CAMERA_APERTURE_EFFECT_NORMAL = 0,
+    OHOS_CAMERA_APERTURE_EFFECT_LOWLIGHT,
+    OHOS_CAMERA_APERTURE_EFFECT_MACRO,
+};
 // OHOS_ABILITY_PHOTO_QUALITY_PRIORITIZATION
 // OHOS_CONTROL_PHOTO_QUALITY_PRIORITIZATION
 typedef enum camera_photo_quality_prioritization {
     OHOS_CAMERA_PHOTO_QUALITY_PRIORITIZATION_HIGH_QUALITY = 0,
     OHOS_CAMERA_PHOTO_QUALITY_PRIORITIZATION_SPEED,
 } camera_photo_quality_prioritization_t;
+
+// OHOS_ABILITY_CAMERA_PREVIEW_QUALITY_PRIORITIZATION
+// OHOS_CONTROL_CAMERA_PREVIEW_QUALITY_PRIORITIZATION
+// OHOS_STATUS_CAMERA_PREVIEW_QUALITY_PRIORITIZATION
+enum CameraPreviewQualityPrioritization {
+    OHOS_CAMERA_PREVIEW_QUALITY_PRIORITIZATION_HIGH_QUALITY = 0,
+    OHOS_CAMERA_PREVIEW_QUALITY_PRIORITIZATION_HIGH_SPEED,
+};
+
+// OHOS_CONTROL_REQUEST_CAMERA_SWITCH enumeration values
+typedef enum camera_switch_mode {
+    OHOS_CAMERA_SWITCH_OFF,
+    OHOS_CAMERA_SWITCH_ON,
+} camera_switch_mode_t;
+
 #endif

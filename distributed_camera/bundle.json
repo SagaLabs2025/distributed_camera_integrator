@@ -18,7 +18,8 @@
         "features": [
             "distributed_camera_common",
             "distributed_camera_filter_front",
-            "distributed_camera_wakeup_enabled"
+            "distributed_camera_wakeup_enabled",
+            "distributed_camera_open_stabile"
         ],
         "adapted_system_type": [
             "standard"
@@ -45,7 +46,6 @@
                 "c_utils",
                 "cJSON",
                 "dsoftbus",
-                "dsoftbus_service_ext",
                 "ffrt",
                 "ffmpeg",
                 "hicollie",

@@ -12,6 +12,12 @@
                   {
                     "name":"usual.event.BOOT_COMPLETED"
                   }
+                ],
+                "deviceonline": [
+                  {
+                      "name": "deviceonline",
+                      "value": "on"
+                  }
                 ]
             },
             "stop-on-demand": {
@@ -21,7 +27,8 @@
                     "value": "true"
                   }
                 ]
-            }
+            },
+            "min_hdi_proxy_version": []
         }
     ]
 }

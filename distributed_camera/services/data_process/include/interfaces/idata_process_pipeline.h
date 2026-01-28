@@ -23,6 +23,7 @@
 #include "image_common_type.h"
 #include "distributed_camera_errno.h"
 #include "data_process_listener.h"
+#include "camera_metadata_info.h"
 
 #include "property_carrier.h"
 
@@ -38,6 +39,7 @@ public:
     virtual void DestroyDataProcessPipeline() = 0;
     virtual int32_t GetProperty(const std::string& propertyName, PropertyCarrier& propertyCarrier) = 0;
     virtual int32_t PushImuData(const std::vector<uint8_t>& imuData, int32_t frameIndex) = 0;
+    virtual int32_t UpdateSettings(const std::shared_ptr<Camera::CameraMetadata> settings) = 0;
 };
 } // namespace DistributedHardware
 } // namespace OHOS

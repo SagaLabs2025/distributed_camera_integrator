@@ -52,6 +52,9 @@
 namespace OHOS {
 namespace DistributedHardware {
 const int DEFAULT_DEVICE_SECURITY_LEVEL = -1;
+#ifdef SECURITY_LEVEL_CHECK_ENABLE
+constexpr int32_t MINIMUM_SECURITY_LEVEL = 3;
+#endif
 const std::string PAGE_SUBTYPE = "camera";
 
 DCameraSinkController::DCameraSinkController(std::shared_ptr<ICameraSinkAccessControl>& accessControl,
@@ -76,6 +79,19 @@ int32_t DCameraSinkController::StartCapture(std::vector<std::shared_ptr<DCameraC
     CHECK_AND_RETURN_RET_LOG(accessControl_ == nullptr, DCAMERA_BAD_VALUE, "accessControl_ is null.");
     if ((accessControl_->IsSensitiveSrcAccess(SRC_TYPE)) &&
         (accessControl_->GetAccessControlType(accessType) == DCAMERA_SAME_ACCOUNT)) {
+#ifdef SECURITY_LEVEL_CHECK_ENABLE
+        std::string sourceUdid = GetUdidByNetworkId(srcDevId_);
+        if (sourceUdid.empty()) {
+            DHLOGE("source udid is empty");
+            return DCAMERA_BAD_VALUE;
+        }
+        int32_t sourceSecurityLevel = GetDeviceSecurityLevel(sourceUdid);
+        DHLOGI("sourceSecurityLevel: %{public}d", sourceSecurityLevel);
+        if (sourceSecurityLevel < MINIMUM_SECURITY_LEVEL) {
+            return DCameraNotifyInner(DCAMERA_SINK_STOP, DCAMERA_EVENT_NO_PERMISSION,
+                std::string("source stop dcamera security less than three"));
+        }
+#endif
         int32_t ret = StartCaptureInner(captureInfos);
         if (ret == DCAMERA_OK) {
             accessControl_->NotifySensitiveSrc(SRC_TYPE);
@@ -219,6 +235,24 @@ int32_t DCameraSinkController::GetCameraInfo(std::shared_ptr<DCameraInfo>& camIn
     DHLOGI("GetCameraInfo dhId: %{public}s, session state: %{public}d", GetAnonyString(dhId_).c_str(), sessionState_);
     camInfo->state_ = sessionState_;
     return DCAMERA_OK;
+}
+
+bool DCameraSinkController::IsIdenticalAccount(const std::string &networkId)
+{
+    CHECK_AND_RETURN_RET_LOG(networkId.empty() || networkId.length() > MAX_ID_LENGTH, false, "networkId is invalid.");
+    DmAuthForm authForm = DmAuthForm::INVALID_TYPE;
+    std::vector<DmDeviceInfo> deviceList;
+    DeviceManager::GetInstance().GetTrustedDeviceList(DCAMERA_PKG_NAME, "", deviceList);
+    CHECK_AND_RETURN_RET_LOG(deviceList.size() == 0 || deviceList.size() > MAX_ONLINE_DEVICE_SIZE,
+        false, "DeviceList size is invalid!");
+    for (const auto &deviceInfo : deviceList) {
+        if (std::string(deviceInfo.networkId) == networkId) {
+            authForm = deviceInfo.authForm;
+            break;
+        }
+    }
+    CHECK_AND_RETURN_RET_LOG(authForm == DmAuthForm::IDENTICAL_ACCOUNT, true, "account check success.");
+    return false;
 }
 
 int32_t DCameraSinkController::CheckSensitive()
@@ -821,6 +855,9 @@ int32_t DCameraSinkController::HandleReceivedData(std::shared_ptr<DataBuffer>& d
             DHLOGE("ACL check failed.");
             return DCAMERA_BAD_VALUE;
         }
+#ifdef DCAMERA_OPEN_STABILE
+        CHECK_AND_RETURN_RET_LOG(!IsIdenticalAccount(srcDevId_), DCAMERA_BAD_VALUE, "Account check failed.");
+#endif
         return StartCapture(captureInfoCmd.value_, sceneMode_);
     } else if ((!command.empty()) && (command.compare(DCAMERA_PROTOCOL_CMD_UPDATE_METADATA) == 0)) {
         DCameraMetadataSettingCmd metadataSettingCmd;

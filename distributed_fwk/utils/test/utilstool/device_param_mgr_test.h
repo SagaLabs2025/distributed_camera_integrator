@@ -13,32 +13,23 @@
  * limitations under the License.
  */
 
-#ifndef OHOS_DISTRIBUTED_HARDWARE_SERVICE_EXT_TEST_H
-#define OHOS_DISTRIBUTED_HARDWARE_SERVICE_EXT_TEST_H
+#ifndef OHOS_DISTRIBUTED_HARDWARE_DEVICE_PARAM_MGR_TEST_H
+#define OHOS_DISTRIBUTED_HARDWARE_DEVICE_PARAM_MGR_TEST_H
 
 #include <gtest/gtest.h>
 
-#include "get_dh_descriptors_callback_stub.h"
+#include "mock_os_account_manager.h"
 
 namespace OHOS {
 namespace DistributedHardware {
-class DistributedHardwareServiceTest : public testing::Test {
+class DeviceParamMgrTest : public testing::Test {
 public:
     static void SetUpTestCase(void);
     static void TearDownTestCase(void);
     void SetUp();
     void TearDown();
 
-public:
-    class TestGetDistributedHardwareCallback : public GetDhDescriptorsCallbackStub {
-    public:
-        TestGetDistributedHardwareCallback() = default;
-        virtual ~TestGetDistributedHardwareCallback() = default;
-    protected:
-        void OnSuccess(const std::string &networkId, const std::vector<DHDescriptor> &descriptors,
-            EnableStep enableStep) override;
-        void OnError(const std::string &networkId, int32_t error) override;
-    };
+    static inline std::shared_ptr<AccountSA::MockIOsAccountManager> deviceDataSyncParamMgr_;
 };
 } // namespace DistributedHardware
 } // namespace OHOS
