@@ -43,7 +43,6 @@ public:
     int32_t OnProcessedVideoBuffer(const std::shared_ptr<DataBuffer>& videoResult);
 
     int32_t GetProperty(const std::string& propertyName, PropertyCarrier& propertyCarrier) override;
-    int32_t PushImuData(const std::vector<uint8_t>& imuData, int32_t frameIndex) override;
 
     int32_t UpdateSettings(const std::shared_ptr<Camera::CameraMetadata> settings) override;
 

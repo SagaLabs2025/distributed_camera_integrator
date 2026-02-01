@@ -27,7 +27,6 @@
 #include "distributed_hardware_log.h"
 #include <sys/prctl.h>
 #include "dcamera_frame_info.h"
-#include "surface_buffer.h"
 
 namespace OHOS {
 namespace DistributedHardware {
@@ -66,10 +65,12 @@ void DCameraStreamDataProcessProducer::Start()
     state_ = DCAMERA_PRODUCER_STATE_START;
     if (streamType_ == CONTINUOUS_FRAME) {
         eventThread_ = std::thread([this]() { this->StartEvent(); });
-        std::unique_lock<std::mutex> lock(eventMutex_);
-        eventCon_.wait(lock, [this] {
-            return eventHandler_ != nullptr;
-        });
+        {
+            std::unique_lock<std::mutex> lock(eventMutex_);
+            eventCon_.wait(lock, [this] {
+                return eventHandler_ != nullptr;
+            });
+        }
         smoother_ = std::make_unique<DCameraFeedingSmoother>();
         smootherListener_ = std::make_shared<FeedingSmootherListener>(shared_from_this());
         smoother_->RegisterListener(smootherListener_);
@@ -103,7 +104,9 @@ void DCameraStreamDataProcessProducer::Stop()
             if ((eventHandler_ != nullptr) && (eventHandler_->GetEventRunner() != nullptr)) {
                 eventHandler_->GetEventRunner()->Stop();
             }
-            eventThread_.join();
+            if (eventThread_.joinable()) {
+                eventThread_.join();
+            }
             eventHandler_ = nullptr;
         }
         // Stop the audio and video synchronization thread
@@ -254,24 +257,6 @@ int32_t DCameraStreamDataProcessProducer::FeedStreamToDriver(const DHBase& dhBas
                 buffer->Size(), sharedMemory.size_);
             break;
         }
-        
-        std::vector<uint8_t> imuData;
-        if (buffer->FindByteArray("IMU_DATA", imuData)) {
-            BufferHandle* handle = sharedMemory.bufferHandle_->GetBufferHandle();
-            if (handle != nullptr) {
-                sptr<SurfaceBuffer> surfaceBuffer = SurfaceBuffer::CreateSurfaceBuffer();
-                if (surfaceBuffer != nullptr) {
-                    surfaceBuffer->SetBufferHandle(handle);
-                    GSError metaRet = surfaceBuffer->SetMetadata(4101, imuData); // 4101 = ATTRKEY_ROI_METADATA
-                    if (metaRet != GSERROR_OK) {
-                        DHLOGW("Set IMU metadata failed: %d", metaRet);
-                    } else {
-                        DHLOGD("Set IMU metadata success, size: %zu", imuData.size());
-                    }
-                }
-            }
-        }
-
         sharedMemory.size_ = buffer->Size();
     } while (0);
     ret = camHdiProvider_->ShutterBuffer(dhBase, streamId_, sharedMemory);

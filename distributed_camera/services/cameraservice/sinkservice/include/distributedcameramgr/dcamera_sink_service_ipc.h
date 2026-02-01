@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2026 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,12 +20,12 @@
 
 #include <map>
 
-#include "single_instance.h"
+#include "dhfwk_single_instance.h"
 
 namespace OHOS {
 namespace DistributedHardware {
 class DCameraSinkServiceIpc {
-DECLARE_SINGLE_INSTANCE_BASE(DCameraSinkServiceIpc);
+FWK_DECLARE_SINGLE_INSTANCE_BASE(DCameraSinkServiceIpc);
 
 public:
     void Init();
@@ -45,10 +45,9 @@ private:
     };
     sptr<SourceRemoteRecipient> sourceRemoteRecipient_;
     std::map<std::string, sptr<IDistributedCameraSource>> remoteSources_;
-    std::mutex sourceRemoteCamSrvLock_;
 
     bool isInit_;
-    std::mutex initCamSrvLock_;
+    std::mutex camSrvOperationLock_;
 };
 } // namespace DistributedHardware
 } // namespace OHOS

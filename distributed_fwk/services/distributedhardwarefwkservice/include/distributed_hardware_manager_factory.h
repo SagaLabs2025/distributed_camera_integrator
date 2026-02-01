@@ -24,12 +24,12 @@
 #include "event_runner.h"
 
 #include "device_type.h"
-#include "single_instance.h"
+#include "dhfwk_single_instance.h"
 
 namespace OHOS {
 namespace DistributedHardware {
 class DistributedHardwareManagerFactory {
-    DECLARE_SINGLE_INSTANCE(DistributedHardwareManagerFactory);
+    FWK_DECLARE_SINGLE_INSTANCE(DistributedHardwareManagerFactory);
 
 public:
     bool InitLocalDevInfo();
@@ -52,6 +52,7 @@ public:
     void ActiveSyncDataByNetworkId(const std::string &networkId);
     void DelaySaStatusTask();
     int32_t DestroySaStatusHandler();
+    void SetSaToCritical();
 private:
     bool Init();
     void ExitDHFWK();
@@ -66,6 +67,7 @@ private:
 
     std::shared_ptr<AppExecFwk::EventHandler> saStatusHandler_;
     std::mutex saStatusMutex_;
+    std::mutex setSaStatusOperateMutex_;
 };
 } // namespace DistributedHardware
 } // namespace OHOS

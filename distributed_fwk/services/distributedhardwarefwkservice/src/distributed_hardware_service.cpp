@@ -549,8 +549,7 @@ int32_t DistributedHardwareService::EnableSink(const std::vector<DHDescriptor> &
 {
     if (!ComponentManager::GetInstance().IsSinkActiveEnabled()) {
         DHLOGI("No business enable sink, set sa status to critical and start delay task");
-        int pid = getpid();
-        Memory::MemMgrClient::GetInstance().SetCritical(pid, true, DISTRIBUTED_HARDWARE_SA_ID);
+        DistributedHardwareManagerFactory::GetInstance().SetSaToCritical();
         DistributedHardwareManagerFactory::GetInstance().DelaySaStatusTask();
     }
     for (const auto &descriptor : descriptors) {
@@ -594,8 +593,7 @@ int32_t DistributedHardwareService::EnableSource(
     }
     if (!ComponentManager::GetInstance().IsSourceEnabled() && !HdfOperateManager::GetInstance().IsAnyHdfInuse()) {
         DHLOGI("No business enable source, set sa status to critical and start delay task");
-        int pid = getpid();
-        Memory::MemMgrClient::GetInstance().SetCritical(pid, true, DISTRIBUTED_HARDWARE_SA_ID);
+        DistributedHardwareManagerFactory::GetInstance().SetSaToCritical();
         DistributedHardwareManagerFactory::GetInstance().DelaySaStatusTask();
     }
     for (const auto &descriptor : descriptors) {
@@ -639,10 +637,9 @@ int32_t DistributedHardwareService::DisableSource(
 
 int32_t DistributedHardwareService::LoadDistributedHDF(const DHType dhType)
 {
-    if (!ComponentManager::GetInstance().IsSourceEnabled() && !HdfOperateManager::GetInstance().IsAnyHdfInuse()) {
+    if (!HdfOperateManager::GetInstance().IsAnyHdfInuse()) {
         DHLOGI("No business load hdf, set sa status to critical and start delay task");
-        int pid = getpid();
-        Memory::MemMgrClient::GetInstance().SetCritical(pid, true, DISTRIBUTED_HARDWARE_SA_ID);
+        DistributedHardwareManagerFactory::GetInstance().SetSaToCritical();
         DistributedHardwareManagerFactory::GetInstance().DelaySaStatusTask();
     }
     switch (dhType) {

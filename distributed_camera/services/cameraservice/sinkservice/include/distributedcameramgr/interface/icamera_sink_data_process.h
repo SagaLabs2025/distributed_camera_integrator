@@ -19,7 +19,6 @@
 #include <cstdint>
 #include <memory>
 
-#include <vector>
 #include "data_buffer.h"
 #include "dcamera_capture_info_cmd.h"
 
@@ -37,7 +36,6 @@ public:
     virtual int32_t FeedStream(std::shared_ptr<DataBuffer>& dataBuffer) = 0;
     virtual void Init() = 0;
     virtual int32_t GetProperty(const std::string& propertyName, PropertyCarrier& propertyCarrier) = 0;
-    virtual int32_t PushImuData(const std::vector<uint8_t>& imuData, int32_t frameIndex) = 0;
 };
 } // namespace DistributedHardware
 } // namespace OHOS

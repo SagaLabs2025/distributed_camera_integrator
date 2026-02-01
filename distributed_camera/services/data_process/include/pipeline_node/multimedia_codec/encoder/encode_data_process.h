@@ -84,7 +84,6 @@ private:
     int32_t GetEncoderOutputBuffer(uint32_t index, MediaAVCodec::AVCodecBufferInfo info,
         MediaAVCodec::AVCodecBufferFlag flag, std::shared_ptr<Media::AVSharedMemory>& buffer);
     int32_t EncodeDone(std::vector<std::shared_ptr<DataBuffer>>& outputBuffers);
-    void SetImuData(uint32_t frameIndex, const std::vector<uint8_t>& imuData);
     int32_t AdjustBitrateBasedOnNetworkConditions(bool isUp);
     void SyncEncodeBufferThread();
     bool IsKeyFrame(const std::shared_ptr<DataBuffer>& inputBuffer);
@@ -163,9 +162,6 @@ private:
     std::mutex encodeBuffersMutex_;
     std::condition_variable encodeBuffersCond_;
     std::deque<std::shared_ptr<DataBuffer>> encodeBuffers_;
-
-    std::mutex imuDataMutex_;
-    std::map<uint32_t, std::vector<uint8_t>> imuDataMap_;
 
     int32_t waitEncoderOutputCount_ = 0;
     int64_t lastFeedEncoderInputBufferTimeUs_ = 0;

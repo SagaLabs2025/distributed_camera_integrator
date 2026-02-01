@@ -203,38 +203,9 @@ int32_t DCameraPipelineSink::GetProperty(const std::string& propertyName, Proper
     return DCAMERA_OK;
 }
 
-int32_t DCameraPipelineSink::PushImuData(const std::vector<uint8_t>& imuData, int32_t frameIndex)
-{
-    if (pipelineHead_ == nullptr) {
-        DHLOGD("PushImuData: pipelineHead is nullptr.");
-        return DCAMERA_BAD_VALUE;
-    }
-    
-    // Find EncodeDataProcess node
-    // In current implementation, pipNodeRanks_[0] IS EncodeDataProcess
-    std::shared_ptr<EncodeDataProcess> encoder = std::dynamic_pointer_cast<EncodeDataProcess>(pipelineHead_);
-    if (encoder != nullptr) {
-        encoder->SetImuData(frameIndex, imuData);
-        return DCAMERA_OK;
-    }
-    
-    // Iterate if not head?
-    for (auto& node : pipNodeRanks_) {
-        encoder = std::dynamic_pointer_cast<EncodeDataProcess>(node);
-        if (encoder != nullptr) {
-            encoder->SetImuData(frameIndex, imuData);
-            return DCAMERA_OK;
-        }
-    }
-    
-    DHLOGW("PushImuData: EncodeDataProcess node not found in pipeline.");
-    return DCAMERA_NOT_FOUND;
-}
-
 int32_t DCameraPipelineSink::UpdateSettings(const std::shared_ptr<Camera::CameraMetadata> settings)
 {
     return DCAMERA_OK;
 }
-
 } // namespace DistributedHardware
 } // namespace OHOS

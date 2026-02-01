@@ -38,7 +38,6 @@ public:
     virtual int32_t ProcessData(std::vector<std::shared_ptr<DataBuffer>>& dataBuffers) = 0;
     virtual void DestroyDataProcessPipeline() = 0;
     virtual int32_t GetProperty(const std::string& propertyName, PropertyCarrier& propertyCarrier) = 0;
-    virtual int32_t PushImuData(const std::vector<uint8_t>& imuData, int32_t frameIndex) = 0;
     virtual int32_t UpdateSettings(const std::shared_ptr<Camera::CameraMetadata> settings) = 0;
 };
 } // namespace DistributedHardware

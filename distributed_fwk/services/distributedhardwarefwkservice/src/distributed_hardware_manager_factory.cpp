@@ -59,7 +59,7 @@ namespace {
 #undef DH_LOG_TAG
 #define DH_LOG_TAG "DistributedHardwareManagerFactory"
 
-IMPLEMENT_SINGLE_INSTANCE(DistributedHardwareManagerFactory);
+FWK_IMPLEMENT_SINGLE_INSTANCE(DistributedHardwareManagerFactory);
 bool DistributedHardwareManagerFactory::InitLocalDevInfo()
 {
     DHLOGI("InitLocalDevInfo start");
@@ -204,8 +204,7 @@ int32_t DistributedHardwareManagerFactory::SendOnLineEvent(const std::string &ne
 
     if (!ComponentManager::GetInstance().IsSourceEnabled() && !ComponentManager::GetInstance().IsSinkActiveEnabled() &&
         !HdfOperateManager::GetInstance().IsAnyHdfInuse()) {
-        int pid = getpid();
-        Memory::MemMgrClient::GetInstance().SetCritical(pid, true, DISTRIBUTED_HARDWARE_SA_ID);
+        SetSaToCritical();
         DHLOGI("New device online, set sa status to critical");
         DelaySaStatusTask();
     }
@@ -355,6 +354,15 @@ int32_t DistributedHardwareManagerFactory::DestroySaStatusHandler()
     saStatusHandler_->RemoveTask(SA_STATUS_TASK_ID);
     saStatusHandler_ = nullptr;
     return DH_FWK_SUCCESS;
+}
+
+void DistributedHardwareManagerFactory::SetSaToCritical()
+{
+    DHLOGI("SetSaToCritical start.");
+    std::lock_guard<std::mutex> lock(setSaStatusOperateMutex_);
+    int pid = getpid();
+    Memory::MemMgrClient::GetInstance().SetCritical(pid, true, DISTRIBUTED_HARDWARE_SA_ID);
+    DHLOGI("SetSaToCritical end.");
 }
 } // namespace DistributedHardware
 } // namespace OHOS

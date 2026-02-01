@@ -109,22 +109,6 @@ bool DataBuffer::FindString(const std::string& name, std::string& value)
     }
 }
 
-void DataBuffer::SetByteArray(const std::string name, const std::vector<uint8_t>& value)
-{
-    byteArrayMap_[name] = value;
-}
-
-bool DataBuffer::FindByteArray(const std::string& name, std::vector<uint8_t>& value)
-{
-    if (byteArrayMap_.count(name) != 0) {
-        value = byteArrayMap_[name];
-        return true;
-    } else {
-        value.clear();
-        return false;
-    }
-}
-
 int64_t DataBuffer::GetTimeStamp()
 {
     return frameInfo_.pts;
