@@ -56,6 +56,8 @@ static uint32_t g_ohosCameraSectionBounds[OHOS_SECTION_COUNT][2] = {
 
 static item_info_t g_ohosCameraProperties[OHOS_CAMERA_PROPERTIES_END - OHOS_CAMERA_PROPERTIES_START] = {
     [OHOS_ABILITY_CAMERA_POSITION - OHOS_CAMERA_PROPERTIES_START] = {"cameraPosition",       META_TYPE_BYTE,  1 },
+    [OHOS_ABILITY_AUTOMOTIVE_CAMERA_POSITION -
+        OHOS_CAMERA_PROPERTIES_START] = {"automotiveCameraPositon", META_TYPE_BYTE, 1},
     [OHOS_ABILITY_CAMERA_TYPE - OHOS_CAMERA_PROPERTIES_START] = {"cameraType",           META_TYPE_BYTE,  1 },
     [OHOS_ABILITY_CAMERA_CONNECTION_TYPE -
         OHOS_CAMERA_PROPERTIES_START] = {"cameraConnectionType", META_TYPE_BYTE,  1 },
@@ -332,6 +334,10 @@ static item_info_t g_ohosCameraControl[OHOS_DEVICE_CONTROL_END - OHOS_DEVICE_CON
         OHOS_DEVICE_CONTROL_START] = {"supportedPreviewQualityPrioritizationValues", META_TYPE_BYTE, -1},
     [OHOS_CONTROL_CAMERA_PREVIEW_QUALITY_PRIORITIZATION -
         OHOS_DEVICE_CONTROL_START] = {"previewQualityPrioritization", META_TYPE_BYTE, 1},
+    [OHOS_ABILITY_IMAGING_MODES -
+       OHOS_DEVICE_CONTROL_START] = {"supportedImagingModeValues", META_TYPE_BYTE, -1},
+    [OHOS_CONTROL_IMAGING_MODE -
+        OHOS_DEVICE_CONTROL_START] = {"imagingMode", META_TYPE_BYTE, 1},
 };
 
 static item_info_t g_ohosDeviceExposure[OHOS_DEVICE_EXPOSURE_END - OHOS_DEVICE_EXPOSURE_START] = {

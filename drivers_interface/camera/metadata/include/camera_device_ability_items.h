@@ -571,6 +571,13 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_STAGE_BOOST,
     /**
+     * ohos.ability.automotiveCameraPositon [static, enum, public]
+     *
+     * camera device property, report current automotive camera position
+     * (i.e. enum: EXTERIOR_FRONT/EXTERIOR_REAR/EXTERIOR_LEFT/ ...)
+     */
+    OHOS_ABILITY_AUTOMOTIVE_CAMERA_POSITION,
+    /**
      * ohos.camera.propertiesEnd
      *
      * camera property end
@@ -1215,13 +1222,6 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_LOG_ASSISTANCE,
     /**
-     * ohos.control.systemCapture [static, uint8, public]
-     *
-     * camera device property, set current camera device system application capture
-     * (i.e. uint8: 0-false/1-true ...)
-     */
-    OHOS_CONTROL_SYSTEM_CAPTURE,
-    /**
      * ohos.ability.external camera lens boost [static, byte, system]
      *
      * camera device property, report current camera support .external camera
@@ -1250,22 +1250,6 @@ typedef enum camera_device_metadata_tag {
     */
     OHOS_CONTROL_PHOTO_QUALITY_PRIORITIZATION,
     /**
-     * ohos.ability.previewQualityPrioritization [static, uint8[], public]
-     * camera device property, report camera default preview quality prioritization
-     *(i.e. uint8[]: 1 2 3 ...)
-     * @since 6.1
-     * @version 1.0
-     */
-    OHOS_ABILITY_CAMERA_PREVIEW_QUALITY_PRIORITIZATION,
-    /**
-     * ohos.control.previewQualityPrioritization [static, uint8, public]
-     * camera device property, set current settings of preview quality prioritization
-     *(i.e. uint8 1 2 3 ...)
-     * @since 6.1
-     * @version 1.0
-     */
-    OHOS_CONTROL_CAMERA_PREVIEW_QUALITY_PRIORITIZATION,
-    /**
      * ohos.control.requestCameraSwitch [static, enum, public]
      *
      * camera device property, set current camera switch
@@ -1286,6 +1270,50 @@ typedef enum camera_device_metadata_tag {
      * (i.e. uint8: 0-false/1-true ...)
     */
     OHOS_CONTROL_REMOVE_SENSOR_RESTRAINT,
+    /**
+     * ohos.ability.previewQualityPrioritization [static, uint8[], public]
+     * camera device property, report camera default preview quality prioritization
+     *(i.e. uint8[]: 1 2 3 ...)
+     * @since 6.1
+     * @version 1.0
+     */
+    OHOS_ABILITY_CAMERA_PREVIEW_QUALITY_PRIORITIZATION,
+    /**
+     * ohos.control.previewQualityPrioritization [static, uint8, public]
+     * camera device property, set current settings of preview quality prioritization
+     *(i.e. uint8 1 2 3 ...)
+     * @since 6.1
+     * @version 1.0
+     */
+    OHOS_CONTROL_CAMERA_PREVIEW_QUALITY_PRIORITIZATION,
+    /**
+     * ohos.status.aeExposureCompensation [static, float, public]
+     *
+     * camera device property, get current camera ae exposure compensation
+     * (i.e. float ...)
+     */
+    OHOS_STATUS_AE_EXPOSURE_COMPENSATION,
+    /**
+     * ohos.control.systemCapture [static, uint8, public]
+     *
+     * camera device property, set current camera device system application capture
+     * (i.e. uint8: 0-false/1-true ...)
+     */
+    OHOS_CONTROL_SYSTEM_CAPTURE,
+    /**
+     * ohos.ability.imagingMode [static, byte, public]
+     *
+     * camera device property, report current camera support imaging mode
+     * (i.e. byte ...)
+     */
+    OHOS_ABILITY_IMAGING_MODES,
+    /**
+     * ohos.control.imagingMode [static, byte, public]
+     *
+     * camera device property, set current camera imaging mode
+     * (i.e. byte ...)
+    */
+    OHOS_CONTROL_IMAGING_MODE,
     /**
      * ohos.device.controlEnd
      *
@@ -3128,6 +3156,25 @@ typedef enum camera_position_enum {
     OHOS_CAMERA_POSITION_OTHER
 } camera_position_enum_t;
 
+// OHOS_ABILITY_AUTOMOTIVE_CAMERA_POSITION enumeration values
+typedef enum automotive_camera_position_enum {
+    OHOS_CAMERA_POSITION_EXTERIOR_FRONT = 0,
+    OHOS_CAMERA_POSITION_EXTERIOR_REAR,
+    OHOS_CAMERA_POSITION_EXTERIOR_LEFT,
+    OHOS_CAMERA_POSITION_EXTERIOR_RIGHT,
+    OHOS_CAMERA_POSITION_EXTERIOR_OTHER,
+    OHOS_CAMERA_POSITION_INTERIOR_OTHER,
+    OHOS_CAMERA_POSITION_INTERIOR_ROW_1_LEFT,
+    OHOS_CAMERA_POSITION_INTERIOR_ROW_1_CENTER,
+    OHOS_CAMERA_POSITION_INTERIOR_ROW_1_RIGHT,
+    OHOS_CAMERA_POSITION_INTERIOR_ROW_2_LEFT,
+    OHOS_CAMERA_POSITION_INTERIOR_ROW_2_CENTER,
+    OHOS_CAMERA_POSITION_INTERIOR_ROW_2_RIGHT,
+    OHOS_CAMERA_POSITION_INTERIOR_ROW_3_LEFT,
+    OHOS_CAMERA_POSITION_INTERIOR_ROW_3_CENTER,
+    OHOS_CAMERA_POSITION_INTERIOR_ROW_3_RIGHT
+} automotive_camera_position_enum_t;
+
 // OHOS_ABILITY_CAMERA_TYPE enumeration values
 typedef enum camera_type_enum {
     OHOS_CAMERA_TYPE_WIDE_ANGLE = 0,
@@ -3847,5 +3894,13 @@ typedef enum camera_switch_mode {
     OHOS_CAMERA_SWITCH_OFF,
     OHOS_CAMERA_SWITCH_ON,
 } camera_switch_mode_t;
+
+// OHOS_ABILITY_IMAGING_MODES
+// OHOS_CONTROL_IMAGING_MODE
+typedef enum camera_imaging_mode_enum {
+    OHOS_CAMERA_IMAGING_MODE_AUTO = 0,
+    OHOS_CAMERA_IMAGING_MODE_RGB,
+    OHOS_CAMERA_IMAGING_MODE_IR,
+} camera_imaging_mode_enum_t;
 
 #endif
