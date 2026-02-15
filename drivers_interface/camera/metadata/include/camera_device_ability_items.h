@@ -1549,6 +1549,13 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_CONTROL_FOCUS_TRACKING_OBJECT_ID,
     /**
+     * ohos.status.fov [static, float[], public]
+     *
+     * camera device property, report current fov
+     * (i.e. float[]: [horizontal fov, vertical fov])
+     */
+    OHOS_STATUS_FOV_INFOS,
+    /**
      * ohos.device.focusEnd
      *
      * camera device focusEnd

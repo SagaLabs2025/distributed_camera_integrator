@@ -349,18 +349,12 @@ int32_t ComponentManager::Disable(const std::string &networkId, const std::strin
     if (!IsIdLengthValid(networkId) || !IsIdLengthValid(uuid) || !IsIdLengthValid(dhId)) {
         return ERR_DH_FWK_PARA_INVALID;
     }
-    std::unique_lock<std::shared_mutex> lock(compSourceMutex_);
-    auto find = compSource_.find(dhType);
-    if (find == compSource_.end()) {
-        DHLOGE("can not find handler for dhId = %{public}s.", GetAnonyString(dhId).c_str());
-        return ERR_DH_FWK_PARA_INVALID;
-    }
-    
+    auto sourceHandler = GetDHSourceInstance(dhType);
     auto compDisable = std::make_shared<ComponentDisable>();
-    auto result = compDisable->Disable(networkId, dhId, find->second);
+    auto result = compDisable->Disable(networkId, dhId, sourceHandler);
     if (result != DH_FWK_SUCCESS) {
         for (int32_t retryCount = 0; retryCount < DISABLE_RETRY_MAX_TIMES; retryCount++) {
-            if (compDisable->Disable(networkId, dhId, find->second) == DH_FWK_SUCCESS) {
+            if (compDisable->Disable(networkId, dhId, sourceHandler) == DH_FWK_SUCCESS) {
                 DHLOGE("disable success, retryCount = %{public}d", retryCount);
                 EnabledCompsDump::GetInstance().DumpDisabledComp(networkId, dhType, dhId);
                 return DH_FWK_SUCCESS;
@@ -788,7 +782,8 @@ int32_t ComponentManager::GetDHSubtypeByDHId(DHSubtype &dhSubtype, const std::st
     } else if (dhSubtypeStr == CAMERA) {
         dhSubtype = DHSubtype::CAMERA;
     } else {
-        DHLOGE("unable to obtain dhSubtype that matches dhId.");
+        dhSubtype = DHSubtype::UNKNOWN;
+        DHLOGE("unable to obtain dhSubtype that matches dhId = %{public}s.", GetAnonyString(dhId).c_str());
         return ERR_DH_FWK_BAD_OPERATION;
     }
     return DH_FWK_SUCCESS;
@@ -859,7 +854,6 @@ void ComponentManager::HandleBusinessStateChange(const std::string &networkId, c
         }
         ret = sourceHandler->UpdateDistributedHardwareWorkMode(networkId, dhId, workModeParam_);
         if (ret != DH_FWK_SUCCESS) {
-            DeinitAVSyncSharedMemory();
             HandleIdleStateChange(targetNetworkId, targetDHId, targetType);
             return;
         }
@@ -1093,13 +1087,14 @@ int32_t ComponentManager::CheckSinkConfigStart(const DHType dhType, bool &enable
     return DH_FWK_SUCCESS;
 }
 
-int32_t ComponentManager::CheckDemandStart(const std::string &uuid, const DHType dhType, bool &enableSource)
+int32_t ComponentManager::CheckDemandStart(const std::string &udid, const std::string &uuid, const DHType dhType,
+    bool &enableSource)
 {
     DHLOGI("CheckDemandStart the dhType: %{public}#X configuration start.", dhType);
     enableSource = false;
 
     CompVersion compVersion;
-    auto ret = GetRemoteVerInfo(compVersion, uuid, dhType);
+    auto ret = GetRemoteVerInfo(compVersion, udid, uuid, dhType);
     if (ret != DH_FWK_SUCCESS) {
         DHLOGE("GetRemoteVerInfo fail.");
         return ret;
@@ -1352,18 +1347,21 @@ int32_t ComponentManager::CheckIdenticalAccount(const std::string &networkId,
     return DH_FWK_SUCCESS;
 }
 
-int32_t ComponentManager::GetRemoteVerInfo(CompVersion &compVersion, const std::string &uuid, DHType dhType)
+int32_t ComponentManager::GetRemoteVerInfo(CompVersion &compVersion, const std::string &udid, const std::string &uuid,
+    DHType dhType)
 {
     MetaCapInfoMap metaInfoMap;
     MetaInfoManager::GetInstance()->GetMetaDataByDHType(dhType, metaInfoMap);
+    auto udidHash = Sha256(udid);
     for (const auto &metaInfo : metaInfoMap) {
-        if (DHContext::GetInstance().GetUUIDByDeviceId(metaInfo.second->GetDeviceId()) == uuid) {
+        if (DHContext::GetInstance().GetUUIDByDeviceId(metaInfo.second->GetDeviceId()) == uuid ||
+            metaInfo.second->GetUdidHash() == udidHash) {
             compVersion = metaInfo.second->GetCompVersion();
             return DH_FWK_SUCCESS;
         }
     }
-    DHLOGE("The metaInfo corresponding to uuid was not found, uuid =%{public}s, dhType = %{public}#X.",
-        GetAnonyString(uuid).c_str(), dhType);
+    DHLOGE("Not find the corresponding metaInfo, udidhash= %{public}s, uuid= %{public}s, dhType= %{public}#X.",
+        GetAnonyString(udidHash).c_str(), GetAnonyString(uuid).c_str(), dhType);
     return ERR_DH_FWK_COMPONENT_COMPVERSION_NOT_FOUND;
 }
 
@@ -2130,12 +2128,7 @@ int32_t ComponentManager::UninitCompSink(DHType dhType)
 int32_t ComponentManager::StopSource(DHType dhType, ActionResult &sourceResult)
 {
     DHLOGI("StopSource, dhType: %{public}#X", dhType);
-    std::shared_lock<std::shared_mutex> lock(compSourceMutex_);
-    if (compSource_.find(dhType) == compSource_.end()) {
-        DHLOGE("Component for DHType: %{public}" PRIu32 " not init source handler.", (uint32_t)dhType);
-        return ERR_DH_FWK_TYPE_NOT_EXIST;
-    }
-    auto sourcePtr = compSource_[dhType];
+    auto sourcePtr = GetDHSourceInstance(dhType);
     if (sourcePtr == nullptr) {
         DHLOGE("comp source ptr is null.");
         return ERR_DH_FWK_SA_HANDLER_IS_NULL;
