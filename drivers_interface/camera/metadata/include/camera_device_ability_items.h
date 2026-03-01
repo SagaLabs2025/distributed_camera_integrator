@@ -2364,6 +2364,13 @@ typedef enum camera_device_metadata_tag {
      */
     OHOS_STATUS_CAMERA_CURRENT_APERTURE_EFFECT,
     /**
+     * ohos.control.cameraAutoFramingControlValue [static, uint8, public]
+     *
+     * camera device property, set current camera auto framing value
+     * (i.e. uint8 ...)
+     */
+    OHOS_CONTROL_AUTO_FRAMING_ENABLE,
+    /**
      * ohos.device.exitCameraEvent [static, byte, public]
      *
      * camera device property, set current camera exitCamera event
