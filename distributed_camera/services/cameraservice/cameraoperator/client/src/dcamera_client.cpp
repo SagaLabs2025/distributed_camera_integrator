@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2025 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2026 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -175,6 +175,24 @@ void DCameraClient::FindCameraMetadata(const std::string& metadataStr)
     } else {
         DHLOGE("FindCameraMetadata %{public}s find stabilization mode failed, ret: %{public}d",
             GetAnonyString(cameraId_).c_str(), ret);
+    }
+}
+
+void DCameraClient::ReleaseCameraInput()
+{
+    if (cameraInput_ != nullptr) {
+        DHLOGI("ReleaseCameraInput %{public}s release cameraInput", GetAnonyString(cameraId_).c_str());
+        int32_t ret = ((sptr<CameraStandard::CameraInput> &)cameraInput_)->Close();
+        if (ret != DCAMERA_OK) {
+            DHLOGE("ReleaseCameraInput cameraInput Close failed, cameraId: %{public}s, ret: %{public}d",
+                GetAnonyString(cameraId_).c_str(), ret);
+        }
+        ret = ((sptr<CameraStandard::CameraInput> &)cameraInput_)->Release();
+        if (ret != DCAMERA_OK) {
+            DHLOGE("ReleaseCameraInput cameraInput Release failed, cameraId: %{public}s, ret: %{public}d",
+                GetAnonyString(cameraId_).c_str(), ret);
+        }
+        cameraInput_ = nullptr;
     }
 }
 
@@ -425,11 +443,16 @@ int32_t DCameraClient::ConfigCaptureSession(std::vector<std::shared_ptr<DCameraC
     if (rc != DCAMERA_OK) {
         DHLOGE("ConfigCaptureSession cameraInput_ Open failed, cameraId: %{public}s, ret: %{public}d",
             GetAnonyString(cameraId_).c_str(), rc);
+        // Clean up: release cameraInput_ after failed Open
+        ((sptr<CameraStandard::CameraInput> &)cameraInput_)->Release();
+        cameraInput_ = nullptr;
         return DCAMERA_BAD_VALUE;
     }
 
     std::shared_ptr<DCameraInputCallback> inputCallback = std::make_shared<DCameraInputCallback>(stateCallback_);
+    std::shared_ptr<CaOnResultCallback> resultCallback = std::make_shared<CaOnResultCallback>(videoOutputCallbackSdk);
     ((sptr<CameraStandard::CameraInput> &)cameraInput_)->SetErrorCallback(inputCallback);
+    ((sptr<CameraStandard::CameraInput> &)cameraInput_)->SetResultCallback(resultCallback);
 
     while (!cameraMetadatas_.empty()) {
         std::string metadataStr = cameraMetadatas_.front();
@@ -438,6 +461,9 @@ int32_t DCameraClient::ConfigCaptureSession(std::vector<std::shared_ptr<DCameraC
         if (ret != DCAMERA_OK) {
             DHLOGE("ConfigCaptureSession %{public}s set camera settings failed, ret: %{public}d",
                 GetAnonyString(cameraId_).c_str(), ret);
+            // Clean up all allocated resources
+            ReleaseCameraInput();
+            cameraMetadatas_.pop(); // Remove the processed metadata
             return ret;
         }
         cameraMetadatas_.pop();
@@ -447,6 +473,8 @@ int32_t DCameraClient::ConfigCaptureSession(std::vector<std::shared_ptr<DCameraC
     if (captureSession_ == nullptr) {
         DHLOGE("ConfigCaptureSession %{public}s create captureSession failed",
                GetAnonyString(cameraId_).c_str());
+        // Clean up cameraInput_ on captureSession creation failure
+        ReleaseCameraInput();
         return DCAMERA_BAD_VALUE;
     }
 
