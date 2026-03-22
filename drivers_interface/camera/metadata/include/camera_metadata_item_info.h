@@ -52,6 +52,8 @@ static uint32_t g_ohosCameraSectionBounds[OHOS_SECTION_COUNT][2] = {
     [OHOS_SECTION_COMPOSITION_SUGGESTION] = {OHOS_COMPOSITION_SUGGESTION_START, OHOS_COMPOSITION_SUGGESTION_END},
     [OHOS_SECTION_LIGHT_STATUS] = {OHOS_LIGHT_STATUS_START, OHOS_LIGHT_STATUS_END },
     [OHOS_SECTION_DATA_DELIVERY]= {OHOS_DATA_DELIVERY_START, OHOS_DATA_DELIVERY_END },
+    [OHOS_SECTION_OPTICAL_IMAGE_STABILIZATION] =
+        {OHOS_OPTICAL_IMAGE_STABILIZATION_START, OHOS_OPTICAL_IMAGE_STABILIZATION_END},
 };
 
 static item_info_t g_ohosCameraProperties[OHOS_CAMERA_PROPERTIES_END - OHOS_CAMERA_PROPERTIES_START] = {
@@ -732,6 +734,30 @@ static item_info_t g_ohosPostProcess[OHOS_CAMERA_EFFECT_END - OHOS_CAMERA_EFFECT
         OHOS_CAMERA_EFFECT_START] = {"controlCenterSupported", META_TYPE_BYTE, 1},
     [OHOS_ABILITY_CONTROL_CENTER_EFFECT_TYPE -
         OHOS_CAMERA_EFFECT_START] = {"controlCenterEffectType", META_TYPE_BYTE, -1},
+    [OHOS_ABILITY_IS_LOGICAL_CAMERA -
+        OHOS_CAMERA_EFFECT_START] = {"isLogicalCamera", META_TYPE_BYTE, 1},
+    [OHOS_ABILITY_CONSTITUENT_CAMERA_DEVICES -
+        OHOS_CAMERA_EFFECT_START] = {"constituentCameraDevices",
+                                     META_TYPE_BYTE, -1},
+    [OHOS_ABILITY_LENS_DISTORTION -
+        OHOS_CAMERA_EFFECT_START] = {"lensDistortion", META_TYPE_FLOAT, -1},
+    [OHOS_ABILITY_LENS_INTRINSIC_CALIBRATION -
+        OHOS_CAMERA_EFFECT_START] = {"lensIntrinsicCalibration",
+                                     META_TYPE_FLOAT, -1},
+    [OHOS_SENSOR_INFO_COLOR_FILTER_ARRANGEMENT -
+        OHOS_CAMERA_EFFECT_START] = {"colorFilterArrangement", META_TYPE_BYTE,
+                                     1},
+    [OHOS_ABILITY_UNSUPPORTED_MULTI_CAMERA_COMBINATIONS -
+        OHOS_CAMERA_EFFECT_START] = {"unsupportedMultiCameraCombinations",
+                                     META_TYPE_INT32, -1},
+    [OHOS_ABILITY_CAMERA_MODE_SUPPORTED_STREAMS -
+        OHOS_CAMERA_EFFECT_START] = {"modeSupportedstreams", META_TYPE_INT32,
+                                     -1},
+    [OHOS_ABILITY_IS_CAMERA_PUBLIC -
+        OHOS_CAMERA_EFFECT_START] = {"isCameraPublic", META_TYPE_BYTE, 1},
+    [OHOS_ABILITY_RAW_CAPTURE_SCENE_ZOOM_CAP -
+        OHOS_CAMERA_EFFECT_START] = {"rawZoomCap", META_TYPE_FLOAT, -1},
+
 };
 
 static item_info_t g_ohosCameraSecure[OHOS_CAMERA_SECURE_END - OHOS_CAMERA_SECURE_START] = {
@@ -813,6 +839,20 @@ static item_info_t g_ohosCameraDataDelivery[OHOS_DATA_DELIVERY_END - OHOS_DATA_D
         OHOS_DATA_DELIVERY_START] = {"controlAutoBokehDataDelivery", META_TYPE_BYTE, 1},
 };
 
+static item_info_t g_ohosCameraOpticalImageStabilization[OHOS_OPTICAL_IMAGE_STABILIZATION_END -
+                                                         OHOS_OPTICAL_IMAGE_STABILIZATION_START] = {
+    [OHOS_ABILITY_OPTICAL_IMAGE_STABILIZATION_MODES -
+        OHOS_OPTICAL_IMAGE_STABILIZATION_START] = {"opticalImageStabilizationSupportedModes", META_TYPE_INT32, -1},
+    [OHOS_CONTROL_OPTICAL_IMAGE_STABILIZATION_MODE -
+        OHOS_OPTICAL_IMAGE_STABILIZATION_START] = {"opticalImageStabilizationMode", META_TYPE_INT32, 1},
+    [OHOS_STATUS_OPTICAL_IMAGE_STABILIZATION_MODE -
+        OHOS_OPTICAL_IMAGE_STABILIZATION_START] = {"opticalImageStabilizationModeStatus", META_TYPE_INT32, 1},
+    [OHOS_ABILITY_OPTICAL_IMAGE_STABILIZATION_BIAS_RANGE -
+        OHOS_OPTICAL_IMAGE_STABILIZATION_START] = {"opticalImageStabilizationSupportedBiasRange", META_TYPE_FLOAT, -1},
+    [OHOS_CONTROL_SET_CUSTOM_OPTICAL_IMAGE_STABILIZATION_BIAS -
+        OHOS_OPTICAL_IMAGE_STABILIZATION_START] = {"opticalImageStabilizationBias", META_TYPE_FLOAT, -1},
+};
+
 const static item_info_t *g_ohosItemInfo[OHOS_SECTION_COUNT] = {
     g_ohosCameraProperties,
     g_ohosCameraSensor,
@@ -835,6 +875,7 @@ const static item_info_t *g_ohosItemInfo[OHOS_SECTION_COUNT] = {
     g_ohosCameraComposition,
     g_ohosCameraLightStatus,
     g_ohosCameraDataDelivery,
+    g_ohosCameraOpticalImageStabilization,
 };
 } // namespace Camera
 #endif /* CAMERA_METADATA_ITEM_INFO_H */
